@@ -33,85 +33,85 @@ To setup the application you need to modify _media/scripts/settings.js_example_ 
 Each category is represented by a javascript object (dictionary). Properties can be either string or number, boolean value or a function that returns strictly defined content. Below you can find properties reference for each category.
 
 ====Application====
-| *Property* | *Description* |
-| userSelection | */bool/* Display user selection page? If false, a placeholder user name has to be setup (eg. default, see below) (true/false) |
-| jsonp | */bool/* allow requests to other hosts (default: false) |
-| pageTitle | */string/* page title (example: 'Task Monitoring') |
-| footerTxt | */string/* footer text (example: 'jTaskMonitoring') |
-| supportLnk | */string/* link to support page (example: 'https://twiki.cern.ch/twiki/bin/view/ArdaGrid/TaskMonitoringWebUI') |
-| logoLnk | */string/* link to page logo (example: 'media/images/atlaslogo.png') |
-| usersListLbl | */string/* Label of user list search field (example: 'Users List') |
-| mainsLbl | */string/* Name of mains content (example: 'Tasks') |
-| subsLbL | */string/* Name of subs content (example: 'Jobs') |
-| modelDefaults | */function/* Here You can set up model (data.js) default values, in most cases doesn't need to be changed. Function has to return the following values: |
-| ^ | user - */string/* default user name (default: '') |
-| ^ | from - */int/* timestamp (default: 0) |
-| ^ | till - */int/* timestamp (default: 0) |
-| ^ | timeRange - */string/* lastDay&#124;last2Days&#124;last3Days&#124;lastWeek&#124;last2Weeks&#124;lastMonth (default: 'lastDay') |
-| ^ | refresh - */int/* seconds (default: 0) |
-| ^ | tid - */string/* eg. Job id in Gange nomenclature (default: '') |
-| ^ | p - */int/* page number (default: 0) |
-| ^ | sorting - */array/* (default: []) |
-| ^ | or - */array/* opened table rows (default: []) |
-| ^ | uparam - */array/* user defined params (for params that cannot be shared between use cases) (default: []) |
+|| *Property* || *Description* ||
+|| userSelection || */bool/* Display user selection page? If false, a placeholder user name has to be setup (eg. default, see below) (true/false) ||
+|| jsonp || */bool/* allow requests to other hosts (default: false) ||
+|| pageTitle || */string/* page title (example: 'Task Monitoring') ||
+|| footerTxt || */string/* footer text (example: 'jTaskMonitoring') ||
+|| supportLnk || */string/* link to support page (example: 'https://twiki.cern.ch/twiki/bin/view/ArdaGrid/TaskMonitoringWebUI') ||
+|| logoLnk || */string/* link to page logo (example: 'media/images/atlaslogo.png') ||
+|| usersListLbl || */string/* Label of user list search field (example: 'Users List') ||
+|| mainsLbl || */string/* Name of mains content (example: 'Tasks') ||
+|| subsLbL || */string/* Name of subs content (example: 'Jobs') ||
+|| modelDefaults || */function/* Here You can set up model (data.js) default values, in most cases doesn't need to be changed. Function has to return the following values: ||
+|| ^ || user - */string/* default user name (default: '') ||
+|| ^ || from - */int/* timestamp (default: 0) ||
+|| ^ || till - */int/* timestamp (default: 0) ||
+|| ^ || timeRange - */string/* lastDay&#124;last2Days&#124;last3Days&#124;lastWeek&#124;last2Weeks&#124;lastMonth (default: 'lastDay') ||
+|| ^ || refresh - */int/* seconds (default: 0) ||
+|| ^ || tid - */string/* eg. Job id in Gange nomenclature (default: '') ||
+|| ^ || p - */int/* page number (default: 0) ||
+|| ^ || sorting - */array/* (default: []) ||
+|| ^ || or - */array/* opened table rows (default: []) ||
+|| ^ || uparam - */array/* user defined params (for params that cannot be shared between use cases) (default: []) ||
 
 ====Users====
-| *Property* | *Description* |
-| dataURL | */string/* Users list URL for ajax request |
-| dataURL_params | */function/* (optional) Ajax request parameters<br>Input: controller.Data object<br>Output: {'&lt;parameter_name&gt;':&lt;parameter_value&gt;,...} (default: {}) |
-| searchLabel | */string/* Label of the search field |
-| translateData | */function/* Translates ajax response onto searchable list plugin data format<br>Input: json responce<br>Output: [user1, user2, ...] |
+|| *Property* || *Description* ||
+|| dataURL || */string/* Users list URL for ajax request ||
+|| dataURL_params || */function/* (optional) Ajax request parameters<br>Input: controller.Data object<br>Output: {'&lt;parameter_name&gt;':&lt;parameter_value&gt;,...} (default: {}) ||
+|| searchLabel || */string/* Label of the search field ||
+|| translateData || */function/* Translates ajax response onto searchable list plugin data format<br>Input: json responce<br>Output: [user1, user2, ...] ||
 
 ====Mains====
-| *Property* | *Description* |
-| dataURL | */string/* Mains URL for ajax request |
-| dataURL_params | */function/* (optional) Ajax request parameters<br>Input: controller.Data object<br>Output: {'&lt;parameter_name&gt;':&lt;parameter_value&gt;,...} (default: {}) |
-| expandableRows | */bool/* If TRUE, rows will expand after clicking '+' |
-| multipleER | */bool/* If TRUE, multiple rows can be expanded |
-| expandData | */object/* Definition of data that will be displayed after row expansion, expandData object has the following structure: |
-| ^ | dataURL - */string/* URL for ajax request |
-| ^ | dataURL_params - */function/* Ajax request parameters<br>Input: controller.Data object and current row data<br>Output: {'&lt;parameter_name&gt;':&lt;parameter_value&gt;,...} (default: {}) |
-| ^ | dataFunction - */Function/* Function, definition of data that will be displayed after row expansion<br>Input:<br>- rowDataSet - clicked row data (from ajax datatable response)<br>- jsonDataSet - data extracted from ajax response<br>Output: [<br>['properties',[[(property_name),'(property_value)'],...]],<br>['table',{<br>'tblLabels':[(label1),(label2),...],<br>'tblData':[[(row1value1),(row1value2),...],[(row2value1),(row2value2),...],...]<br>}],<br>['html','(custom_html)'],<br>['charts',[&lt;chart_obj1&gt;,&lt;chart_obj2&gt;]] <br>]<br>You can skip each of the output parameters ('properties', 'html', 'table' or 'charts' output sections), expanded row will keep to the order set up in this output array |
-| sorting | */array/* sets up column sorting, [<column_index>,<sorting_direction>], sorting_direction='desc'&#124;'asc' (default: [1,'desc']) |
-| iDisplayLength | */int/* Number of rows to display on single page (default: 25) |
-| tblLabels | */array/* column labels (example: ['monitorTaskId','Num of Jobs','Pending','Running','Successful','Failed','Unknown','Graphically']) |
-| aoColumns | */array/* (optional) columns options, see http://www.datatables.net/usage/columns |
-| getDataArray | */function/* function: extracting array of data (for dataTable) form Ajax response<br>Example:<br>- Ajax response: {'user_taskstable':[{col_val1, col_val2, ...}, ...]}<br>- Required function: function(data) { return data.user_taskstable; } |
-| translateData | */function/* function, translates ajax response onto dataTables plugin data format, here you can setup you table content and a links to the subcontent, to do this just add an html "a" tag with class "drilldown" to the cell.<br>Output: [[col_val1, col_val2, ...], ...] |
-| drillDownHandler | */function/* _*Replaced setupUserParams*_. It is executed every time someone clicks a table cell with a.drilldown html tag in it. Main purpose of the function is to indicate tid and (optionary) uparam parameters from the Data object (uparam allows to setup additional parameters to tid that would define a sub table ajax request). This allows to properly display subs table.<br>Input:<br> - Data - application Data object<br> - el - clicked jQuery element<br> - rowIndex - index of the clicked row<br>Output: {<br> 'uparam':[<parameters_list>],<br> 'tid':<id_for_the_subtable><br>} |
-| filters | */array/* It's an array of objects, each object represents different filter and all of the filters values are stored in a Controller.Data.filters object and you can use them (eg in dataURL_params functions) by doing Data.filters.{filter_urlVariable}. The filter object consists of the following elements: |
-| ^ | label - */string/* filter label /displayed above the input field/ (default: '') |
-| ^ | urlVariable - */string/* lower cased, no spaces, no special characters /used in url and inside Controller.Data object/ (default: 'filter') |
-| ^ | fieldType - */string/* accept 3 kinds of input types ('text' &#124; 'select' &#124; 'date') (default: 'text') |
-| ^ | value - */string/* Initial value for the filter (default: '') |
-| ^ | options - */obejct/* there are several options that you can setup depending on _fieldType_ and needs, here is the example:<br>{<br>&nbsp;&nbsp;&nbsp;&nbsp;'dataURL':'/dashboard/request.py/inittaskprod?data=sites',  // (optional) String, works only for select fieldType<br>&nbsp;&nbsp;&nbsp;&nbsp;'dataURL_params':function(Data){return {};},  // (optional) Here you can setup request parameters<br>&nbsp;&nbsp;&nbsp;&nbsp;// Function translates model or ajax data onto simple elements array<br>&nbsp;&nbsp;&nbsp;&nbsp;// Input: data - data represents Data.mem object or ajax response depending on whether dataURL exists or not<br>&nbsp;&nbsp;&nbsp;&nbsp;// Output: [['el1','el1 label'],['el2','el2 label'], ...] - Can also be defined as a static list (when you don't want to<br>&nbsp;&nbsp;&nbsp;&nbsp;// load the data from url nor using Data.mem object)<br>&nbsp;&nbsp;&nbsp;&nbsp;'translateData': function(data) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/* Example useage:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var sitesArr = data.basicData;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var output = [ ['','Off'] ];<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for (var i=0;i<sitesArr.length;i++) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;output.push([sitesArr[i].SITENAME,sitesArr[i].SITENAME]);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return output;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/<br>&nbsp;&nbsp;&nbsp;&nbsp;},<br>&nbsp;&nbsp;&nbsp;&nbsp;// On and Off optional functions are executed when filters submit is clicked<br>&nbsp;&nbsp;&nbsp;&nbsp;// On is executed when field has value other then empty string ("")<br>&nbsp;&nbsp;&nbsp;&nbsp;// Otherwise Off is executed<br>&nbsp;&nbsp;&nbsp;&nbsp;'On':function(Data) {  // Data is a Controller.Data object<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$('#from,#till,#timeRange').attr('disabled',true);<br>&nbsp;&nbsp;&nbsp;&nbsp;},<br>&nbsp;&nbsp;&nbsp;&nbsp;'Off':function(Data) {  // Data is a Controller.Data object<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$('#from,#till,#timeRange').attr('disabled',false);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>} |
-| charts | */array/* (optional) allow to insert charts into charts tab |
-| topTableCharts | */array/* (optional) allow to insert charts on top of the dataTable |
+|| *Property* || *Description* ||
+|| dataURL || */string/* Mains URL for ajax request ||
+|| dataURL_params || */function/* (optional) Ajax request parameters<br>Input: controller.Data object<br>Output: {'&lt;parameter_name&gt;':&lt;parameter_value&gt;,...} (default: {}) ||
+|| expandableRows || */bool/* If TRUE, rows will expand after clicking '+' ||
+|| multipleER || */bool/* If TRUE, multiple rows can be expanded ||
+|| expandData || */object/* Definition of data that will be displayed after row expansion, expandData object has the following structure: ||
+|| ^ || dataURL - */string/* URL for ajax request ||
+|| ^ || dataURL_params - */function/* Ajax request parameters<br>Input: controller.Data object and current row data<br>Output: {'&lt;parameter_name&gt;':&lt;parameter_value&gt;,...} (default: {}) ||
+|| ^ || dataFunction - */Function/* Function, definition of data that will be displayed after row expansion<br>Input:<br>- rowDataSet - clicked row data (from ajax datatable response)<br>- jsonDataSet - data extracted from ajax response<br>Output: [<br>['properties',[[(property_name),'(property_value)'],...]],<br>['table',{<br>'tblLabels':[(label1),(label2),...],<br>'tblData':[[(row1value1),(row1value2),...],[(row2value1),(row2value2),...],...]<br>}],<br>['html','(custom_html)'],<br>['charts',[&lt;chart_obj1&gt;,&lt;chart_obj2&gt;]] <br>]<br>You can skip each of the output parameters ('properties', 'html', 'table' or 'charts' output sections), expanded row will keep to the order set up in this output array ||
+|| sorting || */array/* sets up column sorting, [<column_index>,<sorting_direction>], sorting_direction='desc'&#124;'asc' (default: [1,'desc']) ||
+|| iDisplayLength || */int/* Number of rows to display on single page (default: 25) ||
+|| tblLabels || */array/* column labels (example: ['monitorTaskId','Num of Jobs','Pending','Running','Successful','Failed','Unknown','Graphically']) ||
+|| aoColumns || */array/* (optional) columns options, see http://www.datatables.net/usage/columns ||
+|| getDataArray || */function/* function: extracting array of data (for dataTable) form Ajax response<br>Example:<br>- Ajax response: {'user_taskstable':[{col_val1, col_val2, ...}, ...]}<br>- Required function: function(data) { return data.user_taskstable; } ||
+|| translateData || */function/* function, translates ajax response onto dataTables plugin data format, here you can setup you table content and a links to the subcontent, to do this just add an html "a" tag with class "drilldown" to the cell.<br>Output: [[col_val1, col_val2, ...], ...] ||
+|| drillDownHandler || */function/* _*Replaced setupUserParams*_. It is executed every time someone clicks a table cell with a.drilldown html tag in it. Main purpose of the function is to indicate tid and (optionary) uparam parameters from the Data object (uparam allows to setup additional parameters to tid that would define a sub table ajax request). This allows to properly display subs table.<br>Input:<br> - Data - application Data object<br> - el - clicked jQuery element<br> - rowIndex - index of the clicked row<br>Output: {<br> 'uparam':[<parameters_list>],<br> 'tid':<id_for_the_subtable><br>} ||
+|| filters || */array/* It's an array of objects, each object represents different filter and all of the filters values are stored in a Controller.Data.filters object and you can use them (eg in dataURL_params functions) by doing Data.filters.{filter_urlVariable}. The filter object consists of the following elements: ||
+|| ^ || label - */string/* filter label /displayed above the input field/ (default: '') ||
+|| ^ || urlVariable - */string/* lower cased, no spaces, no special characters /used in url and inside Controller.Data object/ (default: 'filter') ||
+|| ^ || fieldType - */string/* accept 3 kinds of input types ('text' &#124; 'select' &#124; 'date') (default: 'text') ||
+|| ^ || value - */string/* Initial value for the filter (default: '') ||
+|| ^ || options - */obejct/* there are several options that you can setup depending on _fieldType_ and needs, here is the example:<br>{<br>&nbsp;&nbsp;&nbsp;&nbsp;'dataURL':'/dashboard/request.py/inittaskprod?data=sites',  // (optional) String, works only for select fieldType<br>&nbsp;&nbsp;&nbsp;&nbsp;'dataURL_params':function(Data){return {};},  // (optional) Here you can setup request parameters<br>&nbsp;&nbsp;&nbsp;&nbsp;// Function translates model or ajax data onto simple elements array<br>&nbsp;&nbsp;&nbsp;&nbsp;// Input: data - data represents Data.mem object or ajax response depending on whether dataURL exists or not<br>&nbsp;&nbsp;&nbsp;&nbsp;// Output: [['el1','el1 label'],['el2','el2 label'], ...] - Can also be defined as a static list (when you don't want to<br>&nbsp;&nbsp;&nbsp;&nbsp;// load the data from url nor using Data.mem object)<br>&nbsp;&nbsp;&nbsp;&nbsp;'translateData': function(data) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/* Example useage:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var sitesArr = data.basicData;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var output = [ ['','Off'] ];<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for (var i=0;i<sitesArr.length;i++) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;output.push([sitesArr[i].SITENAME,sitesArr[i].SITENAME]);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return output;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/<br>&nbsp;&nbsp;&nbsp;&nbsp;},<br>&nbsp;&nbsp;&nbsp;&nbsp;// On and Off optional functions are executed when filters submit is clicked<br>&nbsp;&nbsp;&nbsp;&nbsp;// On is executed when field has value other then empty string ("")<br>&nbsp;&nbsp;&nbsp;&nbsp;// Otherwise Off is executed<br>&nbsp;&nbsp;&nbsp;&nbsp;'On':function(Data) {  // Data is a Controller.Data object<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$('#from,#till,#timeRange').attr('disabled',true);<br>&nbsp;&nbsp;&nbsp;&nbsp;},<br>&nbsp;&nbsp;&nbsp;&nbsp;'Off':function(Data) {  // Data is a Controller.Data object<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$('#from,#till,#timeRange').attr('disabled',false);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>} ||
+|| charts || */array/* (optional) allow to insert charts into charts tab ||
+|| topTableCharts || */array/* (optional) allow to insert charts on top of the dataTable ||
 
 ====Subs====
-| *Property* | *Description* |
-| dataURL | */string/* Mains URL for ajax request |
-| dataURL_params | */function/* (optional) Ajax request parameters<br>Input: controller.Data<br>Output: {'&lt;parameter_name&gt;':&lt;parameter_value&gt;,...} (default: {}) |
-| expandableRows | */bool/* If TRUE, rows will expand after clicking '+' |
-| multipleER | */bool/* If TRUE, multiple rows can be expanded |
-| expandData | */object/* Definition of data that will be displayed after row expansion, expandData object has the following structure: |
-| ^ | dataURL - */string/* URL for ajax request |
-| ^ | dataURL_params - */function/* (optional) Ajax request parameters<br>Input: controller.Data object and current row data<br>Output: {'&lt;parameter_name&gt;':&lt;parameter_value&gt;,...} (default: {}) |
-| ^ | dataFunction - */Function/* Function, definition of data that will be displayed after row expansion<br>Input:<br>- rowDataSet - clicked row data (from ajax datatable response)<br>- jsonDataSet - data extracted from ajax response<br>Output: [<br>['properties',[[(property_name),'(property_value)'],...]],<br>['table',{<br>'tblLabels':[(label1),(label2),...],<br>'tblData':[[(row1value1),(row1value2),...],[(row2value1),(row2value2),...],...]<br>}],<br>['html','(custom_html)'],<br>['charts',[&lt;chart_obj1&gt;,&lt;chart_obj2&gt;]] <br>]<br>You can skip each of the output parameters ('properties', 'html', 'table' or 'charts' output sections), expanded row will keep to the order set up in this output array |
-| sorting | */array/* sets up column sorting, [<column_index>,<sorting_direction>], sorting_direction='desc'&#124;'asc' (default: [1,'desc']) |
-| iDisplayLength | */int/* Number of rows to display on single page (default: 25) |
-| tblLabels | */array/* column labels (example: ['monitorTaskId','Num of Jobs','Pending','Running','Successful','Failed','Unknown','Graphically']) |
-| aoColumns | */array/* (optional) columns options, see http://www.datatables.net/usage/columns |
-| getDataArray | */function/* function: extracting array of data (for dataTable) form Ajax response<br>Example:<br>- Ajax response: {'user_taskstable':[{col_val1, col_val2, ...}, ...]}<br>- Required function: function(data) { return data.user_taskstable; } |
-| translateData | */function/* function, translates ajax response onto dataTables plugin data format<br>Output: [[col_val1, col_val2, ...], ...] |
-| filters | */array/* It's an array of objects, each object represents different filter and all of the filters values are stored in a Controller.Data.filters object and you can use them (eg in dataURL_params functions) by doing Data.filters.{filter_urlVariable}. The filter object consists of the following elements: |
-| ^ | label - */string/* filter label /displayed above the input field/ (default: '') |
-| ^ | urlVariable - */string/* lower cased, no spaces, no special characters /used in url and inside Controller.Data object/ (default: 'filter') |
-| ^ | fieldType - */string/* accept 3 kinds of input types ('text' &#124; 'select' &#124; 'date') (default: 'text') |
-| ^ | value - */string/* Initial value for the filter (default: '') |
-| ^ | options - */obejct/* there are several options that you can setup depending on _fieldType_ and needs, here is the example:<br>{<br>&nbsp;&nbsp;&nbsp;&nbsp;'dataURL':'/dashboard/request.py/inittaskprod?data=sites',  // (optional) String, works only for select fieldType<br>&nbsp;&nbsp;&nbsp;&nbsp;'dataURL_params':function(Data){return {};},  // (optional) Here you can setup request parameters<br>&nbsp;&nbsp;&nbsp;&nbsp;// Function translates model or ajax data onto simple elements array<br>&nbsp;&nbsp;&nbsp;&nbsp;// Input: data - data represents Data.mem object or ajax response depending on whether dataURL exists or not<br>&nbsp;&nbsp;&nbsp;&nbsp;// Output: [['el1','el1 label'],['el2','el2 label'], ...] - Can also be defined as a static list (when you don't want to<br>&nbsp;&nbsp;&nbsp;&nbsp;// load the data from url nor using Data.mem object)<br>&nbsp;&nbsp;&nbsp;&nbsp;'translateData': function(data) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/* Example useage:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var sitesArr = data.basicData;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var output = [ ['','Off'] ];<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for (var i=0;i<sitesArr.length;i++) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;output.push([sitesArr[i].SITENAME,sitesArr[i].SITENAME]);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return output;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/<br>&nbsp;&nbsp;&nbsp;&nbsp;},<br>&nbsp;&nbsp;&nbsp;&nbsp;// On and Off optional functions are executed when filters submit is clicked<br>&nbsp;&nbsp;&nbsp;&nbsp;// On is executed when field has value other then empty string ("")<br>&nbsp;&nbsp;&nbsp;&nbsp;// Otherwise Off is executed<br>&nbsp;&nbsp;&nbsp;&nbsp;'On':function(Data) {  // Data is a Controller.Data object<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$('#from,#till,#timeRange').attr('disabled',true);<br>&nbsp;&nbsp;&nbsp;&nbsp;},<br>&nbsp;&nbsp;&nbsp;&nbsp;'Off':function(Data) {  // Data is a Controller.Data object<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$('#from,#till,#timeRange').attr('disabled',false);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>} |
-| charts | */array/* (optional) allow to insert charts into charts tab |
-| topTableCharts | */array/* (optional) allow to insert charts on top of the dataTable |
+|| *Property* || *Description* ||
+|| dataURL || */string/* Mains URL for ajax request ||
+|| dataURL_params || */function/* (optional) Ajax request parameters<br>Input: controller.Data<br>Output: {'&lt;parameter_name&gt;':&lt;parameter_value&gt;,...} (default: {}) ||
+|| expandableRows || */bool/* If TRUE, rows will expand after clicking '+' ||
+|| multipleER || */bool/* If TRUE, multiple rows can be expanded ||
+|| expandData || */object/* Definition of data that will be displayed after row expansion, expandData object has the following structure: ||
+|| ^ || dataURL - */string/* URL for ajax request ||
+|| ^ || dataURL_params - */function/* (optional) Ajax request parameters<br>Input: controller.Data object and current row data<br>Output: {'&lt;parameter_name&gt;':&lt;parameter_value&gt;,...} (default: {}) ||
+|| ^ || dataFunction - */Function/* Function, definition of data that will be displayed after row expansion<br>Input:<br>- rowDataSet - clicked row data (from ajax datatable response)<br>- jsonDataSet - data extracted from ajax response<br>Output: [<br>['properties',[[(property_name),'(property_value)'],...]],<br>['table',{<br>'tblLabels':[(label1),(label2),...],<br>'tblData':[[(row1value1),(row1value2),...],[(row2value1),(row2value2),...],...]<br>}],<br>['html','(custom_html)'],<br>['charts',[&lt;chart_obj1&gt;,&lt;chart_obj2&gt;]] <br>]<br>You can skip each of the output parameters ('properties', 'html', 'table' or 'charts' output sections), expanded row will keep to the order set up in this output array ||
+|| sorting || */array/* sets up column sorting, [<column_index>,<sorting_direction>], sorting_direction='desc'&#124;'asc' (default: [1,'desc']) ||
+|| iDisplayLength || */int/* Number of rows to display on single page (default: 25) ||
+|| tblLabels || */array/* column labels (example: ['monitorTaskId','Num of Jobs','Pending','Running','Successful','Failed','Unknown','Graphically']) ||
+|| aoColumns || */array/* (optional) columns options, see http://www.datatables.net/usage/columns ||
+|| getDataArray || */function/* function: extracting array of data (for dataTable) form Ajax response<br>Example:<br>- Ajax response: {'user_taskstable':[{col_val1, col_val2, ...}, ...]}<br>- Required function: function(data) { return data.user_taskstable; } ||
+|| translateData || */function/* function, translates ajax response onto dataTables plugin data format<br>Output: [[col_val1, col_val2, ...], ...] ||
+|| filters || */array/* It's an array of objects, each object represents different filter and all of the filters values are stored in a Controller.Data.filters object and you can use them (eg in dataURL_params functions) by doing Data.filters.{filter_urlVariable}. The filter object consists of the following elements: ||
+|| ^ || label - */string/* filter label /displayed above the input field/ (default: '') ||
+|| ^ || urlVariable - */string/* lower cased, no spaces, no special characters /used in url and inside Controller.Data object/ (default: 'filter') ||
+|| ^ || fieldType - */string/* accept 3 kinds of input types ('text' &#124; 'select' &#124; 'date') (default: 'text') ||
+|| ^ || value - */string/* Initial value for the filter (default: '') ||
+|| ^ || options - */obejct/* there are several options that you can setup depending on _fieldType_ and needs, here is the example:<br>{<br>&nbsp;&nbsp;&nbsp;&nbsp;'dataURL':'/dashboard/request.py/inittaskprod?data=sites',  // (optional) String, works only for select fieldType<br>&nbsp;&nbsp;&nbsp;&nbsp;'dataURL_params':function(Data){return {};},  // (optional) Here you can setup request parameters<br>&nbsp;&nbsp;&nbsp;&nbsp;// Function translates model or ajax data onto simple elements array<br>&nbsp;&nbsp;&nbsp;&nbsp;// Input: data - data represents Data.mem object or ajax response depending on whether dataURL exists or not<br>&nbsp;&nbsp;&nbsp;&nbsp;// Output: [['el1','el1 label'],['el2','el2 label'], ...] - Can also be defined as a static list (when you don't want to<br>&nbsp;&nbsp;&nbsp;&nbsp;// load the data from url nor using Data.mem object)<br>&nbsp;&nbsp;&nbsp;&nbsp;'translateData': function(data) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/* Example useage:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var sitesArr = data.basicData;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var output = [ ['','Off'] ];<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for (var i=0;i<sitesArr.length;i++) {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;output.push([sitesArr[i].SITENAME,sitesArr[i].SITENAME]);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return output;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/<br>&nbsp;&nbsp;&nbsp;&nbsp;},<br>&nbsp;&nbsp;&nbsp;&nbsp;// On and Off optional functions are executed when filters submit is clicked<br>&nbsp;&nbsp;&nbsp;&nbsp;// On is executed when field has value other then empty string ("")<br>&nbsp;&nbsp;&nbsp;&nbsp;// Otherwise Off is executed<br>&nbsp;&nbsp;&nbsp;&nbsp;'On':function(Data) {  // Data is a Controller.Data object<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$('#from,#till,#timeRange').attr('disabled',true);<br>&nbsp;&nbsp;&nbsp;&nbsp;},<br>&nbsp;&nbsp;&nbsp;&nbsp;'Off':function(Data) {  // Data is a Controller.Data object<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$('#from,#till,#timeRange').attr('disabled',false);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>} ||
+|| charts || */array/* (optional) allow to insert charts into charts tab ||
+|| topTableCharts || */array/* (optional) allow to insert charts on top of the dataTable ||
 
 ====Setting up charts====
 Charts are based on google charts service and highcharts jQuery plotting library. The types of charts to draw can be toggled using _type_ property (gchart for google charts and hchart for highcharts). In case when one want to use google charts to display charts on the page function _translateData_ will have to return object with complete google charts parameter set (see the first example and google charts web page: http://code.google.com/apis/chart/). Google charts can be created using Chart Wizard (http://code.google.com/apis/chart/docs/chart_wizard.html), this will give you the necessary parameters to fill. In case when using highcharts the _translateData_ function would have to return highcharts options object (instructions for using highcharts can be found here: http://www.highcharts.com/). When composing highcharts options object you don't have to specify options.chart.renderTo option, it will be replaced anyway. Below you can find example charts settings:
@@ -119,12 +119,12 @@ Charts are based on google charts service and highcharts jQuery plotting library
 'charts': [
     {
         'name':'Status Overview',
-        'type':'gchart', // (gchart|hchart),
+        'type':'gchart', // (gchart||hchart),
         'onDemand':true,
         'dataURL': 'http://pcadc01.cern.ch/client/chartdata',
         'dataURL_params': function(Data) { return {}; },
         // translates data onto requires format:
-        // {"chd":"t:60,40","chl":"Hello|World"} or highcharts options object (http://www.highcharts.com/)
+        // {"chd":"t:60,40","chl":"Hello||World"} or highcharts options object (http://www.highcharts.com/)
         'translateData':function(dataJSON) {
             output = {
                 'chtt':'Example Chart',
@@ -143,10 +143,10 @@ Charts are based on google charts service and highcharts jQuery plotting library
 'charts': [
     {
         'name':'Status Overview',
-        'type':'gchart', // (gchart|hchart)
+        'type':'gchart', // (gchart||hchart)
         'onDemand':false,
         // translates data onto requires format:
-        // {"chd":"t:60,40","chl":"Hello|World"} or highcharts options object (http://www.highcharts.com/)
+        // {"chd":"t:60,40","chl":"Hello||World"} or highcharts options object (http://www.highcharts.com/)
         'translateData':function(dataMem) {
             var data = dataMem.subs.data;
             var dataLen = data.length;
@@ -171,21 +171,21 @@ Charts are based on google charts service and highcharts jQuery plotting library
             
             var output = {
                 "chd":"t:"+obj.statusesCnt.join(','),
-                "chl":obj.statusesLbl.join('|'),
+                "chl":obj.statusesLbl.join('||'),
                 'chtt':'Status Overview',
                 'cht':'p3',
                 'chs':'600x250',
-                'chco':'59D118|C50000|3072F3|BB72F3|FF9900|C2BDDD'
+                'chco':'59D118||C50000||3072F3||BB72F3||FF9900||C2BDDD'
             };
             return output;
         }
     },
     {
         'name':'Graphical representation',
-        'type':'hchart', // (gchart|hchart)
+        'type':'hchart', // (gchart||hchart)
         'onDemand':false,
         // translates data onto requires format:
-        // {"chd":"t:60,40","chl":"Hello|World"} or highcharts options object (http://www.highcharts.com/)
+        // {"chd":"t:60,40","chl":"Hello||World"} or highcharts options object (http://www.highcharts.com/)
         'translateData':function(dataMem) {
             var data = dataMem.mains.data;
             var dataLen = data.length;
@@ -259,13 +259,13 @@ Charts are based on google charts service and highcharts jQuery plotting library
 ]
 }}}
 Chart object description:
-| *Property* | *Description* |
-| name | */string/* Obligatory chart name |
-| type | */string/* (gchart&#124;hchart) |
-| onDemand | */bool/* If true chart will load data and draw after clicking a button |
-| dataURL | */string/* (optional) URL for ajax charts data request |
-| dataURL_params | */function/* (optional) Ajax request parameters<br>Input: data object<br>Output: {'<parameter_name>':<parameter_value>,...} |
-| translateData | */function/* defines google charts dynamic parameters<br>input: <data object>, Data.mem object or AJAX response<br>output example: {"chd":"t:60,40","chl":"Hello&#124;World"} |
+|| *Property* || *Description* ||
+|| name || */string/* Obligatory chart name ||
+|| type || */string/* (gchart&#124;hchart) ||
+|| onDemand || */bool/* If true chart will load data and draw after clicking a button ||
+|| dataURL || */string/* (optional) URL for ajax charts data request ||
+|| dataURL_params || */function/* (optional) Ajax request parameters<br>Input: data object<br>Output: {'<parameter_name>':<parameter_value>,...} ||
+|| translateData || */function/* defines google charts dynamic parameters<br>input: <data object>, Data.mem object or AJAX response<br>output example: {"chd":"t:60,40","chl":"Hello&#124;World"} ||
 As a data source for charts both local stored data (data used to generate a tables) and data from ajax request can be used. When you want to use ajax data you will have to specify _dataURL_ and _dataURL_params_ parameters, in this case input for _translateData_ function will be object extracted from ajax response, otherwise Data.mem (see data.js file for Data.mem object structure) object will serve as an input for this function.
 
 ====Files setup====
@@ -337,11 +337,11 @@ Required libraries:
    * quicksilver.js
    * jquery.livesearch.js
 Options:
-| *Option* | *Description* |
-| listId | */string/* Id prefix of the searchable list html element |
-| srchFieldId | */string/* Id prefix of the html input search field |
-| items | */array/* Simple array of searchable items |
-| srchFldLbl | */string/* Label of the input search field |
+|| *Option* || *Description* ||
+|| listId || */string/* Id prefix of the searchable list html element ||
+|| srchFieldId || */string/* Id prefix of the html input search field ||
+|| items || */array/* Simple array of searchable items ||
+|| srchFldLbl || */string/* Label of the input search field ||
 Initialization example:
 {{{
 $('#someDiv').lkfw_searchableList({
@@ -359,22 +359,22 @@ Required libraries:
    * jquery-1.4.2.min.js
    * jquery.dataTables.min.js
 Options:
-| *Option* | *Description* |
-| dTable | */array/* Array that stores all dataTable objects (tables), if you want to create more that one you can refer to anyone of them by index number. |
-| tableId | */string/* Data Table html id |
-| items | */array/* Array of table content. In practice it's an array of arrays, each sub-array represents a table row. Sub-arrays lengths have to be equal to column labels (headers) number. |
-| tblLabels | */array/* Simple array of column labels (headers). |
-| dataTable | */dictionary/* Dictionary of dataTables jQuery plugin specific properties (see: http://www.datatables.net/usage/options) |
-| expandableRows | */bool/* True or false depending on either you want rows to expand or not. |
-| multipleER | */bool/* True or false depending on either you want multiple rows to expand or only one. |
-| rowsToExpand | */array/* Array of rows ids. All of the rows from this list will be expanded on initialization. |
-| sorting | */array/* aaSorting dataTables option (see: http://www.datatables.net/usage/options) |
-| fnERContent | */function/* This function provides data for expanded rows. As an input, it takes table data row id (id are sorted "as provided" in _items_ property). It should return the following structure:<br />{<br />&nbsp;&nbsp;'properties':[['property1','value1'],['property2','value2'],...],<br />&nbsp;&nbsp;'table':{'tblLabels':['colLabel1','colLabel2','colLabel3',...],'tblData':[['rowData1','rowData2','rowData3',...],...]},<br />&nbsp;&nbsp;'html':'some custom html...'<br />}<br />The content of expandable row can differ according to what is needed. Data Tables and property-value lists are supported but also, thru custom html, such elements like google charts and many more. |
-| fnERClose | */function/* This method is called on expanded row close event and it's used to do some post processing operations. As an input, it takes table data row id (id are sorted "as provided" in _items_ property) |
-| fnContentChange | */function/* This method is called on any data table content change caused by, for example, sorting change, page change etc. |
-| fnTableSorting | */function/* Additional method to handle sorting changes events. In the jTaskMonitoring application is used to accordingly setup URL hash. |
+|| *Option* || *Description* ||
+|| dTable || */array/* Array that stores all dataTable objects (tables), if you want to create more that one you can refer to anyone of them by index number. ||
+|| tableId || */string/* Data Table html id ||
+|| items || */array/* Array of table content. In practice it's an array of arrays, each sub-array represents a table row. Sub-arrays lengths have to be equal to column labels (headers) number. ||
+|| tblLabels || */array/* Simple array of column labels (headers). ||
+|| dataTable || */dictionary/* Dictionary of dataTables jQuery plugin specific properties (see: http://www.datatables.net/usage/options) ||
+|| expandableRows || */bool/* True or false depending on either you want rows to expand or not. ||
+|| multipleER || */bool/* True or false depending on either you want multiple rows to expand or only one. ||
+|| rowsToExpand || */array/* Array of rows ids. All of the rows from this list will be expanded on initialization. ||
+|| sorting || */array/* aaSorting dataTables option (see: http://www.datatables.net/usage/options) ||
+|| fnERContent || */function/* This function provides data for expanded rows. As an input, it takes table data row id (id are sorted "as provided" in _items_ property). It should return the following structure:<br />{<br />&nbsp;&nbsp;'properties':[['property1','value1'],['property2','value2'],...],<br />&nbsp;&nbsp;'table':{'tblLabels':['colLabel1','colLabel2','colLabel3',...],'tblData':[['rowData1','rowData2','rowData3',...],...]},<br />&nbsp;&nbsp;'html':'some custom html...'<br />}<br />The content of expandable row can differ according to what is needed. Data Tables and property-value lists are supported but also, thru custom html, such elements like google charts and many more. ||
+|| fnERClose || */function/* This method is called on expanded row close event and it's used to do some post processing operations. As an input, it takes table data row id (id are sorted "as provided" in _items_ property) ||
+|| fnContentChange || */function/* This method is called on any data table content change caused by, for example, sorting change, page change etc. ||
+|| fnTableSorting || */function/* Additional method to handle sorting changes events. In the jTaskMonitoring application is used to accordingly setup URL hash. ||
 Initialization example:
-<pre class="prettyprint">
+{{{
 $('#someDiv').lkfw_dataTable({
     dTable: someVariable,
     tableId: 'mains',
