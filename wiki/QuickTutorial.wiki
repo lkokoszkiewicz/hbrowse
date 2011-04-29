@@ -1,10 +1,10 @@
----+!! Homepage of hBrowseFramework
+=Homepage of hBrowse Framework=
 
 %TOC%
----++ General Information
+==General Information==
 The hBrowseFramework (aka Tasks Monitoring Web UI) is a generic monitoring tool designed to meet the needs of various communities. It is strongly configurable and easy to adjust and implement accordingly to a specific community needs. Each part of this software (dynamic tables, user selection etc.) is in fact a separate plugin which can be used separately from the main application. It was especially designed to meet the requirements of Atlas and CMS users as well as to use it as a bulked Ganga monitoring tool.
 
----+++ Main Features
+===Main Features===
    * *Highly configurable environment* - Things like table columns, charts, data sources and many more can be set up in only one file
    * *Bookmarking support* - every view has a proper representation in URL
    * *History support* - not so common in ajax applications
@@ -13,18 +13,18 @@ The hBrowseFramework (aka Tasks Monitoring Web UI) is a generic monitoring tool 
    * *Independent View* - Application gets the data from ajax requests so using of different data sources is possible
    * *3 main views* - user selection list, table of main content and table of sub content.
 
----+++ Latest Version (v1.2.0)
+===Latest Version (v1.2.0)===
 ==svn co !http://svn.cern.ch/reps/ganga/tags/packages/hbrowse-1-2-1==
 
----++ Quick start manual
----+++ Basics
+==Quick start manual==
+===Basics===
 First thing to consider when setting up TMWebUI application is your data server. Main and in fact only requirement is your server to be able to serve data in a json format for 3 main views:
    * User selection list
    * Main content table (like jobs in Ganga)
    * Sub-content table (like subjobs in Ganga)
 Json data format is not important because special translation functions can be used inside the application. Of course, data that is in a right format is processed much quicker.
 
----+++ Setting up the application
+===Setting up the application===
 To setup the application you need to modify _media/scripts/settings.js_example_ file. Settings are split onto 3 categories:
    * Application
    * Users
@@ -32,7 +32,7 @@ To setup the application you need to modify _media/scripts/settings.js_example_ 
    * Subs
 Each category is represented by a javascript object (dictionary). Properties can be either string or number, boolean value or a function that returns strictly defined content. Below you can find properties reference for each category.
 
----++++ Application
+====Application====
 | *Property* | *Description* |
 | userSelection | */bool/* Display user selection page? If false, a placeholder user name has to be setup (eg. default, see below) (true/false) |
 | jsonp | */bool/* allow requests to other hosts (default: false) |
@@ -55,14 +55,14 @@ Each category is represented by a javascript object (dictionary). Properties can
 | ^ | or - */array/* opened table rows (default: []) |
 | ^ | uparam - */array/* user defined params (for params that cannot be shared between use cases) (default: []) |
 
----++++ Users
+====Users====
 | *Property* | *Description* |
 | dataURL | */string/* Users list URL for ajax request |
 | dataURL_params | */function/* (optional) Ajax request parameters<br>Input: controller.Data object<br>Output: {'&lt;parameter_name&gt;':&lt;parameter_value&gt;,...} (default: {}) |
 | searchLabel | */string/* Label of the search field |
 | translateData | */function/* Translates ajax response onto searchable list plugin data format<br>Input: json responce<br>Output: [user1, user2, ...] |
 
----++++ Mains
+====Mains====
 | *Property* | *Description* |
 | dataURL | */string/* Mains URL for ajax request |
 | dataURL_params | */function/* (optional) Ajax request parameters<br>Input: controller.Data object<br>Output: {'&lt;parameter_name&gt;':&lt;parameter_value&gt;,...} (default: {}) |
@@ -88,7 +88,7 @@ Each category is represented by a javascript object (dictionary). Properties can
 | charts | */array/* (optional) allow to insert charts into charts tab |
 | topTableCharts | */array/* (optional) allow to insert charts on top of the dataTable |
 
----++++ Subs
+====Subs====
 | *Property* | *Description* |
 | dataURL | */string/* Mains URL for ajax request |
 | dataURL_params | */function/* (optional) Ajax request parameters<br>Input: controller.Data<br>Output: {'&lt;parameter_name&gt;':&lt;parameter_value&gt;,...} (default: {}) |
@@ -113,9 +113,9 @@ Each category is represented by a javascript object (dictionary). Properties can
 | charts | */array/* (optional) allow to insert charts into charts tab |
 | topTableCharts | */array/* (optional) allow to insert charts on top of the dataTable |
 
----++++ Setting up charts
+====Setting up charts====
 Charts are based on google charts service and highcharts jQuery plotting library. The types of charts to draw can be toggled using _type_ property (gchart for google charts and hchart for highcharts). In case when one want to use google charts to display charts on the page function _translateData_ will have to return object with complete google charts parameter set (see the first example and google charts web page: http://code.google.com/apis/chart/). Google charts can be created using Chart Wizard (http://code.google.com/apis/chart/docs/chart_wizard.html), this will give you the necessary parameters to fill. In case when using highcharts the _translateData_ function would have to return highcharts options object (instructions for using highcharts can be found here: http://www.highcharts.com/). When composing highcharts options object you don't have to specify options.chart.renderTo option, it will be replaced anyway. Below you can find example charts settings:
-%SYNTAX{ syntax="javascript" }% 
+{{{
 'charts': [
     {
         'name':'Status Overview',
@@ -137,9 +137,9 @@ Charts are based on google charts service and highcharts jQuery plotting library
         }
     }
 ]
-%ENDSYNTAX%
+}}}
 
-%SYNTAX{ syntax="javascript" }% 
+{{{
 'charts': [
     {
         'name':'Status Overview',
@@ -257,7 +257,7 @@ Charts are based on google charts service and highcharts jQuery plotting library
         }
     }
 ]
-%ENDSYNTAX%
+}}}
 Chart object description:
 | *Property* | *Description* |
 | name | */string/* Obligatory chart name |
@@ -268,15 +268,15 @@ Chart object description:
 | translateData | */function/* defines google charts dynamic parameters<br>input: <data object>, Data.mem object or AJAX response<br>output example: {"chd":"t:60,40","chl":"Hello&#124;World"} |
 As a data source for charts both local stored data (data used to generate a tables) and data from ajax request can be used. When you want to use ajax data you will have to specify _dataURL_ and _dataURL_params_ parameters, in this case input for _translateData_ function will be object extracted from ajax response, otherwise Data.mem (see data.js file for Data.mem object structure) object will serve as an input for this function.
 
----++++ Files setup
+====Files setup====
 To enable easy update from svn few files and directories was set up as an example files:
    * index.html_example
    * media/scripts/settings.js_example
    * media/css_example
 __example_ string should be removed from file/directory name for each of above elements to make application working.
 
----++ For developers
----+++ How does it work?
+==For developers==
+===How does it work?===
 Application works in a loop of mutual dependency between 3 main aspects:
    * Bookmarking URLs
    * Data model
@@ -285,9 +285,9 @@ Basically when we want to change the content of the page we will first modify th
 
 <img src="%PUBURL%/%WEB%/TaskMonitoringWebUI/wui.working.loop.png" alt="WUI Components" />
 
----+++ Model overview
+===Model overview===
 All the application data are stored inside Data model which is defined in data.js file. Settings lets you access the data model in various places so it's important to understand it's structure. Data stored inside data model are split onto 2 parts, operating data and cached data. Operating data are used to display proper informations on the screen and they consists informations like user name, time periods, interface settings etc. Cached data are used in various situations like charts drawing or additional requests etc. Here is the structure with default data:
-%SYNTAX{ syntax="javascript" }%
+{{{
 var Data = {
     user: '',
     from: 0,
@@ -317,8 +317,8 @@ var Data = {
         }
     }
 }
-%ENDSYNTAX%
----+++ Brief modules overview
+}}}
+===Brief modules overview===
 Application consists of 3 main modules that are used in presentation layer.
 
 <img src="%PUBURL%/%WEB%/TaskMonitoringWebUI/wui.components_small.png" alt="WUI Components" />
@@ -329,7 +329,7 @@ Application consists of 3 main modules that are used in presentation layer.
 
 First two modules can be used separately in other application as a simple jQuery plugin. All you need to is to copy a component file and associated libraries.
 
----++++ lkfw.searchable.list plugin
+====lkfw.searchable.list plugin====
 This plugin can be used outside of the parent application as a separate jQuery plugin.
 
 Required libraries:
@@ -343,16 +343,16 @@ Options:
 | items | */array/* Simple array of searchable items |
 | srchFldLbl | */string/* Label of the input search field |
 Initialization example:
-%SYNTAX{ syntax="javascript" }%
+{{{
 $('#someDiv').lkfw_searchableList({
     listId: 'users',
     srchFieldId: 'usersSrch',
     items: ['user1','user2','user3'],
     srchFldLbl: 'Search'
 });
-%ENDSYNTAX%
+}}}
 
----++++ lkfw.datatable plugin
+====lkfw.datatable plugin====
 This plugin can be used outside of the parent application as a separate jQuery plugin.
 
 Required libraries:
@@ -374,7 +374,7 @@ Options:
 | fnContentChange | */function/* This method is called on any data table content change caused by, for example, sorting change, page change etc. |
 | fnTableSorting | */function/* Additional method to handle sorting changes events. In the jTaskMonitoring application is used to accordingly setup URL hash. |
 Initialization example:
-%SYNTAX{ syntax="javascript" }%
+<pre class="prettyprint">
 $('#someDiv').lkfw_dataTable({
     dTable: someVariable,
     tableId: 'mains',
@@ -394,4 +394,4 @@ $('#someDiv').lkfw_dataTable({
         bLengthChange: false
     }
 });
-%ENDSYNTAX%
+}}}
