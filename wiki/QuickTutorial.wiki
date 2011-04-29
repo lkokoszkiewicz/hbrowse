@@ -84,7 +84,36 @@ Each category is represented by a javascript object (dictionary). Properties can
 || ^ || urlVariable - */string/* lower cased, no spaces, no special characters /used in url and inside Controller.Data object/ (default: 'filter') ||
 || ^ || fieldType - */string/* accept 3 kinds of input types ('text' &#124; 'select' &#124; 'date') (default: 'text') ||
 || ^ || value - */string/* Initial value for the filter (default: '') ||
-|| ^ || options - */obejct/* there are several options that you can setup depending on _fieldType_ and needs, here is the example:{{{<br>{<br>'dataURL':'/dashboard/request.py/inittaskprod?data=sites',  // (optional) String, works only for select fieldType<br>'dataURL_params':function(Data){return {};},  // (optional) Here you can setup request parameters<br>// Function translates model or ajax data onto simple elements array<br>// Input: data - data represents Data.mem object or ajax response depending on whether dataURL exists or not<br>// Output: [['el1','el1 label'],['el2','el2 label'], ...] - Can also be defined as a static list (when you don't want to<br>// load the data from url nor using Data.mem object)<br>'translateData': function(data) {<br>/* Example useage:<br>var sitesArr = data.basicData;<br>var output = [ ['','Off'] ];<br><br>for (var i=0;i<sitesArr.length;i++) {<br>output.push([sitesArr[i].SITENAME,sitesArr[i].SITENAME]);<br>}<br><br>return output;<br>*/<br>},<br>// On and Off optional functions are executed when filters submit is clicked<br>// On is executed when field has value other then empty string ("")<br>// Otherwise Off is executed<br>'On':function(Data) {  // Data is a Controller.Data object<br>$('#from,#till,#timeRange').attr('disabled',true);<br>},<br>'Off':function(Data) {  // Data is a Controller.Data object<br>$('#from,#till,#timeRange').attr('disabled',false);<br>}<br>} }}} ||
+|| ^ || options - */obejct/* there are several options that you can setup depending on _fieldType_ and needs, here is the example:{{{{
+    'dataURL':'/dashboard/request.py/inittaskprod?data=sites', // (optional) String, works only for select fieldType
+    'dataURL_params':function(Data){return {};}, // (optional) Here you can setup request parameters
+    // Function translates model or ajax data onto simple elements array
+    // Input: data - data represents Data.mem object or ajax response depending on whether dataURL exists or not
+    // Output: [['el1','el1 label'],['el2','el2 label'], ...] - Can also be defined as a static list (when you don't want to
+    // load the data from url nor using Data.mem object)
+    'translateData': function(data) {
+        /* Example useage:
+        var sitesArr = data.basicData;
+        var output = [ ['','Off'] ];
+        
+        for (var i=0;i<sitesArr.length;i++) {
+            output.push([sitesArr[i].SITENAME,sitesArr[i].SITENAME]);
+        }
+        
+        return output;
+        */
+    },
+    // On and Off optional functions are executed when filters submit is clicked
+    // On is executed when field has value other then empty string ("")
+    // Otherwise Off is executed
+    'On':function(Data) { // Data is a Controller.Data object
+        $('#from,#till,#timeRange').attr('disabled',true);
+    },
+    'Off':function(Data) { // Data is a Controller.Data object
+        $('#from,#till,#timeRange').attr('disabled',false);
+    }
+}
+}}} ||
 || charts || */array/* (optional) allow to insert charts into charts tab ||
 || topTableCharts || */array/* (optional) allow to insert charts on top of the dataTable ||
 
