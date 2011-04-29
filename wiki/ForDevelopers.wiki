@@ -1,5 +1,6 @@
 #labels Featured
 =For developers=
+<wiki:toc max_depth="4" />
 ==How does it work?==
 Application works in a loop of mutual dependency between 3 main aspects:
    * Bookmarking URLs
