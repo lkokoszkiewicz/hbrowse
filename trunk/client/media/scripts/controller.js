@@ -348,6 +348,10 @@ function Controller() {
             new Highcharts.Chart(hData);
         };
         
+        var tableDraw = function(tData) {
+            thisRef.chartsTable_load(tData, domIdPrefix, cnt);
+        };
+        
         var getData = function(data, chart) {
             var translatedData = chart.translateData(data);
             if (translatedData == false) {
@@ -362,8 +366,12 @@ function Controller() {
                 gChartDraw(gData);
             }
             else if (chart.type == 'hchart') {
-                hData = chart.translateData(data);
+                hData = translatedData;
                 hChartDraw(hData);
+            }
+            else if (chart.type == 'table') {
+                tData = translatedData;
+                tableDraw(tData);
             }
         };
         

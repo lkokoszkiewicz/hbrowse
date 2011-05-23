@@ -153,6 +153,38 @@ function ControlsUpdate() {
         );
     };
     
+    this.chartsTable_load = function(tData, domIdPrefix, cnt) {
+        $('#'+domIdPrefix+cnt).empty();
+        var table = $('<table></table>').attr({
+            'cellpadding':'0px',
+            'cellspacing':'1px'
+        }).addClass('chartTable').css('border','1px #aaaaaa solid');
+        if (tData.width !== undefined) table.css('width',tData.width);
+        
+        var tHead = $('<thead></thead>');
+        var tHeadTr = $('<tr></tr>').addClass('chartTableHeadTr');
+        for (var i=0;i<tData.tblLabels.length;i++) {
+            var tHeadTd = $('<td></td>').addClass('chartTableHeadTd').text(tData.tblLabels[i]);
+            tHeadTr.append(tHeadTd);
+        }
+        tHead.append(tHeadTr);
+        
+        var tBody = $('<tbody></tbody>');
+        for (var i=0;i<tData.tblData.length;i++) {
+            var tBodyTr = $('<tr></tr>');
+            for (var j=0;j<tData.tblData[i].length;j++) {
+                var tBodyTd = $('<td></td>').html(tData.tblData[i][j].html);
+                if (tData.tblData[i][j].bgcolor !== undefined) {
+                    tBodyTd.css('background-color',tData.tblData[i][j].bgcolor);
+                }
+                tBodyTr.append(tBodyTd);
+            }
+            tBody.append(tBodyTr);
+        }
+        table.append(tHead).append(tBody);
+        $('#'+domIdPrefix+cnt).append(table);
+    };
+    
     this.drawChtMessageFrame = function(content) {
         var frame = $('<div></div>').addClass('chartMessageFrame');
         return frame;
