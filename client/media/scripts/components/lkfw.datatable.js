@@ -78,8 +78,8 @@
                     
                     for (i in properties) {
                         tr = $('<tr></tr>');
-                        tdKEY = $('<td></td>').addClass('orKEYS').text(properties[i][0]);
-                        tdVAL = $('<td></td>').addClass('orVALS').text(properties[i][1]);
+                        tdKEY = $('<td></td>').addClass('orKEYS').html(properties[i][0]);
+                        tdVAL = $('<td></td>').addClass('orVALS').html(properties[i][1]);
                         tr.append(tdKEY).append(tdVAL);
                         propertiesTable.append(tr);
                     }
