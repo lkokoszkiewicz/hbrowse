@@ -215,13 +215,20 @@
         this.each(function() {
 		    dTable = _config.dTable[elCnt];
             if (!dTable) {
+                var bSort = true;
+                if (_config.sorting == false) {
+                    var aaSorting = [[0,'asc']];
+                    bSort = false;
+                }
+                else var aaSorting = [[_config.sorting[0],_config.sorting[1]]];
                 $(this).empty().append(_buildTable(elCnt));
                 dTable = $('#dataTable_'+elCnt).dataTable( $.extend({
 					    "bJQueryUI": false,
 					    "sPaginationType": "full_numbers",
 					    "bAutoWidth":false,
 					    "bSortClasses": true,
-					    "aaSorting": [[_config.sorting[0],_config.sorting[1]]]
+					    "bSort": bSort,
+					    "aaSorting": aaSorting
 		        },_config.dataTable));
 		    }
 		    else {
