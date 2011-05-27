@@ -490,7 +490,10 @@ Output: `{'<parameter_name>':<parameter_value>,...}`
 defines charts input parameters
 input: `<data object>`, Data.mem object or AJAX response
 output example:
-   * Google charts: `{"chd":"t:60,40","chl":"Hello|World"}`
+   * Google charts: 
+{{{
+{"chd":"t:60,40","chl":"Hello|World"}
+}}}
    * Highcharts:
 {{{
 {
