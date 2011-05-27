@@ -111,31 +111,35 @@ Definition of data that will be displayed after row expansion, expandData object
 }}}
 
 ====sorting /array/====
-sets up column sorting, [<column_index>,<sorting_direction>], sorting_direction='desc'&#124;'asc' (default: [1,'desc'])
+sets up column sorting, `[<column_index>,<sorting_direction>]`, sorting_direction='desc'|'asc' (default: `[1,'desc']`)
+When setup to false it turns off the datatable column sorting at all, the data will appear in the order given by server.
 ====iDisplayLength /int/====
 Number of rows to display on single page (default: 25)
 ====tblLabels /array/====
-column labels (example: ['monitorTaskId','Num of Jobs','Pending','Running','Successful','Failed','Unknown','Graphically'])
+column labels (example: `['monitorTaskId','Num of Jobs','Pending','Running','Successful','Failed','Unknown','Graphically']`)
 ====aoColumns /array/====
 (optional) columns options, see http://www.datatables.net/usage/columns
 ====getDataArray /function/====
 function: extracting array of data (for dataTable) form Ajax response
 Example:
-- Ajax response: {'user_taskstable':[{col_val1, col_val2, ...}, ...]}
-- Required function: function(data) { return data.user_taskstable; }
+   * Ajax response: `{'user_taskstable':[{col_val1, col_val2, ...}, ...]}`
+   * Required function: `function(data) { return data.user_taskstable; }`
 ====translateData /function/====
 function, translates ajax response onto dataTables plugin data format, here you can setup you table content and a links to the subcontent, to do this just add an html "a" tag with class "drilldown" to the cell.
-Output: [[col_val1, col_val2, ...], ...]
+Output: `[[col_val1, col_val2, ...], ...]`
 ====drillDownHandler /function/====
 _*Replaced setupUserParams*_. It is executed every time someone clicks a table cell with a.drilldown html tag in it. Main purpose of the function is to indicate tid and (optionary) uparam parameters from the Data object (uparam allows to setup additional parameters to tid that would define a sub table ajax request). This allows to properly display subs table.
 Input:
- - Data - application Data object
- - el - clicked jQuery element
- - rowIndex - index of the clicked row
-Output: {
+   * Data - application Data object
+   * el - clicked jQuery element
+   * rowIndex - index of the clicked row
+Output: 
+{{{
+{
  'uparam':[<parameters_list>],
  'tid':`<id_for_the_subtable>`
 }
+}}}
 ====filters /array/====
 It's an array of objects, each object represents different filter and all of the filters values are stored in a Controller.Data.filters object and you can use them (eg in dataURL_params functions) by doing Data.filters.{filter_urlVariable}. The filter object consists of the following elements:
    * label - */string/* filter label /displayed above the input field/ (default: '')
@@ -143,6 +147,7 @@ It's an array of objects, each object represents different filter and all of the
    * fieldType - */string/* accept 3 kinds of input types ('text' &#124; 'select' &#124; 'date') (default: 'text')
    * value - */string/* Initial value for the filter (default: '')
    * options - */obejct/* there are several options that you can setup depending on _fieldType_ and needs, here is the example:
+{{{
 {
 'dataURL':'/dashboard/request.py/inittaskprod?data=sites',  // (optional) String, works only for select fieldType
 'dataURL_params':function(Data){return {};},  // (optional) Here you can setup request parameters
@@ -172,6 +177,7 @@ $('#from,#till,#timeRange').attr('disabled',true);
 $('#from,#till,#timeRange').attr('disabled',false);
 }
 }
+}}}
 ====charts /array/====
 (optional) allow to insert charts into charts tab
 ====topTableCharts /array/====
