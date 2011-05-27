@@ -53,30 +53,35 @@ Here You can set up model (data.js) default values, in most cases doesn't need t
    * user - */string/* default user name (default: '')
    * from - */int/* timestamp (default: 0)
    * till - */int/* timestamp (default: 0)
-   * timeRange - */string/* lastDay&#124;last2Days&#124;last3Days&#124;lastWeek&#124;last2Weeks&#124;lastMonth (default: 'lastDay')
+   * timeRange - */string/* (default: 'lastDay')
    * refresh - */int/* seconds (default: 0)
    * tid - */string/* eg. Job id in Gange nomenclature (default: '')
    * p - */int/* page number (default: 0)
-   * sorting - */array/* (default: [])
-   * or - */array/* opened table rows (default: [])
-   * uparam - */array/* user defined params (for params that cannot be shared between use cases) (default: [])
+   * sorting - */array/* (default: `[]`)
+   * or - */array/* opened table rows (default: `[]`)
+   * uparam - */array/* user defined params (for params that cannot be shared between use cases) (default: `[]`)
 
 ===Users===
 ====dataURL /string/====
 Users list URL for ajax request
 ====dataURL_params /function/====
-(optional) Ajax request parameters<br>Input: controller.Data object<br>Output: {'&lt;parameter_name&gt;':&lt;parameter_value&gt;,...} (default: {})
+(optional) Ajax request parameters
+Input: controller.Data object
+Output: `{'<parameter_name>':<parameter_value>,...} (default: {})`
 ====searchLabel /string/====
 Label of the search field
 ====translateData /function/====
-Translates ajax response onto searchable list plugin data format<br>Input: json responce<br>Output: [user1, user2, ...]
+Translates ajax response onto searchable list plugin data format
+Input: json responce
+Output: `[user1, user2, ...]`
 
 ===Mains===
-====*Property* Description*
 ====dataURL /string/====
 Mains URL for ajax request
 ====dataURL_params /function/====
-(optional) Ajax request parameters<br>Input: controller.Data object<br>Output: {'&lt;parameter_name&gt;':&lt;parameter_value&gt;,...} (default: {})
+(optional) Ajax request parameters
+Input: controller.Data object
+Output: `{'<parameter_name>':<parameter_value>,...} (default: {})`
 ====expandableRows /bool/====
 If TRUE, rows will expand after clicking '+'
 ====multipleER /bool/====
@@ -84,8 +89,27 @@ If TRUE, multiple rows can be expanded
 ====expandData /object/====
 Definition of data that will be displayed after row expansion, expandData object has the following structure:
    * dataURL - */string/* URL for ajax request
-   * dataURL_params - */function/* Ajax request parameters<br>Input: controller.Data object and current row data<br>Output: {'&lt;parameter_name&gt;':&lt;parameter_value&gt;,...} (default: {})
-   * dataFunction - */Function/* Function, definition of data that will be displayed after row expansion<br>Input:<br>- rowDataSet - clicked row data (from ajax datatable response)<br>- jsonDataSet - data extracted from ajax response<br>Output: [<br>['properties',[[(property_name),'(property_value)'],...]],<br>['table',{<br>'tblLabels':[(label1),(label2),...],<br>'tblData':[[(row1value1),(row1value2),...],[(row2value1),(row2value2),...],...]<br>}],<br>['html','(custom_html)'],<br>['charts',[&lt;chart_obj1&gt;,&lt;chart_obj2&gt;]] <br>]<br>You can skip each of the output parameters ('properties', 'html', 'table' or 'charts' output sections), expanded row will keep to the order set up in this output array
+   * dataURL_params - */function/* Ajax request parameters
+      * Input: controller.Data object and current row data
+      * Output: `{'<parameter_name>':<parameter_value>,...} (default: {})`
+   * dataFunction - */Function/* Function, definition of data that will be displayed after row expansion
+      * Input:
+         *rowDataSet - clicked row data (from ajax datatable response)
+         *jsonDataSet - data extracted from ajax response
+      * Output:
+{{{
+// You can skip each of the output parameters ('properties', 'html', 'table' or 'charts' output sections), expanded row will keep to the order set up in this output array
+[
+  ['properties',[[(property_name),'(property_value)'],...]],
+  ['table',{
+    'tblLabels':[(label1),(label2),...],
+    'tblData':[[(row1value1),(row1value2),...],[(row2value1),(row2value2),...],...]
+  }],
+  ['html','(custom_html)'],
+  ['charts',[<chart_obj1>,<chart_obj2>]] 
+]
+}}}
+
 ====sorting /array/====
 sets up column sorting, [<column_index>,<sorting_direction>], sorting_direction='desc'&#124;'asc' (default: [1,'desc'])
 ====iDisplayLength /int/====
@@ -95,29 +119,71 @@ column labels (example: ['monitorTaskId','Num of Jobs','Pending','Running','Succ
 ====aoColumns /array/====
 (optional) columns options, see http://www.datatables.net/usage/columns
 ====getDataArray /function/====
-function: extracting array of data (for dataTable) form Ajax response<br>Example:<br>- Ajax response: {'user_taskstable':[{col_val1, col_val2, ...}, ...]}<br>- Required function: function(data) { return data.user_taskstable; }
+function: extracting array of data (for dataTable) form Ajax response
+Example:
+- Ajax response: {'user_taskstable':[{col_val1, col_val2, ...}, ...]}
+- Required function: function(data) { return data.user_taskstable; }
 ====translateData /function/====
-function, translates ajax response onto dataTables plugin data format, here you can setup you table content and a links to the subcontent, to do this just add an html "a" tag with class "drilldown" to the cell.<br>Output: [[col_val1, col_val2, ...], ...]
+function, translates ajax response onto dataTables plugin data format, here you can setup you table content and a links to the subcontent, to do this just add an html "a" tag with class "drilldown" to the cell.
+Output: [[col_val1, col_val2, ...], ...]
 ====drillDownHandler /function/====
-_*Replaced setupUserParams*_. It is executed every time someone clicks a table cell with a.drilldown html tag in it. Main purpose of the function is to indicate tid and (optionary) uparam parameters from the Data object (uparam allows to setup additional parameters to tid that would define a sub table ajax request). This allows to properly display subs table.<br>Input:<br> - Data - application Data object<br> - el - clicked jQuery element<br> - rowIndex - index of the clicked row<br>Output: {<br> 'uparam':[<parameters_list>],<br> 'tid':`<id_for_the_subtable>`<br>}
+_*Replaced setupUserParams*_. It is executed every time someone clicks a table cell with a.drilldown html tag in it. Main purpose of the function is to indicate tid and (optionary) uparam parameters from the Data object (uparam allows to setup additional parameters to tid that would define a sub table ajax request). This allows to properly display subs table.
+Input:
+ - Data - application Data object
+ - el - clicked jQuery element
+ - rowIndex - index of the clicked row
+Output: {
+ 'uparam':[<parameters_list>],
+ 'tid':`<id_for_the_subtable>`
+}
 ====filters /array/====
 It's an array of objects, each object represents different filter and all of the filters values are stored in a Controller.Data.filters object and you can use them (eg in dataURL_params functions) by doing Data.filters.{filter_urlVariable}. The filter object consists of the following elements:
    * label - */string/* filter label /displayed above the input field/ (default: '')
    * urlVariable - */string/* lower cased, no spaces, no special characters /used in url and inside Controller.Data object/ (default: 'filter')
    * fieldType - */string/* accept 3 kinds of input types ('text' &#124; 'select' &#124; 'date') (default: 'text')
    * value - */string/* Initial value for the filter (default: '')
-   * options - */obejct/* there are several options that you can setup depending on _fieldType_ and needs, here is the example:<br>{<br>'dataURL':'/dashboard/request.py/inittaskprod?data=sites',  // (optional) String, works only for select fieldType<br>'dataURL_params':function(Data){return {};},  // (optional) Here you can setup request parameters<br>// Function translates model or ajax data onto simple elements array<br>// Input: data - data represents Data.mem object or ajax response depending on whether dataURL exists or not<br>// Output: [['el1','el1 label'],['el2','el2 label'], ...] - Can also be defined as a static list (when you don't want to<br>// load the data from url nor using Data.mem object)<br>'translateData': function(data) {<br>/* Example useage:<br>var sitesArr = data.basicData;<br>var output = [ ['','Off'] ];<br><br>for (var i=0;i<sitesArr.length;i++) {<br>output.push([sitesArr[i].SITENAME,sitesArr[i].SITENAME]);<br>}<br><br>return output;<br>*/<br>},<br>// On and Off optional functions are executed when filters submit is clicked<br>// On is executed when field has value other then empty string ("")<br>// Otherwise Off is executed<br>'On':function(Data) {  // Data is a Controller.Data object<br>$('#from,#till,#timeRange').attr('disabled',true);<br>},<br>'Off':function(Data) {  // Data is a Controller.Data object<br>$('#from,#till,#timeRange').attr('disabled',false);<br>}<br>}
+   * options - */obejct/* there are several options that you can setup depending on _fieldType_ and needs, here is the example:
+{
+'dataURL':'/dashboard/request.py/inittaskprod?data=sites',  // (optional) String, works only for select fieldType
+'dataURL_params':function(Data){return {};},  // (optional) Here you can setup request parameters
+// Function translates model or ajax data onto simple elements array
+// Input: data - data represents Data.mem object or ajax response depending on whether dataURL exists or not
+// Output: [['el1','el1 label'],['el2','el2 label'], ...] - Can also be defined as a static list (when you don't want to
+// load the data from url nor using Data.mem object)
+'translateData': function(data) {
+/* Example useage:
+var sitesArr = data.basicData;
+var output = [ ['','Off'] ];
+
+for (var i=0;i<sitesArr.length;i++) {
+output.push([sitesArr[i].SITENAME,sitesArr[i].SITENAME]);
+}
+
+return output;
+*/
+},
+// On and Off optional functions are executed when filters submit is clicked
+// On is executed when field has value other then empty string ("")
+// Otherwise Off is executed
+'On':function(Data) {  // Data is a Controller.Data object
+$('#from,#till,#timeRange').attr('disabled',true);
+},
+'Off':function(Data) {  // Data is a Controller.Data object
+$('#from,#till,#timeRange').attr('disabled',false);
+}
+}
 ====charts /array/====
 (optional) allow to insert charts into charts tab
 ====topTableCharts /array/====
 (optional) allow to insert charts on top of the dataTable
 
 ===Subs===
-====*Property* Description*
 ====dataURL /string/====
 Mains URL for ajax request
 ====dataURL_params /function/====
-(optional) Ajax request parameters<br>Input: controller.Data<br>Output: {'&lt;parameter_name&gt;':&lt;parameter_value&gt;,...} (default: {})
+(optional) Ajax request parameters
+Input: controller.Data
+Output: {'<parameter_name>':<parameter_value>,...} (default: {})
 ====expandableRows /bool/====
 If TRUE, rows will expand after clicking '+'
 ====multipleER /bool/====
@@ -125,8 +191,23 @@ If TRUE, multiple rows can be expanded
 ====expandData /object/====
 Definition of data that will be displayed after row expansion, expandData object has the following structure:
    * dataURL - */string/* URL for ajax request
-   * dataURL_params - */function/* (optional) Ajax request parameters<br>Input: controller.Data object and current row data<br>Output: {'&lt;parameter_name&gt;':&lt;parameter_value&gt;,...} (default: {})
-   * dataFunction - */Function/* Function, definition of data that will be displayed after row expansion<br>Input:<br>- rowDataSet - clicked row data (from ajax datatable response)<br>- jsonDataSet - data extracted from ajax response<br>Output: [<br>['properties',[[(property_name),'(property_value)'],...]],<br>['table',{<br>'tblLabels':[(label1),(label2),...],<br>'tblData':[[(row1value1),(row1value2),...],[(row2value1),(row2value2),...],...]<br>}],<br>['html','(custom_html)'],<br>['charts',[&lt;chart_obj1&gt;,&lt;chart_obj2&gt;]] <br>]<br>You can skip each of the output parameters ('properties', 'html', 'table' or 'charts' output sections), expanded row will keep to the order set up in this output array
+   * dataURL_params - */function/* (optional) Ajax request parameters
+Input: controller.Data object and current row data
+Output: {'<parameter_name>':<parameter_value>,...} (default: {})
+   * dataFunction - */Function/* Function, definition of data that will be displayed after row expansion
+Input:
+- rowDataSet - clicked row data (from ajax datatable response)
+- jsonDataSet - data extracted from ajax response
+Output: [
+['properties',[[(property_name),'(property_value)'],...]],
+['table',{
+'tblLabels':[(label1),(label2),...],
+'tblData':[[(row1value1),(row1value2),...],[(row2value1),(row2value2),...],...]
+}],
+['html','(custom_html)'],
+['charts',[<chart_obj1>,<chart_obj2>]] 
+]
+You can skip each of the output parameters ('properties', 'html', 'table' or 'charts' output sections), expanded row will keep to the order set up in this output array
 ====sorting /array/====
 sets up column sorting, [<column_index>,<sorting_direction>], sorting_direction='desc'&#124;'asc' (default: [1,'desc'])
 ====iDisplayLength /int/====
@@ -136,16 +217,49 @@ column labels (example: ['monitorTaskId','Num of Jobs','Pending','Running','Succ
 ====aoColumns /array/====
 (optional) columns options, see http://www.datatables.net/usage/columns
 ====getDataArray /function/====
-function: extracting array of data (for dataTable) form Ajax response<br>Example:<br>- Ajax response: {'user_taskstable':[{col_val1, col_val2, ...}, ...]}<br>- Required function: function(data) { return data.user_taskstable; }
+function: extracting array of data (for dataTable) form Ajax response
+Example:
+- Ajax response: {'user_taskstable':[{col_val1, col_val2, ...}, ...]}
+- Required function: function(data) { return data.user_taskstable; }
 ====translateData /function/====
-function, translates ajax response onto dataTables plugin data format<br>Output: [[col_val1, col_val2, ...], ...]
+function, translates ajax response onto dataTables plugin data format
+Output: [[col_val1, col_val2, ...], ...]
 ====filters /array/====
 It's an array of objects, each object represents different filter and all of the filters values are stored in a Controller.Data.filters object and you can use them (eg in dataURL_params functions) by doing Data.filters.{filter_urlVariable}. The filter object consists of the following elements:
    * label - */string/* filter label /displayed above the input field/ (default: '')
    * urlVariable - */string/* lower cased, no spaces, no special characters /used in url and inside Controller.Data object/ (default: 'filter')
    * fieldType - */string/* accept 3 kinds of input types ('text' &#124; 'select' &#124; 'date') (default: 'text')
    * value - */string/* Initial value for the filter (default: '')
-   * options - */obejct/* there are several options that you can setup depending on _fieldType_ and needs, here is the example:<br>{<br>'dataURL':'/dashboard/request.py/inittaskprod?data=sites',  // (optional) String, works only for select fieldType<br>'dataURL_params':function(Data){return {};},  // (optional) Here you can setup request parameters<br>// Function translates model or ajax data onto simple elements array<br>// Input: data - data represents Data.mem object or ajax response depending on whether dataURL exists or not<br>// Output: [['el1','el1 label'],['el2','el2 label'], ...] - Can also be defined as a static list (when you don't want to<br>// load the data from url nor using Data.mem object)<br>'translateData': function(data) {<br>/* Example useage:<br>var sitesArr = data.basicData;<br>var output = [ ['','Off'] ];<br><br>for (var i=0;i<sitesArr.length;i++) {<br>output.push([sitesArr[i].SITENAME,sitesArr[i].SITENAME]);<br>}<br><br>return output;<br>*/<br>},<br>// On and Off optional functions are executed when filters submit is clicked<br>// On is executed when field has value other then empty string ("")<br>// Otherwise Off is executed<br>'On':function(Data) {  // Data is a Controller.Data object<br>$('#from,#till,#timeRange').attr('disabled',true);<br>},<br>'Off':function(Data) {  // Data is a Controller.Data object<br>$('#from,#till,#timeRange').attr('disabled',false);<br>}<br>}
+   * options - */obejct/* there are several options that you can setup depending on _fieldType_ and needs, here is the example:
+{
+'dataURL':'/dashboard/request.py/inittaskprod?data=sites',  // (optional) String, works only for select fieldType
+'dataURL_params':function(Data){return {};},  // (optional) Here you can setup request parameters
+// Function translates model or ajax data onto simple elements array
+// Input: data - data represents Data.mem object or ajax response depending on whether dataURL exists or not
+// Output: [['el1','el1 label'],['el2','el2 label'], ...] - Can also be defined as a static list (when you don't want to
+// load the data from url nor using Data.mem object)
+'translateData': function(data) {
+/* Example useage:
+var sitesArr = data.basicData;
+var output = [ ['','Off'] ];
+
+for (var i=0;i<sitesArr.length;i++) {
+output.push([sitesArr[i].SITENAME,sitesArr[i].SITENAME]);
+}
+
+return output;
+*/
+},
+// On and Off optional functions are executed when filters submit is clicked
+// On is executed when field has value other then empty string ("")
+// Otherwise Off is executed
+'On':function(Data) {  // Data is a Controller.Data object
+$('#from,#till,#timeRange').attr('disabled',true);
+},
+'Off':function(Data) {  // Data is a Controller.Data object
+$('#from,#till,#timeRange').attr('disabled',false);
+}
+}
 ====charts /array/====
 (optional) allow to insert charts into charts tab
 ====topTableCharts /array/====
@@ -297,7 +411,6 @@ Charts are based on google charts service and highcharts jQuery plotting library
 ]
 }}}
 Chart object description:
-====*Property* Description*
 ====name /string/====
 Obligatory chart name
 ====type /string/====
@@ -307,9 +420,13 @@ If true chart will load data and draw after clicking a button
 ====dataURL /string/====
 (optional) URL for ajax charts data request
 ====dataURL_params /function/====
-(optional) Ajax request parameters<br>Input: data object<br>Output: {'<parameter_name>':<parameter_value>,...}
+(optional) Ajax request parameters
+Input: data object
+Output: {'<parameter_name>':<parameter_value>,...}
 ====translateData /function/====
-defines google charts dynamic parameters<br>input: <data object>, Data.mem object or AJAX response<br>output example: {"chd":"t:60,40","chl":"Hello&#124;World"}
+defines google charts dynamic parameters
+input: <data object>, Data.mem object or AJAX response
+output example: {"chd":"t:60,40","chl":"Hello&#124;World"}
 As a data source for charts both local stored data (data used to generate a tables) and data from ajax request can be used. When you want to use ajax data you will have to specify _dataURL_ and _dataURL_params_ parameters, in this case input for _translateData_ function will be object extracted from ajax response, otherwise Data.mem (see data.js file for Data.mem object structure) object will serve as an input for this function.
 
 ===Files setup===
