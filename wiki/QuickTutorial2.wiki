@@ -554,4 +554,4 @@ To enable easy update from svn few files and directories was set up as an exampl
    * index.html_example
    * media/scripts/settings.js_example
    * media/css_example
-__example_ string should be removed from file/directory name for each of above elements to make application working.
+`_example` string should be removed from file/directory name for each of above elements to make application working.
