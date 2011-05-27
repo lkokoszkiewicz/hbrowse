@@ -1,18 +1,6 @@
 #labels Featured
 <wiki:toc max_depth="4" />
 
-=General Information=
-The hBrowseFramework (aka Tasks Monitoring Web UI) is a generic monitoring tool designed to meet the needs of various communities. It is strongly configurable and easy to adjust and implement accordingly to a specific community needs. Each part of this software (dynamic tables, user selection etc.) is in fact a separate plugin which can be used separately from the main application. It was especially designed to meet the requirements of Atlas and CMS users as well as to use it as a bulked Ganga monitoring tool.
-
-==Main Features==
-   * *Highly configurable environment* - Things like table columns, charts, data sources and many more can be set up in only one file
-   * *Bookmarking support* - every view has a proper representation in URL
-   * *History support* - not so common in ajax applications
-   * *Easy search* - Application provides easy way to search the tables data (part of jQuery datatables plugin)
-   * *Google charts support* - if you are familiar with google charts service you can easily add or modify charts
-   * *Independent View* - Application gets the data from ajax requests so using of different data sources is possible
-   * *3 main views* - user selection list, table of main content and table of sub content.
-
 =Quick start manual=
 ==Basics==
 First thing to consider when setting up TMWebUI application is your data server. Main and in fact only requirement is your server to be able to serve data in a json format for 3 main views:
