@@ -32,27 +32,35 @@ To setup the application you need to modify _media/scripts/settings.js_example_ 
 Each category is represented by a javascript object (dictionary). Properties can be either string or number, boolean value or a function that returns strictly defined content. Below you can find properties reference for each category.
 
 ====Application====
-|| *Property* || *Description* ||
-|| userSelection || */bool/* Display user selection page? If false, a placeholder user name has to be setup (eg. default, see below) (true/false) ||
-|| jsonp || */bool/* allow requests to other hosts (default: false) ||
-|| pageTitle || */string/* page title (example: 'Task Monitoring') ||
-|| footerTxt || */string/* footer text (example: 'jTaskMonitoring') ||
-|| supportLnk || */string/* link to support page (example: 'https://twiki.cern.ch/twiki/bin/view/ArdaGrid/TaskMonitoringWebUI') ||
-|| logoLnk || */string/* link to page logo (example: 'media/images/atlaslogo.png') ||
-|| usersListLbl || */string/* Label of user list search field (example: 'Users List') ||
-|| mainsLbl || */string/* Name of mains content (example: 'Tasks') ||
-|| subsLbL || */string/* Name of subs content (example: 'Jobs') ||
-|| modelDefaults || */function/* Here You can set up model (data.js) default values, in most cases doesn't need to be changed. Function has to return the following values: ||
-|| ^ || user - */string/* default user name (default: '') ||
-|| ^ || from - */int/* timestamp (default: 0) ||
-|| ^ || till - */int/* timestamp (default: 0) ||
-|| ^ || timeRange - */string/* lastDay&#124;last2Days&#124;last3Days&#124;lastWeek&#124;last2Weeks&#124;lastMonth (default: 'lastDay') ||
-|| ^ || refresh - */int/* seconds (default: 0) ||
-|| ^ || tid - */string/* eg. Job id in Gange nomenclature (default: '') ||
-|| ^ || p - */int/* page number (default: 0) ||
-|| ^ || sorting - */array/* (default: []) ||
-|| ^ || or - */array/* opened table rows (default: []) ||
-|| ^ || uparam - */array/* user defined params (for params that cannot be shared between use cases) (default: []) ||
+=====userSelection=====
+*/bool/* Display user selection page? If false, a placeholder user name has to be setup (eg. default, see below) (true/false)
+=====jsonp=====
+*/bool/* allow requests to other hosts (default: false)
+=====pageTitle=====
+*/string/* page title (example: 'Task Monitoring')
+=====footerTxt=====
+*/string/* footer text (example: 'jTaskMonitoring')
+=====supportLnk=====
+*/string/* link to support page (example: 'https://twiki.cern.ch/twiki/bin/view/ArdaGrid/TaskMonitoringWebUI')
+=====logoLnk=====
+*/string/* link to page logo (example: 'media/images/atlaslogo.png')
+=====usersListLbl=====
+*/string/* Label of user list search field (example: 'Users List')
+=====mainsLbl=====
+*/string/* Name of mains content (example: 'Tasks')
+=====subsLbL=====
+*/string/* Name of subs content (example: 'Jobs')
+=====modelDefaults=====*/function/* Here You can set up model (data.js) default values, in most cases doesn't need to be changed. Function has to return the following values:
+   * user - */string/* default user name (default: '')
+   * from - */int/* timestamp (default: 0)
+   * till - */int/* timestamp (default: 0)
+   * timeRange - */string/* lastDay&#124;last2Days&#124;last3Days&#124;lastWeek&#124;last2Weeks&#124;lastMonth (default: 'lastDay')
+   * refresh - */int/* seconds (default: 0)
+   * tid - */string/* eg. Job id in Gange nomenclature (default: '')
+   * p - */int/* page number (default: 0)
+   * sorting - */array/* (default: [])
+   * or - */array/* opened table rows (default: [])
+   * uparam - */array/* user defined params (for params that cannot be shared between use cases) (default: [])
 
 ====Users====
 || *Property* || *Description* ||
