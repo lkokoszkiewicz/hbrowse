@@ -485,11 +485,68 @@ If true chart will load data and draw after clicking a button
 ====dataURL_params /function/====
 (optional) Ajax request parameters
 Input: data object
-Output: {'<parameter_name>':<parameter_value>,...}
+Output: `{'<parameter_name>':<parameter_value>,...}`
 ====translateData /function/====
-defines google charts dynamic parameters
-input: <data object>, Data.mem object or AJAX response
-output example: {"chd":"t:60,40","chl":"Hello&#124;World"}
+defines charts input parameters
+input: `<data object>`, Data.mem object or AJAX response
+output example:
+   * Google charts: `{"chd":"t:60,40","chl":"Hello|World"}`
+   * Highcharts:
+{{{
+{
+    chart: {
+        renderTo: 'container',
+        defaultSeriesType: 'bar',
+        height:281,
+        backgroundColor:'#ffffff',
+        borderColor:'#aaaaaa',
+        borderWidth:1
+    },
+    title: {
+        text: 'Stacked bar chart'
+    },
+    xAxis: {
+        categories: cCategories
+    },
+    yAxis: {
+        min: 0,
+        allowDecimals: false,
+        title: {
+            text: 'Datasets number'
+        }
+    },
+    legend: {
+        backgroundColor: '#FFFFFF',
+        reversed: true
+    },
+    tooltip: {
+        shared: true,
+        crosshairs: true
+    },
+    plotOptions: {
+        bar: {
+            borderWidth:0,
+            stacking: 'normal',
+            pointPadding:0,
+            groupPadding:0.1,
+            shadow:false
+        }
+    },
+    series: [{
+        name: 'Completed',
+        color: '#006600',
+        data: cData[0]
+    }, {
+        name: 'Transfer',
+        color: '#33FF00',
+        data: cData[1]
+    }, {
+        name: 'Subscribed',
+        color: '#FF9933',
+        data: cData[2]
+    }]
+}
+}}}
 As a data source for charts both local stored data (data used to generate a tables) and data from ajax request can be used. When you want to use ajax data you will have to specify _dataURL_ and _dataURL_params_ parameters, in this case input for _translateData_ function will be object extracted from ajax response, otherwise Data.mem (see data.js file for Data.mem object structure) object will serve as an input for this function.
 
 ===Files setup===
