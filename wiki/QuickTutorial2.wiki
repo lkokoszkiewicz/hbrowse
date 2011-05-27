@@ -1,15 +1,14 @@
 #labels Featured
 <wiki:toc max_depth="4" />
 
-=Quick start manual=
-==Basics==
+=Basics=
 First thing to consider when setting up TMWebUI application is your data server. Main and in fact only requirement is your server to be able to serve data in a json format for 3 main views:
    * User selection list
    * Main content table (like jobs in Ganga)
    * Sub-content table (like subjobs in Ganga)
 Json data format is not important because special translation functions can be used inside the application. Of course, data that is in a right format is processed much quicker.
 
-==Setting up the application==
+=Setting up the application=
 To setup the application you need to modify _media/scripts/settings.js_example_ file. Settings are split onto 3 categories:
    * Application
    * Users
@@ -17,24 +16,24 @@ To setup the application you need to modify _media/scripts/settings.js_example_ 
    * Subs
 Each category is represented by a javascript object (dictionary). Properties can be either string or number, boolean value or a function that returns strictly defined content. Below you can find properties reference for each category.
 
-===Application===
-====userSelection /bool/====
+==Application==
+===userSelection /bool/===
 Display user selection page? If false, a placeholder user name has to be setup (eg. default, see below) (true/false)
-====jsonp /bool/====
+===jsonp /bool/===
 Allow requests to other hosts (default: false)
-====pageTitle /string/====
+===pageTitle /string/===
 page title (example: 'Task Monitoring')
-====footerTxt /string/====
+===footerTxt /string/===
 footer text (example: 'jTaskMonitoring')
-====supportLnk /string/====
+===supportLnk /string/===
 link to support page (example: 'https://twiki.cern.ch/twiki/bin/view/ArdaGrid/TaskMonitoringWebUI')
-====logoLnk /string/====
+===logoLnk /string/===
 link to page logo (example: 'media/images/atlaslogo.png')
-====usersListLbl /string/====
+===usersListLbl /string/===
 Label of user list search field (example: 'Users List')
-====mainsLbl /string/====
+===mainsLbl /string/===
 Name of mains content (example: 'Tasks')
-====subsLbL /string/====
+===subsLbL /string/===
 Name of subs content (example: 'Jobs')
 ====modelDefaults /function/====
 Here You can set up model (data.js) default values, in most cases doesn't need to be changed. Function has to return the following values:
@@ -49,32 +48,32 @@ Here You can set up model (data.js) default values, in most cases doesn't need t
    * or - */array/* opened table rows (default: `[]`)
    * uparam - */array/* user defined params (for params that cannot be shared between use cases) (default: `[]`)
 
-===Users===
-====dataURL /string/====
+==Users==
+===dataURL /string/===
 Users list URL for ajax request
-====dataURL_params /function/====
+===dataURL_params /function/===
 (optional) Ajax request parameters
 Input: controller.Data object
 Output: `{'<parameter_name>':<parameter_value>,...} (default: {})`
-====searchLabel /string/====
+===searchLabel /string/===
 Label of the search field
-====translateData /function/====
+===translateData /function/===
 Translates ajax response onto searchable list plugin data format
 Input: json responce
 Output: `[user1, user2, ...]`
 
-===Mains===
-====dataURL /string/====
+==Mains==
+===dataURL /string/===
 Mains URL for ajax request
-====dataURL_params /function/====
+===dataURL_params /function/===
 (optional) Ajax request parameters
 Input: controller.Data object
 Output: `{'<parameter_name>':<parameter_value>,...} (default: {})`
-====expandableRows /bool/====
+===expandableRows /bool/===
 If TRUE, rows will expand after clicking '+'
-====multipleER /bool/====
+===multipleER /bool/===
 If TRUE, multiple rows can be expanded
-====expandData /object/====
+===expandData /object/===
 Definition of data that will be displayed after row expansion, expandData object has the following structure:
    * dataURL - */string/* URL for ajax request
    * dataURL_params - */function/* Ajax request parameters
@@ -98,24 +97,24 @@ Definition of data that will be displayed after row expansion, expandData object
 ]
 }}}
 
-====sorting /array/====
+===sorting /array/===
 sets up column sorting, `[<column_index>,<sorting_direction>]`, sorting_direction='desc'|'asc' (default: `[1,'desc']`)
 When setup to false it turns off the datatable column sorting at all, the data will appear in the order given by server.
-====iDisplayLength /int/====
+===iDisplayLength /int/===
 Number of rows to display on single page (default: 25)
-====tblLabels /array/====
+===tblLabels /array/===
 column labels (example: `['monitorTaskId','Num of Jobs','Pending','Running','Successful','Failed','Unknown','Graphically']`)
-====aoColumns /array/====
+===aoColumns /array/===
 (optional) columns options, see http://www.datatables.net/usage/columns
-====getDataArray /function/====
+===getDataArray /function/===
 function: extracting array of data (for dataTable) form Ajax response
 Example:
    * Ajax response: `{'user_taskstable':[{col_val1, col_val2, ...}, ...]}`
    * Required function: `function(data) { return data.user_taskstable; }`
-====translateData /function/====
+===translateData /function/===
 function, translates ajax response onto dataTables plugin data format, here you can setup you table content and a links to the subcontent, to do this just add an html "a" tag with class "drilldown" to the cell.
 Output: `[[col_val1, col_val2, ...], ...]`
-====drillDownHandler /function/====
+===drillDownHandler /function/===
 _*Replaced setupUserParams*_. It is executed every time someone clicks a table cell with a.drilldown html tag in it. Main purpose of the function is to indicate tid and (optionary) uparam parameters from the Data object (uparam allows to setup additional parameters to tid that would define a sub table ajax request). This allows to properly display subs table.
 Input:
    * Data - application Data object
@@ -128,7 +127,7 @@ Output:
  'tid':`<id_for_the_subtable>`
 }
 }}}
-====filters /array/====
+===filters /array/===
 It's an array of objects, each object represents different filter and all of the filters values are stored in a Controller.Data.filters object and you can use them (eg in dataURL_params functions) by doing Data.filters.{filter_urlVariable}. The filter object consists of the following elements:
    * label - */string/* filter label /displayed above the input field/ (default: '')
    * urlVariable - */string/* lower cased, no spaces, no special characters /used in url and inside Controller.Data object/ (default: 'filter')
@@ -166,23 +165,23 @@ $('#from,#till,#timeRange').attr('disabled',false);
 }
 }
 }}}
-====charts /array/====
+===charts /array/===
 (optional) allow to insert charts into charts tab
-====topTableCharts /array/====
+===topTableCharts /array/===
 (optional) allow to insert charts on top of the dataTable
 
-===Subs===
-====dataURL /string/====
+==Subs==
+===dataURL /string/===
 Mains URL for ajax request
-====dataURL_params /function/====
+===dataURL_params /function/===
 (optional) Ajax request parameters
    * Input: controller.Data
    * Output: `{'<parameter_name>':<parameter_value>,...} (default: {})`
-====expandableRows /bool/====
+===expandableRows /bool/===
 If TRUE, rows will expand after clicking '+'
-====multipleER /bool/====
+===multipleER /bool/===
 If TRUE, multiple rows can be expanded
-====expandData /object/====
+===expandData /object/===
 Definition of data that will be displayed after row expansion, expandData object has the following structure:
    * dataURL - */string/* URL for ajax request
    * dataURL_params - */function/* (optional) Ajax request parameters
@@ -205,24 +204,24 @@ Definition of data that will be displayed after row expansion, expandData object
   ['charts',[<chart_obj1>,<chart_obj2>]] 
 ]
 }}}
-====sorting /array/====
+===sorting /array/===
 sets up column sorting, [<column_index>,<sorting_direction>], sorting_direction='desc'|'asc' (default: `[1,'desc']`)
 When setup to false it turns off the datatable column sorting at all, the data will appear in the order given by server.
-====iDisplayLength /int/====
+===iDisplayLength /int/===
 Number of rows to display on single page (default: 25)
-====tblLabels /array/====
+===tblLabels /array/===
 column labels (example: `['monitorTaskId','Num of Jobs','Pending','Running','Successful','Failed','Unknown','Graphically']`)
-====aoColumns /array/====
+===aoColumns /array/===
 (optional) columns options, see http://www.datatables.net/usage/columns
-====getDataArray /function/====
+===getDataArray /function/===
 function: extracting array of data (for dataTable) form Ajax response
 Example:
    * Ajax response: `{'user_taskstable':[{col_val1, col_val2, ...}, ...]}`
    * Required function: `function(data) { return data.user_taskstable; }`
-====translateData /function/====
+===translateData /function/===
 function, translates ajax response onto dataTables plugin data format
 Output: `[[col_val1, col_val2, ...], ...]`
-====filters /array/====
+===filters /array/===
 It's an array of objects, each object represents different filter and all of the filters values are stored in a Controller.Data.filters object and you can use them (eg in dataURL_params functions) by doing Data.filters.{filter_urlVariable}. The filter object consists of the following elements:
    * label - */string/* filter label /displayed above the input field/ (default: '')
    * urlVariable - */string/* lower cased, no spaces, no special characters /used in url and inside Controller.Data object/ (default: 'filter')
@@ -260,12 +259,12 @@ $('#from,#till,#timeRange').attr('disabled',false);
 }
 }
 }}}
-====charts /array/====
+===charts /array/===
 (optional) allow to insert charts into charts tab
-====topTableCharts /array/====
+===topTableCharts /array/===
 (optional) allow to insert charts on top of the dataTable
 
-===Setting up charts===
+==Setting up charts==
 Charts are based on google charts service and highcharts jQuery plotting library. The types of charts to draw can be toggled using _type_ property (gchart for google charts and hchart for highcharts). In case when one want to use google charts to display charts on the page function _translateData_ will have to return object with complete google charts parameter set (see the first example and google charts web page: http://code.google.com/apis/chart/). Google charts can be created using Chart Wizard (http://code.google.com/apis/chart/docs/chart_wizard.html), this will give you the necessary parameters to fill. In case when using highcharts the _translateData_ function would have to return highcharts options object (instructions for using highcharts can be found here: http://www.highcharts.com/). When composing highcharts options object you don't have to specify options.chart.renderTo option, it will be replaced anyway. Below you can find example charts settings:
 {{{
 'charts': [
@@ -461,20 +460,20 @@ Charts are based on google charts service and highcharts jQuery plotting library
     }
 ]
 }}}
-Chart object description:
-====name /string/====
+*Chart object description:*
+===name /string/===
 Obligatory chart name
-====type /string/====
+===type /string/===
 (gchart|hchart|table)
-====onDemand /bool/====
+===onDemand /bool/===
 If true chart will load data and draw after clicking a button
-====dataURL /string/====
+===dataURL /string/===
 (optional) URL for ajax charts data request
-====dataURL_params /function/====
+===dataURL_params /function/===
 (optional) Ajax request parameters
 Input: data object
 Output: `{'<parameter_name>':<parameter_value>,...}`
-====translateData /function/====
+===translateData /function/===
 defines charts input parameters
 input: `<data object>`, Data.mem object or AJAX response
 output example:
@@ -540,7 +539,7 @@ output example:
 }}}
 As a data source for charts both local stored data (data used to generate a tables) and data from ajax request can be used. When you want to use ajax data you will have to specify _dataURL_ and _dataURL_params_ parameters, in this case input for _translateData_ function will be object extracted from ajax response, otherwise Data.mem (see data.js file for Data.mem object structure) object will serve as an input for this function.
 
-===Files setup===
+==Files setup==
 To enable easy update from svn few files and directories was set up as an example files:
    * index.html_example
    * media/scripts/settings.js_example
