@@ -81,8 +81,8 @@ Definition of data that will be displayed after row expansion, expandData object
       * Output: `{'<parameter_name>':<parameter_value>,...} (default: {})`
    * dataFunction - */Function/* Function, definition of data that will be displayed after row expansion
       * Input:
-         *rowDataSet - clicked row data (from ajax datatable response)
-         *jsonDataSet - data extracted from ajax response
+         * rowDataSet - clicked row data (from ajax datatable response)
+         * jsonDataSet - data extracted from ajax response
       * Output:
 {{{
 // You can skip each of the output parameters ('properties', 'html', 'table' or 'charts' output sections), expanded row will keep to the order set up in this output array
