@@ -1,7 +1,6 @@
 #labels Featured
-=For developers=
 <wiki:toc max_depth="4" />
-==How does it work?==
+=How does it work?=
 Application works in a loop of mutual dependency between 3 main aspects:
    * Bookmarking URLs
    * Data model
@@ -10,7 +9,7 @@ Basically when we want to change the content of the page we will first modify th
 
 <img src="http://hbrowse.googlecode.com/files/wui.working.loop.png" alt="WUI Components" />
 
-==Model overview==
+=Model overview=
 All the application data are stored inside Data model which is defined in data.js file. Settings lets you access the data model in various places so it's important to understand it's structure. Data stored inside data model are split onto 2 parts, operating data and cached data. Operating data are used to display proper informations on the screen and they consists informations like user name, time periods, interface settings etc. Cached data are used in various situations like charts drawing or additional requests etc. Here is the structure with default data:
 {{{
 var Data = {
@@ -44,7 +43,7 @@ var Data = {
     }
 }
 }}}
-==Brief modules overview==
+=Brief modules overview=
 Application consists of 3 main modules that are used in presentation layer.
 
 <img src="http://hbrowse.googlecode.com/files/hbrowse-components.png" alt="WUI Components" />
@@ -55,7 +54,7 @@ Application consists of 3 main modules that are used in presentation layer.
 
 First two modules can be used separately in other application as a simple jQuery plugin. All you need to is to copy a component file and associated libraries.
 
-===lkfw.searchable.list plugin===
+==lkfw.searchable.list plugin==
 This plugin can be used outside of the parent application as a separate jQuery plugin.
 
 Required libraries:
@@ -79,7 +78,7 @@ $('#someDiv').lkfw_searchableList({
 });
 }}}
 
-===lkfw.datatable plugin===
+==lkfw.datatable plugin==
 This plugin can be used outside of the parent application as a separate jQuery plugin.
 
 Required libraries:
