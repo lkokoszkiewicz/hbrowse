@@ -46,7 +46,7 @@ var Data = {
 ==Brief modules overview==
 Application consists of 3 main modules that are used in presentation layer.
 
-<img src="http://hbrowse.googlecode.com/files/wui.components_small.png" alt="WUI Components" />
+<img src="http://hbrowse.googlecode.com/files/hbrowse-components.png" alt="WUI Components" />
 
    * *lkfw.datatable plugin* - jQuery datatables plugin overlay that expands it's original functionality.
    * *lkfw.searchable.list plugin* - jQuery livesearch plugin overlay fitted to the needs of the monitoring application.
