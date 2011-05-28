@@ -35,7 +35,7 @@ Label of user list search field (example: 'Users List')
 Name of mains content (example: 'Tasks')
 ===subsLbL /string/===
 Name of subs content (example: 'Jobs')
-====modelDefaults /function/====
+===modelDefaults /function/===
 Here You can set up model (data.js) default values, in most cases doesn't need to be changed. Function has to return the following values:
    * user - */string/* default user name (default: '')
    * from - */int/* timestamp (default: 0)
