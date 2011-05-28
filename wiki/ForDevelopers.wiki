@@ -39,7 +39,8 @@ var Data = {
             tid: '',
             timestamp: 0,
             data: Array()
-        }
+        },
+        filters: {}
     }
 }
 }}}
@@ -67,6 +68,7 @@ Options:
 || srchFieldId || */string/* Id prefix of the html input search field ||
 || items || */array/* Simple array of searchable items ||
 || srchFldLbl || */string/* Label of the input search field ||
+
 Initialization example:
 {{{
 $('#someDiv').lkfw_searchableList({
@@ -94,10 +96,13 @@ Options:
 || multipleER || */bool/* True or false depending on either you want multiple rows to expand or only one. ||
 || rowsToExpand || */array/* Array of rows ids. All of the rows from this list will be expanded on initialization. ||
 || sorting || */array/* aaSorting dataTables option (see: http://www.datatables.net/usage/options) ||
-|| fnERContent || */function/* This function provides data for expanded rows. As an input, it takes table data row id (id are sorted "as provided" in _items_ property). It should return the following structure:<br />{<br />'properties':[['property1','value1'],['property2','value2'],...],<br />'table':{'tblLabels':['colLabel1','colLabel2','colLabel3',...],'tblData':[['rowData1','rowData2','rowData3',...],...]},<br />'html':'some custom html...'<br />}<br />The content of expandable row can differ according to what is needed. Data Tables and property-value lists are supported but also, thru custom html, such elements like google charts and many more. ||
+|| fnERContent || */function/* This function provides data for expanded rows. As an input, it takes table data row id (id are sorted "as provided" in _items_ property). It should return the following structure:
+{{{<br />{<br />'properties':[['property1','value1'],['property2','value2'],...],<br />'table':{'tblLabels':['colLabel1','colLabel2','colLabel3',...],'tblData':[['rowData1','rowData2','rowData3',...],...]},<br />'html':'some custom html...'<br />}
+}}}<br />The content of expandable row can differ according to what is needed. Data Tables and property-value lists are supported but also, thru custom html, such elements like google charts and many more. ||
 || fnERClose || */function/* This method is called on expanded row close event and it's used to do some post processing operations. As an input, it takes table data row id (id are sorted "as provided" in _items_ property) ||
 || fnContentChange || */function/* This method is called on any data table content change caused by, for example, sorting change, page change etc. ||
 || fnTableSorting || */function/* Additional method to handle sorting changes events. In the jTaskMonitoring application is used to accordingly setup URL hash. ||
+
 Initialization example:
 {{{
 $('#someDiv').lkfw_dataTable({
