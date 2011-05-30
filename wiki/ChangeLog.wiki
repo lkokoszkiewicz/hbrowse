@@ -1,0 +1,8 @@
+#labels Featured
+=Change Log=
+==v1.3.0==
+  * Fixed the bug where the user could not modify time ranges drop down list
+  * Added possibility to add small tables along with charts
+    * Added chart type: _table_
+  * full hbrowse app download is now working application
+    * created a starting point example settings to start with
