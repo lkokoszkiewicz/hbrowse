@@ -61,7 +61,7 @@ function ControlsUpdate() {
     
     this.timeRange_update = function() {
         var thisRef = this;
-        var timestampNow, timestampThen, timeThen;
+        /*var timestampNow, timestampThen, timeThen;
         var pastArr = {
             'lastDay': (86400*1000),
             'last2Days': (86400*1000*2),
@@ -69,13 +69,13 @@ function ControlsUpdate() {
             'lastWeek': (86400*1000*7),
             'last2Weeks': (86400*1000*14),
             'lastMonth': (86400*1000*31)
-        };
+        };*/
         $('#timeRange option').each( function(i){
             $(this).removeAttr('selected');
             if ($(this).val() == thisRef.Data.timeRange) $(this).attr('selected','selected');
         });
         
-        if (thisRef.Data.timeRange) {
+        /*if (thisRef.Data.timeRange) {
             timestampNow = $.datepicker.formatDate('@', new Date());
             timestampThen = $.datepicker.parseDate('@',(timestampNow - pastArr[thisRef.Data.timeRange]));
             timeThen = 'Records from '+$.datepicker.formatDate('yy-mm-dd', timestampThen);
@@ -83,7 +83,7 @@ function ControlsUpdate() {
         else {
             timeThen = 'Disabled';
         }
-        $('#timeRange').attr('title',timeThen);
+        $('#timeRange').attr('title',timeThen);*/
     };
     
     this.userRefresh_update = function() {
