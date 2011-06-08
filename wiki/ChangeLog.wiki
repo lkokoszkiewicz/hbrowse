@@ -1,12 +1,12 @@
 #labels Featured
 =Change Log=
 ==v1.4.0==
-  * Added `tableActivityEvent` functions to the Settings.Mains and Settings.Subs to allow users to react on table actions such ordering change or p$
-  * Added `hashChange` function to the Settings.Application alowing users to react ton hashchange event
+  * Added `tableActivityEvent` functions to the `Settings.Mains` and `Settings.Subs` to allow users to react on table actions such ordering change or p$
+  * Added `hashChange` function to the `Settings.Application` allowing users to react ton hashchange event
   * Moved to jQuery v1.6.1 (from v1.5.1)
   * Moved to jQuery.datatables v1.8.0 (from v1.7.4)
-    * Loading of table performance was increased by new bDeferRender option of datatables plugin
-  * Number of minor bugfixes
+    * Loading of table performance was increased by new bDeferRender option of datatables plug-in
+  * Number of minor bug-fixes
 
 ==v1.3.0==
   * Fixed the bug where the user could not modify time ranges drop down list
