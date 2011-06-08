@@ -74,16 +74,12 @@ function Events() {
     this.breadcrumbs_click = function(el) {
         var _Settings = this.Settings.Application; // Shortcut
         if ($(el).text() == _Settings.usersListLbl) {
-            this.Data.tid = '';
-            this.Data.sorting = [];
-            this.Data.uparam = [];
             this.Data.user = '';
         }
-        else if ($(el).text() == _Settings.mainsLbl) {
-            this.Data.tid = '';
-            this.Data.sorting = [];
-            this.Data.uparam = [];
-        }
+        this.Data.tid = '';
+        this.Data.sorting = [];
+        this.Data.uparam = [];
+        this.Data.p = 1;
         $('.tablePlus').attr('src', 'media/images/table_plus.png');
         this.Data.or = [];
         this.Data.noreload = false;
@@ -160,6 +156,7 @@ function Events() {
     };
     
     this.mainsTableContent_change = function(el) {
+        var _Settings = this.Settings.Mains; // Shortcut
         var thisRef = this;
         this.Data.p = $('#dataTable_0_paginate input').val();
         if (this.Data.noreload == false) {
@@ -171,6 +168,12 @@ function Events() {
             var aPos = thisRef.mainsTable[0].fnGetPosition(this);
             thisRef.drillDown_click(this, aPos[0]); 
         });
+        
+        // Running settings post processing (if avaliable)
+        try {
+            _Settings.tableActivityEvent(el);
+        } catch(err) { /* do nothing */ }
+        
         this.Data.noreload = true;
         this.setupURL();
     };
@@ -197,8 +200,15 @@ function Events() {
     };
     
     this.subsTableContent_change = function(el) {
+        var _Settings = this.Settings.Subs; // Shortcut
         var thisRef = this;
         this.Data.p = $('#dataTable_0_paginate input').val();
+        
+        // Running settings post processing (if avaliable)
+        try {
+            _Settings.tableActivityEvent(el);
+        } catch(err) { /* do nothing */ }
+        
         this.Data.noreload = true;
         this.setupURL();
     };
