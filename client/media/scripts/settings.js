@@ -16,7 +16,7 @@ function Settings() {
         'jsonp': false, // allow requests to other hosts
         'pageTitle': 'Task Monitoring', // Page title
         'footerTxt': 'Task Monitoring', // Footer text
-        'supportLnk': 'https://twiki.cern.ch/twiki/bin/view/ArdaGrid/TaskMonitoringWebUI', // Link to support page
+        'supportLnk': 'http://code.google.com/p/hbrowse/w/list', // Link to support page
         'logoLnk': 'media/images/atlaslogo.png', // Link to page logo
         'usersListLbl': 'Users List', // Label of user list search field, example: 'Users List'
         'mainsLbl': 'Tasks', // Name of mains content, example: 'Tasks'
