@@ -545,9 +545,5 @@ output example:
 }}}
 As a data source for charts both local stored data (data used to generate a tables) and data from ajax request can be used. When you want to use ajax data you will have to specify _dataURL_ and _dataURL_params_ parameters, in this case input for _translateData_ function will be object extracted from ajax response, otherwise Data.mem (see data.js file for Data.mem object structure) object will serve as an input for this function.
 
-=Files setup=
-To enable easy update from svn few files and directories was set up as an example files:
-   * index.html_example
-   * media/scripts/settings.js_example
-   * media/css_example
-`_example` string should be removed from file/directory name for each of above elements to make application working.
+=First running the application=
+If you download the whole package (not just the essential libraries) you get a working example application with example data sources (files) which you should be replaced. So, basically, the package is a "starting point" example application which should be modified to meet the requirements.
