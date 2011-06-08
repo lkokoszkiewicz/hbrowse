@@ -225,6 +225,8 @@ Example:
 ===translateData /function/===
 function, translates ajax response onto dataTables plugin data format
 Output: `[[col_val1, col_val2, ...], ...]`
+===tableActivityEvent /function/===
+Optional function that allows user to handle table change event (on changing sorting or page). It takes only one parameter which is clicked element. Function will also run on table init, in this case element will be empty.
 ===filters /array/===
 It's an array of objects, each object represents different filter and all of the filters values are stored in a Controller.Data.filters object and you can use them (eg in dataURL_params functions) by doing Data.filters.{filter_urlVariable}. The filter object consists of the following elements:
    * label - */string/* filter label /displayed above the input field/ (default: '')
