@@ -36,7 +36,7 @@ Name of mains content (example: 'Tasks')
 ===subsLbL /string/===
 Name of subs content (example: 'Jobs')
 ===modelDefaults /function/===
-Here You can set up model (data.js) default values, in most cases doesn't need to be changed. Function has to return the following values:
+Here You can set up model (data.js) default values, in most cases doesn't need to be changed. Function has to return the following values in a form of a dictionary:
    * user - */string/* default user name (default: '')
    * from - */int/* timestamp (default: 0)
    * till - */int/* timestamp (default: 0)
@@ -47,6 +47,8 @@ Here You can set up model (data.js) default values, in most cases doesn't need t
    * sorting - */array/* (default: `[]`)
    * or - */array/* opened table rows (default: `[]`)
    * uparam - */array/* user defined params (for params that cannot be shared between use cases) (default: `[]`)
+===hashChangeEvent /function/===
+Optional hash change function alows to react on hast changes, it takes one parameter which is the state of the view (subs|mains|users). Keep in mind that this is only the state of the url, not the state of the application, because of asynchronous ajax requests the state of the view might be (temporally) different then state of the url hash.
 
 ==Users==
 ===dataURL /string/===
@@ -127,6 +129,8 @@ Output:
  'tid':`<id_for_the_subtable>`
 }
 }}}
+===tableActivityEvent /function/===
+Optional function that allows user to handle table change event (on changing sorting or page). It takes only one parameter which is clicked element. Function will also run on table init, in this case element will be empty.
 ===filters /array/===
 It's an array of objects, each object represents different filter and all of the filters values are stored in a Controller.Data.filters object and you can use them (eg in dataURL_params functions) by doing Data.filters.{filter_urlVariable}. The filter object consists of the following elements:
    * label - */string/* filter label /displayed above the input field/ (default: '')
