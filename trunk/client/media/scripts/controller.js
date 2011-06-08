@@ -206,7 +206,7 @@ function Controller() {
             
 		    if ( $.bbq.getState('p') && ($.bbq.getState('p') <= tPages) ) {
                 $('#url-page').trigger('click');  // Load page number from URL
-                thisRef.Data.noreload = true;  // tell keyup event that page hes been reloaded (history is not working without this)
+                thisRef.Data.noreload = true;  // tell keyup event that page has been reloaded (history is not working without this)
                 $('#dataTable_0_paginate input').trigger('keyup');  // Recreate expand events for current page
                 thisRef.Data.noreload = false;  // Make sure that noreload is off after operation
             }
@@ -306,8 +306,12 @@ function Controller() {
             
             if ( $.bbq.getState('p') && ($.bbq.getState('p') <= tPages) ) {
                 $('#url-page').trigger('click');  // Load page number from URL
+                thisRef.Data.noreload = true;  // tell keyup event that page has been reloaded (history is not working without this)
+                $('#dataTable_0_paginate input').trigger('keyup');  // Recreate expand events for current page
+                thisRef.Data.noreload = false;  // Make sure that noreload is off after operation
             } else {
                 thisRef.Data.p = 1;
+                $('#dataTable_0_paginate input').trigger('keyup');  // Recreate expand events for current page
                 thisRef.Data.noreload = true;
                 thisRef.setupURL();
             }
@@ -484,6 +488,11 @@ function Controller() {
             thisRef.Data.quickSetup($.bbq.getState());
             if (!thisRef.Data.noreload) thisRef.viewUpdater();
             else thisRef.Data.noreload = false;
+            
+            // Running settings post processing (if avaliable)
+            try {
+                _Settings.hashChangeEvent(thisRef.appDisplayState());
+            } catch(err) { /* do nothing */ }
         });
         
         this.viewUpdater();

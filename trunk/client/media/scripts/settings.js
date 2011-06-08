@@ -35,7 +35,13 @@ function Settings() {
                 'or': [], // opened table rows
                 'uparam': [] // user defined params (for params that cannot be shared between use cases)
             }
-        }
+        },
+        // Optional hash change function alows to react on hast changes, it takes one parameter which is the state of the view (subs|mains|users)
+        // Keep in mind the this is only the state of the url, not the state of the app, because of asyncronous ajax requests
+        // the state of the view might be (temporarly) different then state of the url hash
+        /*'hashChangeEvent':function(el) {
+            alert(el);
+        }*/
     };
     // Application specific settings - FINISH
 
@@ -187,6 +193,9 @@ function Settings() {
             
             return {'tid':tid,filters:{'status':status}};
         },
+        /*'tableActivityEvent': function(el) {
+            //alert('it works! (mains)');
+        },*/
         'charts': [
             {
                 'name':'Status Overview',
@@ -433,7 +442,7 @@ function Settings() {
         // - Ajax response: {'user_taskstable':[{col_val1, col_val2, ...}, ...]}
         // - Required function: function(data) { return data.user_taskstable; }
         'getDataArray': function(data) {
-            $.bbq.pushState({'user':data.taskjobs[1].username},0);
+            //$.bbq.pushState({'user':data.taskjobs[1].username},0);
             return data.taskjobs[0];
         },
         // Function, translates ajax response onto dataTables plugin data format
@@ -473,6 +482,9 @@ function Settings() {
             }
             return tasksArr;
         },
+        /*'tableActivityEvent': function(el) {
+            //alert('it works! (subs)');
+        },*/
         'filters':[
             {
                 'label':'Status',  // String

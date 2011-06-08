@@ -227,6 +227,7 @@
 					    "sPaginationType": "full_numbers",
 					    "bAutoWidth":false,
 					    "bSortClasses": true,
+					    "bDeferRender": true,
 					    "bSort": bSort,
 					    "aaSorting": aaSorting
 		        },_config.dataTable));
