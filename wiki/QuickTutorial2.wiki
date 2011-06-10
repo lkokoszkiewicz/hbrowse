@@ -49,6 +49,8 @@ Here You can set up model (data.js) default values, in most cases doesn't need t
    * uparam - */array/* user defined params (for params that cannot be shared between use cases) (default: `[]`)
 ===hashChangeEvent /function/===
 Optional hash change function alows to react on hast changes, it takes one parameter which is the state of the view (subs|mains|users). Keep in mind that this is only the state of the url, not the state of the application, because of asynchronous ajax requests the state of the view might be (temporally) different then state of the url hash.
+===initEvent /function/===
+Optional init function alows to run some additional action on application initialization, it takes one parameter which is the state of the view (subs|mains|users). Keep in mind the this is only the state of the url, not the state of the app, because of asyncronous ajax requests the state of the view might be (temporarly) different then state of the url hash
 
 ==Users==
 ===dataURL /string/===
