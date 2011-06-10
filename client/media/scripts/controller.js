@@ -497,6 +497,11 @@ function Controller() {
         
         this.viewUpdater();
         
+        // Running settings post processing (if avaliable)
+        try {
+            _Settings.initEvent(thisRef.appDisplayState());
+        } catch(err) { /* do nothing */ }
+        
         // Set up refresh
         this.refresh_Change('#refresh');
     };
