@@ -1,5 +1,8 @@
 #labels Featured
 =Change Log=
+==v1.4.1==
+  * Added `Application.initEvent` function allowing running additional actions on application initialization
+
 ==v1.4.0==
   * Added `tableActivityEvent` functions to the `Settings.Mains` and `Settings.Subs` to allow users to react on table actions such ordering change or p$
   * Added `hashChange` function to the `Settings.Application` allowing users to react ton hashchange event
