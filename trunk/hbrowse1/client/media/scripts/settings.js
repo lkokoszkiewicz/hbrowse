@@ -17,7 +17,7 @@ function Settings() {
         'pageTitle': 'Task Monitoring', // Page title
         'footerTxt': 'Task Monitoring', // Footer text
         'supportLnk': 'http://code.google.com/p/hbrowse/w/list', // Link to support page
-        'logoLnk': 'media/images/atlaslogo.png', // Link to page logo
+        'logoLnk': 'media/images/logo.png', // Link to page logo
         'usersListLbl': 'Users List', // Label of user list search field, example: 'Users List'
         'mainsLbl': 'Tasks', // Name of mains content, example: 'Tasks'
         'subsLbL': 'Jobs', // Name of subs content, example: 'Jobs'
@@ -36,10 +36,16 @@ function Settings() {
                 'uparam': [] // user defined params (for params that cannot be shared between use cases)
             }
         },
-        // Optional hash change function alows to react on hast changes, it takes one parameter which is the state of the view (subs|mains|users)
+        // Optional init function alows to run some additional action on application initialization, it takes one parameter which is the state of the view (subs|mains|users)
         // Keep in mind the this is only the state of the url, not the state of the app, because of asyncronous ajax requests
         // the state of the view might be (temporarly) different then state of the url hash
-        /*'hashChangeEvent':function(el) {
+        /*'initEvent':function(appState){
+            alert(';)');
+        }*/
+        // Optional hash change function alows to react on hash changes, it takes one parameter which is the state of the view (subs|mains|users)
+        // Keep in mind the this is only the state of the url, not the state of the app, because of asyncronous ajax requests
+        // the state of the view might be (temporarly) different then state of the url hash
+        /*'hashChangeEvent':function(appState) {
             alert(el);
         }*/
     };
