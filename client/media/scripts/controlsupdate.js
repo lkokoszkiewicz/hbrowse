@@ -222,7 +222,7 @@ function ControlsUpdate() {
         if (_Settings.filters !== undefined) {
             $('#dataFiltersInputs').empty();
             for (var i=0;i<_Settings.filters.length;i++) {
-                var mainSpan = $('<span></span>').addClass('filterItems').html(_Settings.filters[i].label+'<br />');
+                var mainSpan = $('<span></span>').attr('id','filter_'+_Settings.filters[i].urlVariable).addClass('filterItems').html(_Settings.filters[i].label+'<br />');
                 
                 if (_Settings.filters[i].fieldType == 'text' || _Settings.filters[i].fieldType == 'date' || _Settings.filters[i].fieldType == 'datetime') {
                     var filter = $('<input></input>').attr({
