@@ -28,6 +28,7 @@
 <script type="text/javascript" src="media/scripts/components/lkfw.searchable.list.js"></script>
 <script type="text/javascript" src="media/scripts/components/lkfw.datatable.js"></script>
 <script type="text/javascript" src="media/scripts/components/idfn.datatable.sorting.js"></script>
+<script type="text/javascript" src="media/scripts/components/lkfw.tooltip.js"></script>
 
 <script type="text/javascript" language="javascript">
 $(document).ready( function() {
@@ -36,6 +37,17 @@ $(document).ready( function() {
     _Cache = new Cache(_cache_max_entries, _cache_lifetime);
     Controller = new Controller();
     Controller.Init();
+    
+    /*$('#userSelect').lkfw_tooltip({
+        'content':{
+            'userSelect':{
+                'html':'hjihihehe',
+                'css':{
+                    'top':'70px'
+                }
+            }
+        }
+    });*/
 } );
 </script>
 </head>
