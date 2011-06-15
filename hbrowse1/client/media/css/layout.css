@@ -69,3 +69,6 @@ input,select { border:1px gray solid;-moz-border-radius: 3px;-webkit-border-radi
     -moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px;
 }
 .chartTableHeadTd { background-color:#7FA4BF; font-weight:bold; color:white; border-bottom:2px #557f9d solid; border-top:2px #c4d5e1 solid; }
+
+/* LKFW.TOOLTIP */
+.lkfw_tooltip { background-color:#dddddd;border:1px #aaaaaa solid; padding:5px; -moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px; }

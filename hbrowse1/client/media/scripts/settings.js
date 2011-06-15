@@ -199,9 +199,9 @@ function Settings() {
             
             return {'tid':tid,filters:{'status':status}};
         },
-        /*'tableActivityEvent': function(el) {
+        'tableActivityEvent': function(el) {
             //alert('it works! (mains)');
-        },*/
+        },
         'charts': [
             {
                 'name':'Status Overview',
