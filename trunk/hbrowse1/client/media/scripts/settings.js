@@ -199,9 +199,9 @@ function Settings() {
             
             return {'tid':tid,filters:{'status':status}};
         },
-        'tableActivityEvent': function(el) {
+        /*'tableActivityEvent': function(el) {
             //alert('it works! (mains)');
-        },
+        },*/
         'charts': [
             {
                 'name':'Status Overview',
@@ -488,9 +488,23 @@ function Settings() {
             }
             return tasksArr;
         },
-        /*'tableActivityEvent': function(el) {
+        'tableActivityEvent': function(el) {
+            $('.tblSort').lkfw_tooltip({
+                'content':{
+                    'SchedulerJobId':{
+                        'html':'SchedulerJobID',
+                        'css':{
+                            'width':'215px'
+                        },
+                        'posShift':[0,0]
+                    }
+                },
+                'take':'html',
+                'delay':0,
+                'place':'top'
+            });
             //alert('it works! (subs)');
-        },*/
+        },
         'filters':[
             {
                 'label':'Status',  // String
