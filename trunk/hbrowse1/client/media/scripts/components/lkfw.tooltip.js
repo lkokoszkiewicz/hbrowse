@@ -8,6 +8,9 @@
             'place':'top'
         };
         
+        var overTooltip = false;
+        var clockTimeoutID;
+        
         var _drawTooltip = function(el) {
             try {
                 var scroll = $(document).scrollTop();
@@ -62,14 +65,29 @@
                 });
                 
                 mainDiv.delay(_config.delay).fadeIn(_config.fadeIn);
+                mainDiv.hover(function(){overTooltip = true;},function(){
+                    if (overTooltip == true) {
+                        $('.lkfw_tooltip').fadeOut(100,function(){$('.lkfw_tooltip').detach();});
+                    }
+                    overTooltip = false;
+                })
             } catch(err) {  }
         };
         
         if (settings) $.extend(_config, settings);
         
         this.each(function() {
-            //alert(';)');
-            $(this).hover(function(){_drawTooltip(this);},function(){ $('.lkfw_tooltip').detach(); });
+            $(this).hover(function(){
+                    clearTimeout(clockTimeoutID);
+                    _drawTooltip(this);
+                },function(){
+                    clockTimeoutID = setTimeout(function(){
+                    if (overTooltip == false) {
+                        $('.lkfw_tooltip').fadeOut(100,function(){$('.lkfw_tooltip').detach();});
+                    }
+                }, 1000);
+                
+            });
         });
     };
 })( jQuery );
