@@ -5,7 +5,9 @@
             'take':'id', // id | class | html | none
             'delay':1000,
             'fadeIn':200,
-            'place':'top'
+            'fadeOut':100,
+            'place':'top',
+            'clickable':false
         };
         
         var overTooltip = false;
@@ -65,12 +67,15 @@
                 });
                 
                 mainDiv.delay(_config.delay).fadeIn(_config.fadeIn);
-                mainDiv.hover(function(){overTooltip = true;},function(){
-                    if (overTooltip == true) {
-                        $('.lkfw_tooltip').fadeOut(100,function(){$('.lkfw_tooltip').detach();});
-                    }
-                    overTooltip = false;
-                })
+                
+                if (_config.clickable) {
+                    mainDiv.hover(function(){overTooltip = true;},function(){
+                        if (overTooltip == true) {
+                            $('.lkfw_tooltip').fadeOut(_config.fadeOut,function(){$('.lkfw_tooltip').detach();});
+                        }
+                        overTooltip = false;
+                    });
+                }
             } catch(err) {  }
         };
         
@@ -78,15 +83,16 @@
         
         this.each(function() {
             $(this).hover(function(){
-                    clearTimeout(clockTimeoutID);
-                    _drawTooltip(this);
-                },function(){
-                    clockTimeoutID = setTimeout(function(){
+                clearTimeout(clockTimeoutID);
+                _drawTooltip(this);
+            },function(){
+                var timeout = 0;
+                if (_config.clickable) timeout = 800;
+                clockTimeoutID = setTimeout(function(){
                     if (overTooltip == false) {
-                        $('.lkfw_tooltip').fadeOut(100,function(){$('.lkfw_tooltip').detach();});
+                        $('.lkfw_tooltip').fadeOut(_config.fadeOut,function(){$('.lkfw_tooltip').detach();});
                     }
-                }, 1000);
-                
+                }, timeout);
             });
         });
     };
