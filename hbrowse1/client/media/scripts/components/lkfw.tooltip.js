@@ -2,12 +2,14 @@
     $.fn.lkfw_tooltip = function(settings) {
         var _config = {
             'content': {},
-            'take':'id', // id | class | html | none
+            'take':'none', // id | class | html | none
             'delay':1000,
             'fadeIn':200,
             'fadeOut':100,
             'place':'top',
-            'clickable':false
+            'clickable':false,
+            'posShift':[0,0],
+            'css':{}
         };
         
         var overTooltip = false;
@@ -34,6 +36,8 @@
                 
                 if (tTipConfig.css !== undefined) {
                     mainDiv.css(tTipConfig.css);
+                } else {
+                    mainDiv.css(_config.css);
                 }
                 
                 if (tTipConfig.html !== undefined) {
@@ -50,6 +54,9 @@
                 if (tTipConfig.posShift !== undefined) {
                     posShift.top = tTipConfig.posShift[0];
                     posShift.left = tTipConfig.posShift[1];
+                } else {
+                    posShift.top = _config.posShift[0];
+                    posShift.left = _config.posShift[1];
                 }
                 
                 if (_config.place == 'bottom') {

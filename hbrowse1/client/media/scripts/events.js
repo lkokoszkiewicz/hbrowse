@@ -171,7 +171,7 @@ function Events() {
         
         // Running settings post processing (if avaliable)
         try {
-            _Settings.tableActivityEvent(el);
+            _Settings.tableActivityEvent(el, thisRef.Data.mem);
         } catch(err) { /* do nothing */ }
         
         this.Data.noreload = true;
@@ -206,7 +206,7 @@ function Events() {
         
         // Running settings post processing (if avaliable)
         try {
-            _Settings.tableActivityEvent(el);
+            _Settings.tableActivityEvent(el, thisRef.Data.mem);
         } catch(err) { /* do nothing */ }
         
         this.Data.noreload = true;

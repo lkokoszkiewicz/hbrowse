@@ -492,16 +492,14 @@ function Settings() {
             $('.tblSort').lkfw_tooltip({
                 'content':{
                     'SchedulerJobId':{
-                        'html':'SchedulerJobID',
-                        'css':{
-                            'width':'215px'
-                        },
-                        'posShift':[0,0]
+                        'html':'SchedulerJobID'
                     }
                 },
                 'take':'html',
                 'delay':0,
-                'place':'top'
+                'css':{
+                    'width':'215px'
+                }
             });
             //alert('it works! (subs)');
         },
