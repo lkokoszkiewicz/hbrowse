@@ -1,0 +1,8 @@
+#summary One-sentence summary of this page.
+#labels Deprecated
+
+= Introduction =
+lkfwTooltip is a jQuery plugin. It was created out of irritation caused by other tooltip plugins that did not provide a proper support for dynamic content and, for example loaded html code only from opposite divs. The following plugin gives You freedom in defining your html content inside the tooltip. Defining multiple tooltips with different settings and content is possible.
+
+= Quick start =
+It's very simple to create a simple tooltip:
