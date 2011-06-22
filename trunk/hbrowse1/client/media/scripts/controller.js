@@ -491,7 +491,7 @@ function Controller() {
             
             // Running settings post processing (if avaliable)
             try {
-                _Settings.hashChangeEvent(thisRef.appDisplayState());
+                _Settings.hashChangeEvent(thisRef.appDisplayState(thisRef.Data.mem));
             } catch(err) { /* do nothing */ }
         });
         
@@ -499,7 +499,7 @@ function Controller() {
         
         // Running settings post processing (if avaliable)
         try {
-            _Settings.initEvent(thisRef.appDisplayState());
+            _Settings.initEvent(thisRef.appDisplayState(),thisRef.Data.mem);
         } catch(err) { /* do nothing */ }
         
         // Set up refresh
