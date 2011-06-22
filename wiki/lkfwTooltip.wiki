@@ -6,6 +6,10 @@ lkfwTooltip is a jQuery plugin. It was created out of irritation caused by other
 
 = Quick start =
 It's very simple to create a simple tooltip:
+{{{
+$(/*target elements*/).lkfw_tooltip(/*config object*/);
+}}}
+So, for example:
 
 *HTML:*
 {{{
@@ -50,3 +54,26 @@ It is possible to define a tooltips without any parameters:
 $('.class').lkfw_tooltip();
 }}}
 That way, content will be taken from title attribute. In fact, every time script will not find _html_ content for a given element it will look for a content inside _title_ attribute.
+
+=Full config object reference=
+==content (default:{})==
+Here you can define options specific for each element tooltip:
+  * *html* - Element tooltip html content
+  * *posShift (default:`[0,0]`)* - You can shift an element position according to it's normal position (counted from top-left conner of the browse window).
+  * *css* - You can add additional css parameters to each element tooltip.
+==take (default:none)==
+It tells the script what it should look for inside _content_ dictionary. Possible values are: *id | class | html | none*
+==delay (default:1000)==
+Defines (in miliseconds) how long will wait before tooltip will show up.
+==fadeIn (default:200)==
+Fade in effect leangth.
+==fadeOut (default:100)==
+Fade out effect leangth.
+==place (default:top)==
+Tells the script where to place the tooltip, whether it should display at the top or at the bottom of the element. Possible values: *top | bottom*
+==clickable (default:false)==
+If set to true it allows the tooltip content to be navigated. It waits about a second with tooltip fading out allowing user to put mouse over the tooltip content and, for example, click a link on it.
+==posShift (default:`[0,0]`)==
+You can shift an element position according to it's normal position (counted from top-left conner of the browse window).
+==css (default:{})==
+You can add additional css parameters to all elements tooltips.
