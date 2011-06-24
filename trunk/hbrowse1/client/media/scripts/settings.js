@@ -89,7 +89,7 @@ function Settings() {
             };
             return obj;
         },
-        'expandableRows':true, // If TRUE, rows will expand after clicking '+'
+        'expandableRows':false, // If TRUE, rows will expand after clicking '+'
         'multipleER':false, // If TRUE, multiple rows can be expanded
         // Expanded data view setub object
         'expandData': {
@@ -133,8 +133,13 @@ function Settings() {
         },
         'sorting':[1,'desc'], // [<column_index>,<sorting_direction>], sorting_direction='desc'||'asc'
         'iDisplayLength': 25, // Number of rows to display on single page
+        
         // Column labels
-        'tblLabels': ['monitorTaskId','Num of Jobs','Pending','Running','Successful','Failed','Unknown','Graphically'],
+        'tblLabels': {
+            'groups':[['monitorTaskId',2,0],['Num of Jobs',2,0],['Statuses',0,5],['Graphically',2,0]],
+            'labels':[['Pending',0,0],['Running',0,0],['Successful',0,0],['Failed',0,0],['Unknown',0,0]]
+        },
+        
         // dataTables plugin column options
         // see: http://www.datatables.net/usage/columns
         'aoColumns': [
