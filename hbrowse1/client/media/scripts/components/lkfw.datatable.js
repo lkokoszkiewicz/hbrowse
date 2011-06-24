@@ -40,7 +40,7 @@
                 cellpadding: '0',
                 cellspacing: '1'
             }).addClass('display');
-            if ($.isArray(_config.tblLabels)) {
+            if (_isSimpleHeaders()) {
                 var colHeaders = $('<tr></tr>');
                 for (i in _config.tblLabels) {
                     var colHeader = $('<th></th>').text(_config.tblLabels[i]);
@@ -54,32 +54,37 @@
                 table.append(tblHead);
                 table.append(tblFoot);
             } else {
-                // Drawing labels groups
-                var colHeaderGroups = $('<tr></tr>');
-                for (i in _config.tblLabels.groups) {
-                    var colHeaderGroup = $('<th></th>').text(_config.tblLabels.groups[i][0]);
-                    if (_config.tblLabels.groups[i][1] > 0) colHeaderGroup.attr('rowspan',_config.tblLabels.groups[i][1]);
-                    if (_config.tblLabels.groups[i][2] > 0) colHeaderGroup.attr('colspan',_config.tblLabels.groups[i][2]);
-                    colHeaderGroups.append(colHeaderGroup);
-                }
-                // Drawing labels
-                var colHeaders = $('<tr></tr>');
-                for (i in _config.tblLabels.labels) {
-                    var colHeader = $('<th></th>').text(_config.tblLabels.labels[i][0]);
-                    if (_config.tblLabels.labels[i][1] > 0) colHeader.attr('rowspan',_config.tblLabels.labels[i][1]);
-                    if (_config.tblLabels.labels[i][2] > 0) colHeader.attr('colspan',_config.tblLabels.labels[i][2]);
-                    if (!_config.expandableRows || i!=0) colHeader.addClass('tblSort');
-                    colHeaders.append(colHeader);
+                if (_config.tblLabels.header !== undefined) {
+                    var tblHead = $('<thead></thead>');
+                    
+                    if (_config.tblLabels.header.groups !== undefined) {
+                        var colHeaderGroups = _headerRow(_config.tblLabels.header.groups);
+                        tblHead.append(colHeaderGroups);
+                    }
+                    
+                    if (_config.tblLabels.header.labels !== undefined) {
+                        var colHeaders = _headerRow(_config.tblLabels.header.labels);
+                        tblHead.append(colHeaders);
+                    }
+                    
+                    table.append(tblHead);
                 }
                 
-                var colFooterGroups = colHeaderGroups.clone();
-                var colFooters = colHeaders.clone();
-                
-                var tblHead = $('<thead></thead>').append(colHeaderGroups).append(colHeaders);
-                var tblFoot = $('<tfoot></tfoot>').append(colFooters).append(colFooterGroups);
-                
-                table.append(tblHead);
-                //table.append(tblFoot);
+                if (_config.tblLabels.footer !== undefined) {
+                    var tblFoot = $('<tfoot></tfoot>');
+                    
+                    if (_config.tblLabels.footer.labels !== undefined) {
+                        var colFooters = _headerRow(_config.tblLabels.footer.labels);
+                        tblFoot.append(colFooters);
+                    }
+                    
+                    if (_config.tblLabels.footer.labels !== undefined) {
+                        var colFooterGroups = _headerRow(_config.tblLabels.footer.groups);
+                        tblFoot.append(colFooterGroups);
+                    }
+                    
+                    table.append(tblFoot);
+                }
             }
             
             return table;
@@ -93,7 +98,7 @@
                 'id': 'expand_'+trID[0]
             }).addClass('expand').addClass(trClass);
             var mainTD = $('<td></td>').attr({
-                'colspan': _config.tblLabels.length
+                'colspan': _countTableColumns()
             }).addClass('sorting_1');
             
             for (var j=0;j<inputObj.length;j++) {
@@ -211,20 +216,78 @@
                 }
             });
         };
- 
+        
+        var _isSimpleHeaders = function() {
+            return $.isArray(_config.tblLabels);
+        };
+        
+        var _headerRow = function(contentArr) {
+            var colHeadersTr = $('<tr></tr>');
+            for (i in contentArr) {
+                var colHeader = $('<th></th>').text(contentArr[i][0]);
+                if (contentArr[i][1] > 0) colHeader.attr('rowspan',contentArr[i][1]);
+                if (contentArr[i][2] > 0) colHeader.attr('colspan',contentArr[i][2]);
+                if (!_config.expandableRows || i!=0) colHeader.addClass('tblSort');
+                colHeadersTr.append(colHeader);
+            }
+            return colHeadersTr;
+        };
+        
+        var _addPlusRowEmptyLabel = function() {
+            if (_isSimpleHeaders()) {
+                _config.tblLabels = $.merge([''], _config.tblLabels);
+            } else {
+                // Add empty label to header
+                if (_config.tblLabels.header.groups !== undefined) {
+                    _config.tblLabels.header.groups = $.merge([['',2,0]],_config.tblLabels.header.groups);
+                } else {
+                    _config.tblLabels.header.labels = $.merge([['',0,0]],_config.tblLabels.header.labels);
+                }
+                
+                // Add empty label to footer
+                if (_config.tblLabels.footer.labels !== undefined) {
+                    _config.tblLabels.footer.labels = $.merge([['',2,0]],_config.tblLabels.footer.labels);
+                } else {
+                    _config.tblLabels.footer.groups = $.merge([['',0,0]],_config.tblLabels.footer.groups);
+                }
+            }
+        };
+        
+        var _countTableColumns = function() {
+            if (_isSimpleHeaders()) {
+                return _config.tblLabels.length;
+            } else {
+                var colCount = 0;
+                if (_config.tblLabels.header.groups !== undefined) {
+                    for (var i=0;i<_config.tblLabels.header.groups.length;i++) {
+                        if (_config.tblLabels.header.groups[i][2] == 0) colCount++;
+                    }
+                }
+                if (_config.tblLabels.header.labels !== undefined) {
+                    for (var i=0;i<_config.tblLabels.header.labels.length;i++) {
+                        if (_config.tblLabels.header.labels[i][2] == 0) colCount++;
+                    }
+                }
+                return colCount;
+            }
+        };
+        
         if (settings) $.extend(_config, settings);
+        if (!_isSimpleHeaders()) _config.tblLabels = settings.tblLabels();
         
         if (_config.expandableRows) {
             // Adding first column with + sign
             // Setting up column settings if they are not exists
             if (!_config.dataTable.aoColumns) {
                 _config.dataTable.aoColumns = Array();
-                for (i in _config.tblLabels) {
+                var tableColumnsCount = _countTableColumns();
+                for (var i=0;i<tableColumnsCount;i++) {
                     _config.dataTable.aoColumns.push(null);
                 }
             }
             // Adding empty column label
-            _config.tblLabels = $.merge([''], _config.tblLabels);
+            _addPlusRowEmptyLabel();
+            //alert( _config.tblLabels.header.groups + "\n" + _config.tblLabels.footer.labels );
             
             // Adding PLUS image to every row
             for (var i=0; i<_config.items.length; i++) {
