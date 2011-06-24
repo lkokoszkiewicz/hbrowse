@@ -89,7 +89,7 @@ function Settings() {
             };
             return obj;
         },
-        'expandableRows':false, // If TRUE, rows will expand after clicking '+'
+        'expandableRows':true, // If TRUE, rows will expand after clicking '+'
         'multipleER':false, // If TRUE, multiple rows can be expanded
         // Expanded data view setub object
         'expandData': {
@@ -135,9 +135,17 @@ function Settings() {
         'iDisplayLength': 25, // Number of rows to display on single page
         
         // Column labels
-        'tblLabels': {
-            'groups':[['monitorTaskId',2,0],['Num of Jobs',2,0],['Statuses',0,5],['Graphically',2,0]],
-            'labels':[['Pending',0,0],['Running',0,0],['Successful',0,0],['Failed',0,0],['Unknown',0,0]]
+        'tblLabels': function() {
+            return {
+                'header':{
+                    'groups':[['monitorTaskId',2,0],['Num of Jobs',2,0],['Statuses',0,5],['Graphically',2,0]],
+                    'labels':[['Pending',0,0],['Running',0,0],['Successful',0,0],['Failed',0,0],['Unknown',0,0]]
+                },
+                'footer': {
+                    'groups':[['Statuses',0,5]],
+                    'labels':[['monitorTaskId',2,0],['Num of Jobs',2,0],['Pending',0,0],['Running',0,0],['Successful',0,0],['Failed',0,0],['Unknown',0,0],['Graphically',2,0]]
+                }
+            };
         },
         
         // dataTables plugin column options
