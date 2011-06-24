@@ -16,7 +16,7 @@ table { border:0px }
 
 .alignRight { text-align:right; }
 
-.numericTD { text-align:right; }
+td.numericTD { text-align:right; }
 .display a { color:#3383BB; text-decoration:none; font-weight:bold; }
 /*a.noJobsClick, a.noPendClick, a.noRunnClick, a.noSuccClick, a.noFailClick, a.noUnknClick { font-size:10pt; }*/
 .display a:hover { text-decoration:underline; }

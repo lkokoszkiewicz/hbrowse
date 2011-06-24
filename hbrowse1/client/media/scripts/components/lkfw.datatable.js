@@ -40,18 +40,47 @@
                 cellpadding: '0',
                 cellspacing: '1'
             }).addClass('display');
-            var colHeaders = $('<tr></tr>');
-            for (i in _config.tblLabels) {
-                var colHeader = $('<th></th>').text(_config.tblLabels[i]);
-                if (!_config.expandableRows || i!=0) colHeader.addClass('tblSort');
-                colHeaders.append(colHeader);
+            if ($.isArray(_config.tblLabels)) {
+                var colHeaders = $('<tr></tr>');
+                for (i in _config.tblLabels) {
+                    var colHeader = $('<th></th>').text(_config.tblLabels[i]);
+                    if (!_config.expandableRows || i!=0) colHeader.addClass('tblSort');
+                    colHeaders.append(colHeader);
+                }
+                var colFooters = colHeaders.clone();
+                var tblHead = $('<thead></thead>').append(colHeaders);
+                var tblFoot = $('<tfoot></tfoot>').append(colFooters);
+                
+                table.append(tblHead);
+                table.append(tblFoot);
+            } else {
+                // Drawing labels groups
+                var colHeaderGroups = $('<tr></tr>');
+                for (i in _config.tblLabels.groups) {
+                    var colHeaderGroup = $('<th></th>').text(_config.tblLabels.groups[i][0]);
+                    if (_config.tblLabels.groups[i][1] > 0) colHeaderGroup.attr('rowspan',_config.tblLabels.groups[i][1]);
+                    if (_config.tblLabels.groups[i][2] > 0) colHeaderGroup.attr('colspan',_config.tblLabels.groups[i][2]);
+                    colHeaderGroups.append(colHeaderGroup);
+                }
+                // Drawing labels
+                var colHeaders = $('<tr></tr>');
+                for (i in _config.tblLabels.labels) {
+                    var colHeader = $('<th></th>').text(_config.tblLabels.labels[i][0]);
+                    if (_config.tblLabels.labels[i][1] > 0) colHeader.attr('rowspan',_config.tblLabels.labels[i][1]);
+                    if (_config.tblLabels.labels[i][2] > 0) colHeader.attr('colspan',_config.tblLabels.labels[i][2]);
+                    if (!_config.expandableRows || i!=0) colHeader.addClass('tblSort');
+                    colHeaders.append(colHeader);
+                }
+                
+                var colFooterGroups = colHeaderGroups.clone();
+                var colFooters = colHeaders.clone();
+                
+                var tblHead = $('<thead></thead>').append(colHeaderGroups).append(colHeaders);
+                var tblFoot = $('<tfoot></tfoot>').append(colFooters).append(colFooterGroups);
+                
+                table.append(tblHead);
+                //table.append(tblFoot);
             }
-            var colFooters = colHeaders.clone();
-            var tblHead = $('<thead></thead>').append(colHeaders);
-            var tblFoot = $('<tfoot></tfoot>').append(colFooters);
-            
-            table.append(tblHead);
-            table.append(tblFoot);
             
             return table;
         };
