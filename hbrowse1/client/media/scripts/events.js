@@ -253,7 +253,7 @@ function Events() {
         var thisRef = this;
         
         // Prepare html for the filters summary
-        var html = '<h3>Filters Summary</h3>';
+        var div = $('<div></div>').append($('<h3></h3>').html('Filters Summary').css('margin','0px 0px 3px 0px'));
         // Check the state of the app and load proper settings
         switch (this.appDisplayState()) {
             case 'mains':
@@ -271,11 +271,11 @@ function Events() {
                     var selectElements = _Settings.filters[i].options.translateData();
                     for (var j=0;j<selectElements.length;j++) {
                         if (selectElements[j][0] == this.Data.filters[_Settings.filters[i].urlVariable]) {
-                            html += _Settings.filters[i].label+': '+selectElements[j][1];
+                            div.append('<span style="font-weight:bold">'+_Settings.filters[i].label+'</span>: '+selectElements[j][1]+'<br />');
                         }
                     }
                 } else {
-                    html += _Settings.filters[i].label+': '+this.Data.filters[_Settings.filters[i].urlVariable]+'<br />';
+                    div.append('<span style="font-weight:bold">'+_Settings.filters[i].label+'</span>: '+this.Data.filters[_Settings.filters[i].urlVariable]+'<br />');
                 }
             }
         }
@@ -283,7 +283,7 @@ function Events() {
         $('#dataFiltersLabel').lkfw_tooltip({
             'content':{
                 'dataFiltersLabel':{
-                    'html':html
+                    'html':div
                 }
             },
             'take':'id',

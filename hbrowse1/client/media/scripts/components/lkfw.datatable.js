@@ -320,6 +320,8 @@
 					    "bAutoWidth":false,
 					    "bSortClasses": true,
 					    "bDeferRender": true,
+					    //"sScrollY": "200px",
+                        //"sDom": "frtiS",
 					    "bSort": bSort,
 					    "aaSorting": aaSorting
 		        },_config.dataTable));
