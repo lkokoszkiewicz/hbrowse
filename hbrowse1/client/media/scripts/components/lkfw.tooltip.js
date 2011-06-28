@@ -4,6 +4,7 @@
             'content': {},
             'take':'none', // id | class | html | none
             'delay':1000,
+            'classDist':'',
             'fadeIn':200,
             'fadeOut':100,
             'place':'top',
@@ -32,7 +33,7 @@
                     'top':(offset.top-scroll)+'px',
                     'left':offset.left+'px',
                     'z-index':'15000'
-                }).addClass('lkfw_tooltip').attr('id','lkfw_tooltip');
+                }).addClass('lkfw_tooltip'+_config.classDist).attr('id','lkfw_tooltip');
                 
                 if (tTipConfig.css !== undefined) {
                     mainDiv.css(tTipConfig.css);
@@ -78,7 +79,7 @@
                 if (_config.clickable) {
                     mainDiv.hover(function(){overTooltip = true;},function(){
                         if (overTooltip == true) {
-                            $('.lkfw_tooltip').fadeOut(_config.fadeOut,function(){$('.lkfw_tooltip').detach();});
+                            $('.lkfw_tooltip'+_config.classDist).fadeOut(_config.fadeOut,function(){$('.lkfw_tooltip'+_config.classDist).detach();});
                         }
                         overTooltip = false;
                     });
@@ -89,6 +90,7 @@
         if (settings) $.extend(_config, settings);
         
         this.each(function() {
+            $(this).unbind('hover');
             $(this).hover(function(){
                 clearTimeout(clockTimeoutID);
                 _drawTooltip(this);
@@ -97,7 +99,7 @@
                 if (_config.clickable) timeout = 800;
                 clockTimeoutID = setTimeout(function(){
                     if (overTooltip == false) {
-                        $('.lkfw_tooltip').fadeOut(_config.fadeOut,function(){$('.lkfw_tooltip').detach();});
+                        $('.lkfw_tooltip'+_config.classDist).fadeOut(_config.fadeOut,function(){$('.lkfw_tooltip'+_config.classDist).detach();});
                     }
                 }, timeout);
             });

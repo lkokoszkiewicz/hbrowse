@@ -295,6 +295,8 @@ function ControlsUpdate() {
             $('#submitFilters').click(function(){ thisRef.filtersSubmit_click(this); });
             
             $('#dataFilters').show();
+            
+            this.filter_change();
         }
     };
     
@@ -321,6 +323,7 @@ function ControlsUpdate() {
                 
                 this.setupURL();
             }
+            this.filter_change();
         }
     };
 }

@@ -234,6 +234,8 @@ function Events() {
         this.Data.sorting = [];
         this.Data.p = 1;
         this.setupURL();
+        
+        this.filter_change();
     };
     
     this.filtersSubmit_OnOff = function(i) {
@@ -245,6 +247,54 @@ function Events() {
         } else if (_Settings.filters[i].options.Off !== undefined && this.Data.filters[_Settings.filters[i].urlVariable] == '') {
             _Settings.filters[i].options.Off(this.Data);
         }
+    };
+    
+    this.filter_change = function() {
+        var thisRef = this;
+        
+        // Prepare html for the filters summary
+        var html = '<h3>Filters Summary</h3>';
+        // Check the state of the app and load proper settings
+        switch (this.appDisplayState()) {
+            case 'mains':
+                var _Settings = this.Settings.Mains;
+                break;
+            case 'subs':
+                var _Settings = this.Settings.Subs;
+                break;
+        }
+        
+        // loop through the filters array
+        for (var i=0; i<_Settings.filters.length;i++) {
+            if (this.Data.filters[_Settings.filters[i].urlVariable] != '') {
+                if (_Settings.filters[i].fieldType == 'select') {
+                    var selectElements = _Settings.filters[i].options.translateData();
+                    for (var j=0;j<selectElements.length;j++) {
+                        if (selectElements[j][0] == this.Data.filters[_Settings.filters[i].urlVariable]) {
+                            html += _Settings.filters[i].label+': '+selectElements[j][1];
+                        }
+                    }
+                } else {
+                    html += _Settings.filters[i].label+': '+this.Data.filters[_Settings.filters[i].urlVariable]+'<br />';
+                }
+            }
+        }
+        
+        $('#dataFiltersLabel').lkfw_tooltip({
+            'content':{
+                'dataFiltersLabel':{
+                    'html':html
+                }
+            },
+            'take':'id',
+            'place':'bottom',
+            'classDist':'_filtersSummary',
+            'delay':500,
+            'posShift':[12,-1],
+            'css':{
+                'width':'215px'
+            }
+        });
     };
     
     this.drawChtRequestButton_click = function(el, _charts, domIdPrefix, cnt) {
