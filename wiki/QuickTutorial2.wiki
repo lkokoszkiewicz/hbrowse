@@ -121,34 +121,36 @@ Here is the example function that you can define instead of standard array:
             'labels':[['Pending',0,0],['Running',0,0],['Successful',0,0],['Failed',0,0],['Unknown',0,0]]
         },
         'footer': {
-            'groups':[['Statuses',0,5]],
-            'labels':[['monitorTaskId',2,0],['Num of Jobs',2,0],['Pending',0,0],['Running',0,0],['Successful',0,0],['Failed',0,0],['Unknown',0,0],['Graphically',2,0]]
+            'labels':[['monitorTaskId',2,0],['Num of Jobs',2,0],['Pending',0,0],['Running',0,0],['Successful',0,0],['Failed',0,0],['Unknown',0,0],['Graphically',2,0]],
+            'groups':[['Statuses',0,5]]
         }
     };
 }
 }}}
+Every label is an array: `[<label text>,<row_span>,<col_span>]`. _Groups_, for header are positioned above _labels_ and for footer below.
 The above definition will generate the following html structure:
 {{{
 <table id="dataTable_0" cellpadding="0" cellspacing="1" class="display">
     <thead>
         <tr>
             <th rowspan="2" class="sorting_disabled rExpand" colspan="1" style="width: 10px; "></th>
-            <th rowspan="2" class="tblSort sorting_desc" colspan="1" style="width: 200px; ">monitorTaskId</th>
-            <th rowspan="2" class="tblSort numericTD sorting" colspan="1">Num of Jobs</th>
+            <th rowspan="2" class="tblSort sorting_desc" colspan="1">monitorTaskId</th>
+            <th rowspan="2" class="tblSort sorting" colspan="1">Num of Jobs</th>
             <th colspan="5" class="tblSort" rowspan="1">Statuses</th>
-            <th rowspan="2" class="tblSort sorting_disabled" colspan="1" style="width: 130px; ">Graphically</th>
+            <th rowspan="2" class="tblSort sorting_disabled" colspan="1">Graphically</th>
         </tr>
         <tr>
             <th class="numericTD sorting" rowspan="1" colspan="1">Pending</th>
-            <th class="tblSort numericTD sorting" rowspan="1" colspan="1">Running</th>
-            <th class="tblSort numericTD sorting" rowspan="1" colspan="1">Successful</th>
-            <th class="tblSort numericTD sorting" rowspan="1" colspan="1">Failed</th>
-            <th class="tblSort numericTD sorting" rowspan="1" colspan="1">Unknown</th>
+            <th class="tblSort sorting" rowspan="1" colspan="1">Running</th>
+            <th class="tblSort sorting" rowspan="1" colspan="1">Successful</th>
+            <th class="tblSort sorting" rowspan="1" colspan="1">Failed</th>
+            <th class="tblSort sorting" rowspan="1" colspan="1">Unknown</th>
         </tr>
     </thead>
     <tfoot>
         <tr>
-            <th rowspan="2" colspan="1"></th><th rowspan="2" class="tblSort" colspan="1">monitorTaskId</th>
+            <th rowspan="2" colspan="1"></th>
+            <th rowspan="2" class="tblSort" colspan="1">monitorTaskId</th>
             <th rowspan="2" class="tblSort" colspan="1">Num of Jobs</th>
             <th class="tblSort" rowspan="1" colspan="1">Pending</th>
             <th class="tblSort" rowspan="1" colspan="1">Running</th>
@@ -163,6 +165,7 @@ The above definition will generate the following html structure:
     </tfoot>
 </table>
 }}}
+Complex headers option is an experimental one for now, and it's difficult for us to predict all possible behaviors of the script but we encourage you to try it out and waiting for a feedback.
 ===aoColumns /array/===
 (optional) columns options, see http://www.datatables.net/usage/columns
 ===getDataArray /function/===
