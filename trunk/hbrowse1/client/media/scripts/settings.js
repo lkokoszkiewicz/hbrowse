@@ -528,9 +528,16 @@ function Settings() {
                     // Output: [['el1','el1 label'],['el2','el2 label'], ...] - Can also be defined as a static list (when you don't want to
                     // load the data from url nor using Data.mem object)
                     'translateData': function(data) {
-                        return [['all','Off'],['P','Pending'],['R','Running'],['S','Successful'],['F','Failed'],['U','Unknown']];
+                        return [['all','All'],['P','Pending'],['R','Running'],['S','Successful'],['F','Failed'],['U','Unknown']];
                     }
                 }
+            },
+            {
+                'label':'Text filter',  // String
+                'urlVariable':'textfilter',  // String - lower cased, no spaces, no special characters
+                'fieldType':'text',  // String (text|select|date)
+                'value':'',
+                'options':{}
             }
         ],
         'charts': [

@@ -322,8 +322,8 @@ function ControlsUpdate() {
                 }
                 
                 this.setupURL();
+                this.filter_change();
             }
-            this.filter_change();
         }
     };
 }

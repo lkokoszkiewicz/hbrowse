@@ -90,7 +90,7 @@
         if (settings) $.extend(_config, settings);
         
         this.each(function() {
-            $(this).unbind('hover');
+            $(this).unbind('mouseenter mouseleave');
             $(this).hover(function(){
                 clearTimeout(clockTimeoutID);
                 _drawTooltip(this);
