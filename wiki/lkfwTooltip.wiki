@@ -68,7 +68,7 @@ Fade in effect leangth.
 ==fadeOut (default:100)==
 Fade out effect leangth.
 ==classDist (dafault:'')==
-Adds classDist string at the and on tooltip class name so the user could create a different styles for a different tooltips.
+Adds classDist string at the end of the tooltip class name so the user could create a different styles for a different tooltips.
 ==place (default:top)==
 Tells the script where to place the tooltip, whether it should display at the top or at the bottom of the element. Possible values: *top | bottom*
 ==clickable (default:false)==
