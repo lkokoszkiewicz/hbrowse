@@ -108,6 +108,61 @@ When setup to false it turns off the datatable column sorting at all, the data w
 Number of rows to display on single page (default: 25)
 ===tblLabels /array/===
 column labels (example: `['monitorTaskId','Num of Jobs','Pending','Running','Successful','Failed','Unknown','Graphically']`)
+*From version 1.5.0*
+There is also a possibility of adding an `complex headers`. Using this option allows to group table labels like in this [http://www.datatables.net/examples/advanced_init/complex_header.html example].
+
+Here is the example function that you can define instead of standard array:
+{{{
+// Column labels
+'tblLabels': function() {
+    return {
+        'header':{
+            'groups':[['monitorTaskId',2,0],['Num of Jobs',2,0],['Statuses',0,5],['Graphically',2,0]],
+            'labels':[['Pending',0,0],['Running',0,0],['Successful',0,0],['Failed',0,0],['Unknown',0,0]]
+        },
+        'footer': {
+            'groups':[['Statuses',0,5]],
+            'labels':[['monitorTaskId',2,0],['Num of Jobs',2,0],['Pending',0,0],['Running',0,0],['Successful',0,0],['Failed',0,0],['Unknown',0,0],['Graphically',2,0]]
+        }
+    };
+}
+}}}
+The above definition will generate the following html structure:
+{{{
+<table id="dataTable_0" cellpadding="0" cellspacing="1" class="display">
+    <thead>
+        <tr>
+            <th rowspan="2" class="sorting_disabled rExpand" colspan="1" style="width: 10px; "></th>
+            <th rowspan="2" class="tblSort sorting_desc" colspan="1" style="width: 200px; ">monitorTaskId</th>
+            <th rowspan="2" class="tblSort numericTD sorting" colspan="1">Num of Jobs</th>
+            <th colspan="5" class="tblSort" rowspan="1">Statuses</th>
+            <th rowspan="2" class="tblSort sorting_disabled" colspan="1" style="width: 130px; ">Graphically</th>
+        </tr>
+        <tr>
+            <th class="numericTD sorting" rowspan="1" colspan="1">Pending</th>
+            <th class="tblSort numericTD sorting" rowspan="1" colspan="1">Running</th>
+            <th class="tblSort numericTD sorting" rowspan="1" colspan="1">Successful</th>
+            <th class="tblSort numericTD sorting" rowspan="1" colspan="1">Failed</th>
+            <th class="tblSort numericTD sorting" rowspan="1" colspan="1">Unknown</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th rowspan="2" colspan="1"></th><th rowspan="2" class="tblSort" colspan="1">monitorTaskId</th>
+            <th rowspan="2" class="tblSort" colspan="1">Num of Jobs</th>
+            <th class="tblSort" rowspan="1" colspan="1">Pending</th>
+            <th class="tblSort" rowspan="1" colspan="1">Running</th>
+            <th class="tblSort" rowspan="1" colspan="1">Successful</th>
+            <th class="tblSort" rowspan="1" colspan="1">Failed</th>
+            <th class="tblSort" rowspan="1" colspan="1">Unknown</th>
+            <th rowspan="2" class="tblSort" colspan="1">Graphically</th>
+        </tr>
+        <tr>
+            <th colspan="5" rowspan="1">Statuses</th>
+        </tr>
+    </tfoot>
+</table>
+}}}
 ===aoColumns /array/===
 (optional) columns options, see http://www.datatables.net/usage/columns
 ===getDataArray /function/===
