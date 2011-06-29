@@ -319,17 +319,25 @@
                 }
                 else var aaSorting = [[_config.sorting[0],_config.sorting[1]]];
                 $(this).empty().append(_buildTable(elCnt));
-                dTable = $('#dataTable_'+elCnt).dataTable( $.extend({
+                
+                var dTableOptions = {
 					    "bJQueryUI": false,
 					    "sPaginationType": "full_numbers",
 					    "bAutoWidth":false,
 					    "bSortClasses": true,
 					    "bDeferRender": true,
-					    "sScrollY": _calculateTableHeight()+"px",
-                        "sDom": "frtiS",
 					    "bSort": bSort,
 					    "aaSorting": aaSorting
-		        },_config.dataTable));
+		        };
+		        
+		        if (_config.useScrollerPlugin == true) {
+		            $.extend(dTableOptions,{
+		                "sScrollY": _calculateTableHeight()+"px",
+                        "sDom": "frtiS",
+		            });
+		        }
+                
+                dTable = $('#dataTable_'+elCnt).dataTable( $.extend(dTableOptions,_config.dataTable));
 		    }
 		    else {
 		        dTable.fnClearTable();
