@@ -158,7 +158,7 @@ function Events() {
     this.mainsTableContent_change = function(el) {
         var _Settings = this.Settings.Mains; // Shortcut
         var thisRef = this;
-        this.Data.p = $('#dataTable_0_paginate input').val();
+        if ($('#dataTable_0_paginate input').val() !== undefined) this.Data.p = $('#dataTable_0_paginate input').val();
         if (this.Data.noreload == false) {
             $('.tablePlus').attr('src', 'media/images/table_plus.png');
             this.Data.or = [];
@@ -202,7 +202,7 @@ function Events() {
     this.subsTableContent_change = function(el) {
         var _Settings = this.Settings.Subs; // Shortcut
         var thisRef = this;
-        this.Data.p = $('#dataTable_0_paginate input').val();
+        if ($('#dataTable_0_paginate input').val() !== undefined) this.Data.p = $('#dataTable_0_paginate input').val();
         
         // Running settings post processing (if avaliable)
         try {

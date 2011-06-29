@@ -141,12 +141,12 @@ function Controller() {
         
         // "draw" function is calling lkfw.datatable plugin to create table filled with data
         var draw = function(data) {
-            // Charts tab chandling - start
+            // Charts tab handling - start
             if (_Settings.charts !== undefined) $("#siteTabs").tabs("enable",1); // Enable charts tab
             else $("#siteTabs").tabs("disable",1); // Disable charts tab
             $("#siteTabs").tabs("select",0); // Select data table tab
             $('#topTableCharts').empty();
-            // Charts tab chandling - finish
+            // Charts tab handling - finish
             
             thisRef.mainsTable = $('#tableContent').lkfw_dataTable({
                 dTable: thisRef.mainsTable,
@@ -156,6 +156,7 @@ function Controller() {
                 items: data,
                 tblLabels: _Settings['tblLabels'],
                 rowsToExpand: thisRef.Data.or,
+                useScrollerPlugin: ( (_Settings.useScrollerPlugin !== undefined) ? _Settings.useScrollerPlugin : false ),
                 sorting: (thisRef.Data.sorting.length > 0 ? thisRef.Data.sorting : _Settings.sorting),
                 fnERContent:function(dataID){ return thisRef.expand_click(dataID) },
                 fnERContentPostProcess:function(expandedID,inputObj){ return thisRef.expand_click_postprocess(expandedID,inputObj,true) },
@@ -258,6 +259,7 @@ function Controller() {
                 multipleER: _Settings.multipleER,
                 items: data,
                 tblLabels: _Settings['tblLabels'],
+                useScrollerPlugin: ( (_Settings.useScrollerPlugin !== undefined) ? _Settings.useScrollerPlugin : false ),
                 sorting: (thisRef.Data.sorting.length > 0 ? thisRef.Data.sorting : _Settings.sorting),
                 fnERContent:function(dataID){ return thisRef.expand_click(dataID) },
                 fnERContentPostProcess:function(expandedID,inputObj){ return thisRef.expand_click_postprocess(expandedID,inputObj,false) },
