@@ -134,7 +134,6 @@ function Settings() {
         'sorting':[1,'desc'], // [<column_index>,<sorting_direction>], sorting_direction='desc'||'asc'
         'iDisplayLength': 25, // Number of rows to display on single page
         'useScrollerPlugin':true,
-        
         // Column labels
         'tblLabels': function() {
             return {
@@ -148,7 +147,6 @@ function Settings() {
                 }
             };
         },
-        
         // dataTables plugin column options
         // see: http://www.datatables.net/usage/columns
         'aoColumns': [
