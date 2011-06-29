@@ -19,6 +19,7 @@
             'tableId': 'srchList',
             'items': [],
             'tblLabels': [],
+            'useScrollerPlugin':true,
             'dataTable':{},
             'expandableRows':false,
             'multipleER':false,   // Multiple expandable rows
@@ -217,6 +218,10 @@
             });
         };
         
+        var _calculateTableHeight = function() {
+            return $(window).height()-370;
+        };
+        
         var _isSimpleHeaders = function() {
             return $.isArray(_config.tblLabels);
         };
@@ -320,8 +325,8 @@
 					    "bAutoWidth":false,
 					    "bSortClasses": true,
 					    "bDeferRender": true,
-					    //"sScrollY": "200px",
-                        //"sDom": "frtiS",
+					    "sScrollY": _calculateTableHeight()+"px",
+                        "sDom": "frtiS",
 					    "bSort": bSort,
 					    "aaSorting": aaSorting
 		        },_config.dataTable));
@@ -333,9 +338,16 @@
 		    dTablesArr.push(dTable);
 		    
 		    // Setting up table events
-		    if (_config.dataTable.sPaginationType) {
+		    if (_config.dataTable.sPaginationType && _config.useScrollerPlugin == false) {
+		    
                 $('#dataTable_'+elCnt+' thead tr,#dataTable_'+elCnt+'_next,#dataTable_'+elCnt+'_previous,#dataTable_'+elCnt+'_first,#dataTable_'+elCnt+'_last').click( function() { _config.fnContentChange(this); if (_config.expandableRows) _expandClick(dTable); } );
                 $('#dataTable_'+elCnt+'_paginate input,#dataTable_'+elCnt+'_filter input').keyup( function() { _config.fnContentChange(this); if (_config.expandableRows) _expandClick(dTable); } );
+                
+            } else if (_config.useScrollerPlugin == true) {
+            
+                $('#dataTable_'+elCnt+'_wrapper .dataTables_scrollHeadInner thead tr').click( function() { _config.fnContentChange(this); if (_config.expandableRows) _expandClick(dTable); } );
+                $('#dataTable_'+elCnt+'_filter input').keyup( function() { _config.fnContentChange(this); if (_config.expandableRows) _expandClick(dTable); } );
+                $('#dataTable_'+elCnt+'_wrapper .dataTables_scrollBody').scroll( function() { _config.fnContentChange(this); if (_config.expandableRows) _expandClick(dTable); } );
             }
             if (_config.expandableRows) _expandClick(dTable);
             $('.tblSort').click( function() { _config.fnTableSorting(this); } );
