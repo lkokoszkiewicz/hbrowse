@@ -165,6 +165,14 @@ The above definition will generate the following html structure:
     </tfoot>
 </table>
 }}}
+In addition, there is a possibility to add a summary sum of entire column values (this option, for now, was tested only for ints). Here is en example:
+{{{
+'footer': {
+    'groups':[['Statuses Summary',0,5]],
+    'labels':[['monitorTaskId',2,0],['Num of Jobs',2,0],['=SUM',0,0,false,{'text-align':'right','color':'#FF9900'}],['=SUM',0,0,false,{'text-align':'right','color':'#BB72F3'}],['=SUM',0,0,false,{'text-align':'right','color':'#59D118'}],['=SUM',0,0,false,{'text-align':'right','color':'#C50000'}],['=SUM',0,0,false,{'text-align':'right','color':'#C2BDDD'}],['Graphically',2,0]]
+}
+}}}
+So, the label array was extended a little. After header label, row and col span column index and css styles object was added. Column index represents the column index which values we want to sum up (after adding optional expandable row 'plus image coulmn'). Column index is optional so it can be left empty or set to false. You have to use false if you don't want to specify it but you want to define additional style-sheets for a specific header.
 Complex headers option is an experimental one for now, and it's difficult for us to predict all possible behaviors of the script but we encourage you to try it out and waiting for a feedback.
 ===aoColumns /array/===
 (optional) columns options, see http://www.datatables.net/usage/columns
