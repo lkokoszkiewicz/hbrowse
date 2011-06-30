@@ -173,6 +173,7 @@ In addition, there is a possibility to add a summary sum of entire column values
 }
 }}}
 So, the label array was extended a little. After header label, row and col span column index and css styles object was added. Column index represents the column index which values we want to sum up (after adding optional expandable row 'plus image coulmn'). Column index is optional so it can be left empty or set to false. You have to use false if you don't want to specify it but you want to define additional style-sheets for a specific header.
+
 Complex headers option is an experimental one for now, and it's difficult for us to predict all possible behaviors of the script but we encourage you to try it out and waiting for a feedback.
 ===aoColumns /array/===
 (optional) columns options, see http://www.datatables.net/usage/columns
