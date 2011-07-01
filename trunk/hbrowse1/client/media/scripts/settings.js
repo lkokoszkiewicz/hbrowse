@@ -133,7 +133,6 @@ function Settings() {
         },
         'sorting':[1,'desc'], // [<column_index>,<sorting_direction>], sorting_direction='desc'||'asc'
         'iDisplayLength': 25, // Number of rows to display on single page
-        'useScrollerPlugin':false,
         // Column labels (complex headers example)
         'tblLabels': function() {
             return {
@@ -143,7 +142,7 @@ function Settings() {
                 },
                 'footer': {
                     'groups':[['Statuses Summary',0,5]],
-                    'labels':[['monitorTaskId',2,0],['Num of Jobs',2,0],['=SUM',0,0,3,{'text-align':'right','color':'#FF9900'}],['=SUM',0,0,4,{'text-align':'right','color':'#BB72F3'}],['=SUM',0,0,5,{'text-align':'right','color':'#59D118'}],['=SUM',0,0,6,{'text-align':'right','color':'#C50000'}],['=SUM',0,0,7,{'text-align':'right','color':'#C2BDDD'}],['Graphically',2,0]]
+                    'labels':[['monitorTaskId',2,0],['Num of Jobs',2,0],['=SUM',0,0,false,{'text-align':'right','color':'#FF9900'}],['=SUM',0,0,false,{'text-align':'right','color':'#BB72F3'}],['=SUM',0,0,false,{'text-align':'right','color':'#59D118'}],['=SUM',0,0,false,{'text-align':'right','color':'#C50000'}],['=SUM',0,0,false,{'text-align':'right','color':'#C2BDDD'}],['Graphically',2,0]]
                 }
             };
         },

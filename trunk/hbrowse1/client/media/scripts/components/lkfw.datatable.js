@@ -230,17 +230,17 @@
             var colHeadersTr = $('<tr></tr>');
             for (i in contentArr) {
                 if (contentArr[i][0] == '=SUM') {
-                    var index = parseInt(i)+1;
+                    var index = parseInt(i);
                     if (contentArr[i][3] !== undefined && contentArr[i][3] != false) index = contentArr[i][3];
                     var sum = 0;
                     for (var j=0;j<_config.items.length;j++) {
-                        //alert(sum+'+'+parseInt(_config.items[j][index])+'='+(sum + parseInt(_config.items[j][index])));
                         sum = (sum + parseInt(_config.items[j][index]));
                     }
                     var colHeader = $('<th></th>').text(sum);
                     if (contentArr[i][4] !== undefined) colHeader.css(contentArr[i][4]);
                 } else {
                     var colHeader = $('<th></th>').text(contentArr[i][0]);
+                    if (contentArr[i][4] !== undefined) colHeader.css(contentArr[i][4]);
                 }
                 if (contentArr[i][1] > 0) colHeader.attr('rowspan',contentArr[i][1]);
                 if (contentArr[i][2] > 0) colHeader.attr('colspan',contentArr[i][2]);
