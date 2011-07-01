@@ -1,1 +1,1 @@
-var curRel = [1,5,0_rc3];
+var curRel = [1,5,'0_rc3'];
