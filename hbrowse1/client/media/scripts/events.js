@@ -268,7 +268,8 @@ function Events() {
         for (var i=0; i<_Settings.filters.length;i++) {
             if (this.Data.filters[_Settings.filters[i].urlVariable] != '') {
                 if (_Settings.filters[i].fieldType == 'select') {
-                    var selectElements = _Settings.filters[i].options.translateData();
+                    if (_Settings.filters[i].urlVariable === undefined) var selectElements = _Settings.filters[i].options.translateData();
+                    else var selectElements = _Settings.filters[i].options.translateData(this.Data.mem.filters[_Settings.filters[i].urlVariable]);
                     for (var j=0;j<selectElements.length;j++) {
                         if (selectElements[j][0] == this.Data.filters[_Settings.filters[i].urlVariable]) {
                             div.append('<span style="font-weight:bold">'+_Settings.filters[i].label+'</span>: '+selectElements[j][1]+'<br />');
