@@ -1,5 +1,10 @@
 #labels Featured
 =Change Log=
+==v1.5.0==
+  * Added advanced headers (experimental option)
+    * Added possibility to add sum of entire column values to the specific colum footer
+  * Added filters summary (after hovering a mouse over filters frame label the selected filters summary is displayed)
+
 ==v1.4.2==
   * Added proper ID to the filters span elements
 

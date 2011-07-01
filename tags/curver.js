@@ -1,1 +1,1 @@
-var curRel = [1,4,2];
+var curRel = [1,5,0];
