@@ -40,7 +40,8 @@ function Data(ajaxAnimation, _Settings, jsonp) {
             tid: '',
             timestamp: 0,
             data: Array()
-        }
+        },
+        filters:{}
     };
     
     // Copy val instead create reference
