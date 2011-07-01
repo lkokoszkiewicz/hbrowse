@@ -2,7 +2,7 @@
 #svn update
 svn cp trunk/hbrowse1/. tags/hbrowse-$1-$2-$3
 nano wiki/ChangeLog.wiki
-echo "var curRel = [$1,$2,$3];" > tags/curver.js
+echo "var curRel = ['$1','$2','$3'];" > tags/curver.js
 svn ci -m ""
 svn export trunk/hbrowse1/client ../hbrowse_exports/hbrowse-$1-$2-$3/.
 mkdir ../hbrowse_exports/hbrowse-common-$1-$2-$3
