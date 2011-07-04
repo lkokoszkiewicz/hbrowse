@@ -1,5 +1,8 @@
 #labels Featured
 =Change Log=
+==v1.5.0_rc4==
+  * Fixed the bug when feeding the table with new data the footer sums remained unchanged
+
 ==v1.5.0_rc3==
   * Added advanced headers (experimental option)
     * Added possibility to add sum of entire column values to the specific colum footer
