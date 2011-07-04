@@ -250,6 +250,29 @@
             return colHeadersTr;
         };
         
+        var _updateTableFooterSums = function(elCnt) {
+            var labelsSums = [];
+            
+            for (var i=0; i<_config.tblLabels.footer.labels.length;i++) {
+                if (_config.tblLabels.footer.labels[i][0] == '=SUM') {
+                    if (_config.tblLabels.footer.labels[i][3] === undefined || _config.tblLabels.footer.labels[i][3] == false) {
+                        labelsSums.push([i,i]);
+                    } else {
+                        labelsSums.push([i,_config.tblLabels.footer.labels[i][3]]);
+                    }
+                }
+            }
+            
+            for (var i=0;i<labelsSums.length;i++) {
+                var th = $('#dataTable_'+elCnt+' tfoot tr').first().children().eq(labelsSums[i][0]);
+                var sum = 0;
+                for (var j=0;j<_config.items.length;j++) {
+                    sum = (sum + parseInt(_config.items[j][labelsSums[i][1]]));
+                }
+                th.text(sum);
+            }
+        };
+        
         var _addPlusRowEmptyLabel = function() {
             if (_isSimpleHeaders()) {
                 _config.tblLabels = $.merge([''], _config.tblLabels);
@@ -352,6 +375,7 @@
                 dTable = $('#dataTable_'+elCnt).dataTable( $.extend(dTableOptions,_config.dataTable));
 		    }
 		    else {
+		        if (!_isSimpleHeaders()) _updateTableFooterSums(elCnt);
 		        dTable.fnClearTable();
 		    }
 		    dTable.fnAddData(_config.items);
