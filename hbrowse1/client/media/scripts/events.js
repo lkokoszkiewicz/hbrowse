@@ -205,6 +205,8 @@ function Events() {
         var thisRef = this;
         if ($('#dataTable_0_paginate input').val() !== undefined) this.Data.p = $('#dataTable_0_paginate input').val();
         
+        this.Data.records = parseInt($('#dataTable_0_length select').val());
+        
         // Running settings post processing (if avaliable)
         try {
             _Settings.tableActivityEvent(el, thisRef.Data.mem);
