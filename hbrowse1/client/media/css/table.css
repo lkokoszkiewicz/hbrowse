@@ -55,13 +55,21 @@
 }
 
 .dataTables_length {
+    position:absolute;
+    top:-38px;
+    left:130px;
 	width: 40%;
-	float: left;
+	color: #ffffff;
+	/*float: left;*/
 }
 
 .dataTables_filter {
+    position:absolute;
+    top:-38px;
+    right:0px;
 	width: 50%;
-	float: right;
+	color: #ffffff;
+	/*float: right;*/
 	text-align: right;
 }
 
