@@ -106,6 +106,15 @@ sets up column sorting, `[<column_index>,<sorting_direction>]`, sorting_directio
 When setup to false it turns off the datatable column sorting at all, the data will appear in the order given by server.
 ===iDisplayLength /int/===
 Number of rows to display on single page (default: 25)
+===aLengthMenu /array/===
+This parameter allows you to readily specify the entries in the length drop down menu that DataTables shows when pagination is enabled. It can be either a 1D array of options which will be used for both the displayed option and the value, or a 2D array which will use the array in the first position as the value, and the array in the second position as the displayed options (useful for language strings such as 'All').
+{{{
+'aLengthMenu': [[10, 25, 50, -1], [10, 25, 50, "All"]]
+}}}
+or simply
+{{{
+'aLengthMenu': [10, 15, 20, 25, 30, 50, 100, 200]
+}}}
 ===tblLabels /array/===
 column labels (example: `['monitorTaskId','Num of Jobs','Pending','Running','Successful','Failed','Unknown','Graphically']`)
 *From version 1.5.0*
@@ -282,6 +291,15 @@ sets up column sorting, [<column_index>,<sorting_direction>], sorting_direction=
 When setup to false it turns off the datatable column sorting at all, the data will appear in the order given by server.
 ===iDisplayLength /int/===
 Number of rows to display on single page (default: 25)
+===aLengthMenu /array/===
+This parameter allows you to readily specify the entries in the length drop down menu that DataTables shows when pagination is enabled. It can be either a 1D array of options which will be used for both the displayed option and the value, or a 2D array which will use the array in the first position as the value, and the array in the second position as the displayed options (useful for language strings such as 'All').
+{{{
+'aLengthMenu': [[10, 25, 50, -1], [10, 25, 50, "All"]]
+}}}
+or simply
+{{{
+'aLengthMenu': [10, 15, 20, 25, 30, 50, 100, 200]
+}}}
 ===tblLabels /array/===
 column labels (example: `['monitorTaskId','Num of Jobs','Pending','Running','Successful','Failed','Unknown','Graphically']`)
 *From version 1.5.0*
