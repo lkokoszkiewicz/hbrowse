@@ -1,5 +1,8 @@
 #labels Featured
 =Change Log=
+==v1.5.2==
+  * Fixed bug when first open a page `filter_change` function generated en error
+
 ==v1.5.1==
   * Added a possibility to select number of records user wants to see on one page
 
