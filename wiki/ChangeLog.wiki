@@ -1,5 +1,8 @@
 #labels Featured
 =Change Log=
+==v1.5.1==
+  * Added a possibility to select number of records user wants to see on one page
+
 ==v1.5.0==
   * Added advanced headers (experimental option)
     * Added possibility to add sum of entire column values to the specific colum footer
