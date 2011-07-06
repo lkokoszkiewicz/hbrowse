@@ -164,9 +164,10 @@ function Controller() {
                 fnERClose: function(dataID) { thisRef.erClose_click(dataID) },
                 fnTableSorting: function(el) { thisRef.tableSorting_click(el,thisRef.mainsTable[0]) },
                 dataTable: {
-                    iDisplayLength: _Settings.iDisplayLength,
+                    iDisplayLength: thisRef.Data.records,//_Settings.iDisplayLength,
                     sPaginationType: "input",
-                    bLengthChange: false,
+                    bLengthChange: ( (_Settings.aLengthMenu !== undefined) ? true : false ),
+                    aLengthMenu:( (_Settings.aLengthMenu !== undefined) ? _Settings.aLengthMenu : [10, 25, 50, 100] ),
                     aoColumns: _Settings.aoColumns
                 }
             });
@@ -431,6 +432,7 @@ function Controller() {
             refresh:this.Data.refresh,
             tid:this.Data.tid,
             p:this.Data.p,
+            records:this.Data.records,
             sorting:this.Data.sorting,
             or:this.Data.or,
             uparam:this.Data.uparam

@@ -163,6 +163,7 @@ function Events() {
             $('.tablePlus').attr('src', 'media/images/table_plus.png');
             this.Data.or = [];
         }
+        this.Data.records = parseInt($('#dataTable_0_length select').val());
         $('#dataTable_0 tbody a.drilldown').closest('td').unbind();
         $('#dataTable_0 tbody a.drilldown').closest('td').click(function(){ 
             var aPos = thisRef.mainsTable[0].fnGetPosition(this);

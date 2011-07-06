@@ -10,6 +10,14 @@
 
 function Data(ajaxAnimation, _Settings, jsonp) {
     var settings = _Settings.Application.modelDefaults();
+    if (this.tid == '' || this.user == '') var tSettings = _Settings.Mains;
+    else var tSettings = _Settings.Subs;
+    
+    // Copy val instead create reference
+    this.copyVal = function(val) {
+        return val;
+    };
+    
     var jsonp = _Settings.Application.jsonp
     // general values
     this.user = settings.user;
@@ -19,6 +27,7 @@ function Data(ajaxAnimation, _Settings, jsonp) {
     this.refresh = settings.refresh;
     this.tid = settings.tid;
     this.p = settings.p;
+    this.records = this.copyVal(tSettings.iDisplayLength);
     this.sorting = settings.sorting;
     this.or = settings.or; // opened table rows
     this.uparam = settings.uparam; // user defined params (for params that cannot be shared between use cases)
@@ -42,11 +51,6 @@ function Data(ajaxAnimation, _Settings, jsonp) {
             data: Array()
         },
         filters:{}
-    };
-    
-    // Copy val instead create reference
-    this.copyVal = function(val) {
-        return val;
     };
     
     // Setting up user defined filters
@@ -74,6 +78,7 @@ function Data(ajaxAnimation, _Settings, jsonp) {
         this.refresh = (params['refresh'] || settings.refresh);
         this.tid = (params['tid'] || settings.tid);
         this.p = (params['p'] || settings.p);
+        this.records = (parseInt(params['records']) || this.copyVal(tSettings.iDisplayLength));
         this.or = (params['or'] || settings.or);
         this.sorting = (params['sorting'] || []);
         this.uparam = (params['uparam'] || settings.uparam);

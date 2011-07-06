@@ -133,6 +133,7 @@ function Settings() {
         },
         'sorting':[1,'desc'], // [<column_index>,<sorting_direction>], sorting_direction='desc'||'asc'
         'iDisplayLength': 25, // Number of rows to display on single page
+        'aLengthMenu':[10, 15, 20, 25, 30, 50, 100, 200],
         // Column labels (complex headers example)
         'tblLabels': function() {
             return {
