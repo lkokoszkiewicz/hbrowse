@@ -14,23 +14,23 @@
 
 (function($) {
     var methods = {
-        init : function( settings ) {  
+        init : function ( settings ) {  
             var _config = {
                 'dTable': [],
                 'tableId': 'srchList',
                 'items': [],
                 'tblLabels': [],
-                'useScrollerPlugin':false,
-                'dataTable':{},
-                'expandableRows':false,
-                'multipleER':false,   // Multiple expandable rows
-                'rowsToExpand':[],
-                'sorting':[0,'desc'],
-                'fnERContent':function(dataID, onlyData){ return {'properties':[['error','Data provider function not set up!']],'table':false,'html':false} },
-                'fnERContentPostProcess':function(expandedID){},
-                'fnContentChange':function(el){ alert('Please define a proper function to handle "fnContentChange"!'); },
-                'fnERClose':function(dataID){ alert('Please define a proper function to handle "fnERClose"!'); },
-                'fnTableSorting':function(el){  }
+                'useScrollerPlugin': false,
+                'dataTable': {},
+                'expandableRows': false,
+                'multipleER': false,   // Multiple expandable rows
+                'rowsToExpand': [],
+                'sorting': [0,'desc'],
+                'fnERContent': function ( dataID, onlyData ){ return {'properties':[['error','Data provider function not set up!']],'table':false,'html':false}; },
+                'fnERContentPostProcess': function( expandedID ){},
+                'fnContentChange': function ( el ){ alert('Please define a proper function to handle "fnContentChange"!'); },
+                'fnERClose': function ( dataID ){ alert('Please define a proper function to handle "fnERClose"!'); },
+                'fnTableSorting': function ( el ){  }
             };
             
             var _tablePlus = 'media/images/table_plus.png';

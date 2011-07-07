@@ -4,6 +4,7 @@
 */
 
 /* Import other styles */
+@import url('multiselect.css');
 @import url('table.css');
 @import url('page.css');
 @import url('global.css');
