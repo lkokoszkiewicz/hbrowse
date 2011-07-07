@@ -232,8 +232,10 @@ function ControlsUpdate() {
                     });
                     mainSpan.append(filter);
                 } 
-                else if (_Settings.filters[i].fieldType == 'select') {
+                else if (_Settings.filters[i].fieldType == 'select' || _Settings.filters[i].fieldType == 'multiselect') {
                     var filter = $('<select></select>').attr('id',_Settings.filters[i].urlVariable);
+                    
+                    if (_Settings.filters[i].fieldType == 'multiselect') filter.attr('multiple','multiple');
                     
                     if (_Settings.filters[i].options.dataURL !== undefined) {
                         if (this.Data.mem.filters[_Settings.filters[i].urlVariable] === undefined) {
@@ -263,7 +265,11 @@ function ControlsUpdate() {
                     if (optArr == false) return false;
                     if (optArr.length > 0) for (var j=0;j<optArr.length;j++) {
                         var option = $('<option></option>').attr('value',optArr[j][0]).text(optArr[j][1]);
-                        if (optArr[j][0] == this.Data.filters[_Settings.filters[i].urlVariable]) option.attr('selected','selected');
+                        if (_Settings.filters[i].fieldType == 'multiselect') {
+                            if (optArr[j][0] == thisRef.Data.filters[_Settings.filters[i].urlVariable] || $.inArray(optArr[j][0], thisRef.Data.filters[_Settings.filters[i].urlVariable]) != -1) option.attr('selected','selected');
+                        } else {
+                            if (optArr[j][0] == this.Data.filters[_Settings.filters[i].urlVariable]) option.attr('selected','selected');
+                        }
                         filter.append(option);
                     }
                     mainSpan.append(filter);
@@ -290,6 +296,12 @@ function ControlsUpdate() {
 			            changeYear: true
 		            });
                 }
+                else if (_Settings.filters[i].fieldType == 'multiselect') {
+                    $('#'+_Settings.filters[i].urlVariable).multiselect({
+                        selectedText: "# of # selected",
+                        classes:'hb-multiselect'
+                    });
+                }
             }
             
             $('#submitFilters').click(function(){ thisRef.filtersSubmit_click(this); });
@@ -315,6 +327,13 @@ function ControlsUpdate() {
                         $('.filterItems #'+_Settings.filters[i].urlVariable+' option').each( function(j){
                             $(this).removeAttr('selected');
                             if ($(this).val() == thisRef.Data.filters[_Settings.filters[i].urlVariable]) $(this).attr('selected','selected');
+                        });
+                    } else if (_Settings.filters[i].fieldType == 'multiselect') {
+                        $('.filterItems #'+_Settings.filters[i].urlVariable+' option').each( function(j){
+                            try {
+                                $(this).removeAttr('selected');
+                                if ($(this).val() == thisRef.Data.filters[_Settings.filters[i].urlVariable] || $.inArray($(this).val(), thisRef.Data.filters[_Settings.filters[i].urlVariable])) $(this).attr('selected','selected');
+                            } catch(err) {/*do nothing*/}
                         });
                     }
                     

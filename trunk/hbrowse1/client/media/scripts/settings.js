@@ -384,6 +384,7 @@ function Settings() {
         // Function, ajax request parameters
         // Output: {'<parameter_name>':<parameter_value>,...} (default: {})
         'dataURL_params': function(Data) {
+            //alert(Data.filters.status);
             obj = {
                 'taskmonid':Data.tid,
                 'what':(Data.filters.status || 'all')
@@ -520,7 +521,7 @@ function Settings() {
             {
                 'label':'Status',  // String
                 'urlVariable':'status',  // String - lower cased, no spaces, no special characters
-                'fieldType':'select',  // String (text|select|date)
+                'fieldType':'multiselect',  // String (text|select|multiselect|date)
                 'value':'',
                 'options':{
                     // Function translates model or ajax data onto simple elements array
@@ -528,13 +529,20 @@ function Settings() {
                     // Output: [['el1','el1 label'],['el2','el2 label'], ...] - Can also be defined as a static list (when you don't want to
                     // load the data from url nor using Data.mem object)
                     'translateData': function(data) {
-                        return [['all','All'],['P','Pending'],['R','Running'],['S','Successful'],['F','Failed'],['U','Unknown']];
+                        return [['P','Pending'],['R','Running'],['S','Successful'],['F','Failed'],['U','Unknown']];
                     }
                 }
             },
             {
                 'label':'Text filter',  // String
                 'urlVariable':'textfilter',  // String - lower cased, no spaces, no special characters
+                'fieldType':'text',  // String (text|select|date)
+                'value':'',
+                'options':{}
+            },
+            {
+                'label':'Text filter',  // String
+                'urlVariable':'textfilter2',  // String - lower cased, no spaces, no special characters
                 'fieldType':'text',  // String (text|select|date)
                 'value':'',
                 'options':{}
