@@ -9,7 +9,8 @@
 // 31.03.2011 Major v1.2.0 release (many changes to settings and core of the application)
 //
 
-Events.prototype = new ControlsUpdate();
+/*JSHINT*/
+/*global ControlsUpdate: false*/
 
 function Events() {
     this.userDropDown_Change = function(el) {
@@ -40,10 +41,10 @@ function Events() {
     
     this.refresh_Change = function(el) {
         var thisRef = this;
-        this.Data.refresh = parseInt($(el).val());
+        this.Data.refresh = parseInt($(el).val(), 10);
         
         try { clearInterval(this.intervalID); } finally {}
-        if (this.Data.refresh > 0) this.intervalID = setInterval( function() {thisRef.viewUpdater()}, (this.Data.refresh*1000));
+        if (this.Data.refresh > 0) this.intervalID = setInterval( function() { thisRef.viewUpdater(); }, (this.Data.refresh*1000) );
         //this.Data.noreload = true;
         //$('.tablePlus').attr('src', 'media/images/table_plus.png');
         //this.Data.or = [];
@@ -53,7 +54,7 @@ function Events() {
     
     this.fromTill_Change = function(el) {
         if( !this.Data.changeFromTill(el.id, ($.datepicker.formatDate('@',$(el).datepicker( "getDate" )))) ) {
-            if (this.Data[el.id] == 0) $(el).datepicker( "setDate", null );
+            if (this.Data[el.id] === 0) $(el).datepicker( "setDate", null );
             else $(el).datepicker( "setDate", $.datepicker.parseDate('@',(this.Data[el.id])) );
         }
         this.Data.timeRange = '';
@@ -87,16 +88,17 @@ function Events() {
     };
     
     this.expand_click = function(dataID) {
+        var _Settings, rowDataSet, output;
+        var thisRef = this;
+    
         if (this.appDisplayState() == 'mains') {
-            var _Settings = this.Settings.Mains; // Shortcut
-            var rowDataSet = this.Data.mem.mains.data[dataID];
+            _Settings = this.Settings.Mains; // Shortcut
+            rowDataSet = this.Data.mem.mains.data[dataID];
         }
         else {
-            var _Settings = this.Settings.Subs; // Shortcut
-            var rowDataSet = this.Data.mem.subs.data[dataID];
+            _Settings = this.Settings.Subs; // Shortcut
+            rowDataSet = this.Data.mem.subs.data[dataID];
         }
-        
-        var output;
         
         var processData = function(jsonDataSet) {
             if (jsonDataSet === undefined) jsonDataSet = false;
@@ -159,11 +161,11 @@ function Events() {
         var _Settings = this.Settings.Mains; // Shortcut
         var thisRef = this;
         if ($('#dataTable_0_paginate input').val() !== undefined) this.Data.p = $('#dataTable_0_paginate input').val();
-        if (this.Data.noreload == false) {
+        if (this.Data.noreload === false) {
             $('.tablePlus').attr('src', 'media/images/table_plus.png');
             this.Data.or = [];
         }
-        this.Data.records = parseInt($('#dataTable_0_length select').val());
+        this.Data.records = parseInt($('#dataTable_0_length select').val(), 10);
         $('#dataTable_0 tbody a.drilldown').closest('td').unbind();
         $('#dataTable_0 tbody a.drilldown').closest('td').click(function(){ 
             var aPos = thisRef.mainsTable[0].fnGetPosition(this);
@@ -180,16 +182,19 @@ function Events() {
     };
     
     this.drillDown_click = function(el, rowIndex) {
-        var _Settings = this.Settings.Mains; // Shortcut
+        var i, _Settings, dParams = false;
+        _Settings = this.Settings.Mains; // Shortcut
         
         // setup model
-        if ($.isFunction(_Settings.drillDownHandler)) var dParams = _Settings.drillDownHandler(this.Data, el, rowIndex);
+        if ($.isFunction(_Settings.drillDownHandler)) dParams = _Settings.drillDownHandler(this.Data, el, rowIndex);
         if (dParams) {
-            if (dParams.uparam != undefined) this.Data.uparam = dParams.uparam;
-            if (dParams.tid != undefined) this.Data.tid = dParams.tid;
-            if (dParams.filters != undefined) {
-                for (x in dParams.filters) {
-                    this.Data.filters[x] = dParams.filters[x];
+            if (dParams.uparam !== undefined) this.Data.uparam = dParams.uparam;
+            if (dParams.tid !== undefined) this.Data.tid = dParams.tid;
+            if (dParams.filters !== undefined) {
+                for (i in dParams.filters) {
+                    if (dParams.filters.hasOwnProperty(i)) {
+                        this.Data.filters[i] = dParams.filters[i];
+                    }
                 }
             }
         } else alert('setupUserParams settings function was replaced by drillDownHandler function, see documentation and latest settings.js_example for detailes!');
@@ -205,7 +210,7 @@ function Events() {
         var thisRef = this;
         if ($('#dataTable_0_paginate input').val() !== undefined) this.Data.p = $('#dataTable_0_paginate input').val();
         
-        this.Data.records = parseInt($('#dataTable_0_length select').val());
+        this.Data.records = parseInt($('#dataTable_0_length select').val(), 10);
         
         // Running settings post processing (if avaliable)
         try {
@@ -217,7 +222,7 @@ function Events() {
     };
     
     this.tableSorting_click = function(el, dataTable) {
-        tSettings = dataTable.fnSettings();
+        var tSettings = dataTable.fnSettings();
         //alert(tSettings.aaSorting[0][1]);
         this.Data.sorting = Array(tSettings.aaSorting[0][0],tSettings.aaSorting[0][1]);
         //this.Data.noreload = true;
@@ -225,10 +230,12 @@ function Events() {
     };
     
     this.filtersSubmit_click = function(el) {
-        if (this.appDisplayState() == 'mains') var _Settings = this.Settings.Mains; // Shortcut
-        else if (this.appDisplayState() == 'subs') var _Settings = this.Settings.Subs; // Shortcut
+        var i, _Settings;
+    
+        if (this.appDisplayState() == 'mains') _Settings = this.Settings.Mains; // Shortcut
+        else if (this.appDisplayState() == 'subs') _Settings = this.Settings.Subs; // Shortcut
         
-        for (var i=0;i<_Settings.filters.length;i++) {
+        for (i=0;i<_Settings.filters.length;i++) {
             this.Data.filters[_Settings.filters[i].urlVariable] = $('.filterItems #'+_Settings.filters[i].urlVariable).val();
             this.filtersSubmit_OnOff(i);
         }
@@ -241,38 +248,41 @@ function Events() {
     };
     
     this.filtersSubmit_OnOff = function(i) {
-        if (this.appDisplayState() == 'mains') var _Settings = this.Settings.Mains; // Shortcut
-        else if (this.appDisplayState() == 'subs') var _Settings = this.Settings.Subs; // Shortcut
+        var _Settings;
+    
+        if (this.appDisplayState() == 'mains') _Settings = this.Settings.Mains; // Shortcut
+        else if (this.appDisplayState() == 'subs') _Settings = this.Settings.Subs; // Shortcut
         
-        if (_Settings.filters[i].options.On !== undefined && this.Data.filters[_Settings.filters[i].urlVariable] != '') {
+        if (_Settings.filters[i].options.On !== undefined && this.Data.filters[_Settings.filters[i].urlVariable] !== '') {
             _Settings.filters[i].options.On(this.Data);
-        } else if (_Settings.filters[i].options.Off !== undefined && this.Data.filters[_Settings.filters[i].urlVariable] == '') {
+        } else if (_Settings.filters[i].options.Off !== undefined && this.Data.filters[_Settings.filters[i].urlVariable] === '') {
             _Settings.filters[i].options.Off(this.Data);
         }
     };
     
     this.filter_change = function() {
+        var i, div, _Settings, selectElements;
         var thisRef = this;
         
         // Prepare html for the filters summary
-        var div = $('<div></div>').append($('<h3></h3>').html('Filters Summary').css('margin','0px 0px 3px 0px'));
+        div = $('<div></div>').append($('<h3></h3>').html('Filters Summary').css('margin','0px 0px 3px 0px'));
         // Check the state of the app and load proper settings
         switch (this.appDisplayState()) {
             case 'mains':
-                var _Settings = this.Settings.Mains;
+                _Settings = this.Settings.Mains;
                 break;
             case 'subs':
-                var _Settings = this.Settings.Subs;
+                _Settings = this.Settings.Subs;
                 break;
         }
         
         // loop through the filters array
-        for (var i=0; i<_Settings.filters.length;i++) {
-            if (this.Data.filters[_Settings.filters[i].urlVariable] != '') {
+        for (i=0; i<_Settings.filters.length;i++) {
+            if (this.Data.filters[_Settings.filters[i].urlVariable] !== '') {
                 if (_Settings.filters[i].fieldType == 'select') {
                     try {
-                        if (_Settings.filters[i].urlVariable === undefined) var selectElements = _Settings.filters[i].options.translateData();
-                        else var selectElements = _Settings.filters[i].options.translateData(this.Data.mem.filters[_Settings.filters[i].urlVariable]);
+                        if (_Settings.filters[i].urlVariable === undefined) selectElements = _Settings.filters[i].options.translateData();
+                        else selectElements = _Settings.filters[i].options.translateData(this.Data.mem.filters[_Settings.filters[i].urlVariable]);
                         for (var j=0;j<selectElements.length;j++) {
                             if (selectElements[j][0] == this.Data.filters[_Settings.filters[i].urlVariable]) {
                                 div.append('<span style="font-weight:bold">'+_Settings.filters[i].label+'</span>: '+selectElements[j][1]+'<br />');
@@ -307,3 +317,6 @@ function Events() {
         this.drawChart(_charts, domIdPrefix, cnt, true);
     };
 }
+
+// Inherits from ControlsUpdate()
+Events.prototype = new ControlsUpdate();
