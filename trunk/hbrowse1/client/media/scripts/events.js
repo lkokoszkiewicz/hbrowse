@@ -236,7 +236,7 @@ function Events() {
         else if (this.appDisplayState() == 'subs') _Settings = this.Settings.Subs; // Shortcut
         
         for (i=0;i<_Settings.filters.length;i++) {
-            this.Data.filters[_Settings.filters[i].urlVariable] = $('.filterItems #'+_Settings.filters[i].urlVariable).val();
+            this.Data.filters[_Settings.filters[i].urlVariable] = ($('.filterItems #'+_Settings.filters[i].urlVariable).val() || '');
             this.filtersSubmit_OnOff(i);
         }
         this.Data.or = [];
@@ -261,7 +261,7 @@ function Events() {
     };
     
     this.filter_change = function() {
-        var i, div, _Settings, selectElements;
+        var i, j, div, _Settings, selectElements, elIndex, fElementsArr = [];
         var thisRef = this;
         
         // Prepare html for the filters summary
@@ -283,12 +283,25 @@ function Events() {
                     try {
                         if (_Settings.filters[i].urlVariable === undefined) selectElements = _Settings.filters[i].options.translateData();
                         else selectElements = _Settings.filters[i].options.translateData(this.Data.mem.filters[_Settings.filters[i].urlVariable]);
-                        for (var j=0;j<selectElements.length;j++) {
+                        for (j=0;j<selectElements.length;j++) {
                             if (selectElements[j][0] == this.Data.filters[_Settings.filters[i].urlVariable]) {
                                 div.append('<span style="font-weight:bold">'+_Settings.filters[i].label+'</span>: '+selectElements[j][1]+'<br />');
                             }
                         }
-                    } catch(err) { /*do nothing*/ }
+                    } catch(err1) { /*do nothing*/ }
+                } else if (_Settings.filters[i].fieldType == 'multiselect') {
+                    try {
+                        if (_Settings.filters[i].urlVariable === undefined) selectElements = _Settings.filters[i].options.translateData();
+                        else selectElements = _Settings.filters[i].options.translateData(this.Data.mem.filters[_Settings.filters[i].urlVariable]);
+                        
+                        for (j=0;j<selectElements.length;j++) {
+                            elIndex = $.inArray(selectElements[j][0], this.Data.filters[_Settings.filters[i].urlVariable]);
+                            if (elIndex != -1) {
+                                fElementsArr.push(selectElements[j][1]);
+                            }
+                        }
+                        div.append('<span style="font-weight:bold">'+_Settings.filters[i].label+'</span>: '+fElementsArr.join(', ')+'<br />');
+                    } catch(err2) { /*do nothing*/ }
                 } else {
                     div.append('<span style="font-weight:bold">'+_Settings.filters[i].label+'</span>: '+this.Data.filters[_Settings.filters[i].urlVariable]+'<br />');
                 }
