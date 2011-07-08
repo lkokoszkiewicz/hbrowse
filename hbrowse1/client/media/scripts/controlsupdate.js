@@ -14,7 +14,7 @@ function ControlsUpdate() {
         var ul = $('<ul></ul>');
         var st = err.stack.split("\n");
         for (var i=0;i<st.length;i++) {
-            if (st[i] != '') ul.append($('<li></li>').html(st[i]));
+            if (st[i] !== '') ul.append($('<li></li>').html(st[i]));
         }
         $('#dialog-content').html(ul);
         $('#dialog-message').dialog({ 
@@ -38,24 +38,27 @@ function ControlsUpdate() {
         });
     };
     
+    // Generate users options
     this.generateUserDropdownOptions = function() {
-        // Generate users options
-        var newOption = $('<option></option>').attr('value','').html('');
+        var i, newOption;
+        var thisRef = this;
+        
+        newOption = $('<option></option>').attr('value','').html('');
         $('#userSelect_dropdown').empty();
         $('#userSelect_dropdown').append(newOption);
-        for (i in thisRef.Data.mem.users) {
+        for (i=0;i<thisRef.Data.mem.users.length;i++) {
             newOption = $('<option></option>').attr('value',this.Data.mem.users[i]).html(this.Data.mem.users[i]);
             $('#userSelect_dropdown').append(newOption);
         }
         
-        $('#userSelect_dropdown').unbind('change').change( function() { thisRef.userDropDown_Change(this) });
+        $('#userSelect_dropdown').unbind('change').change( function() { thisRef.userDropDown_Change(this); });
         this.userDropdown_update();
     };
     
     this.fromTill_update = function() {
-        if (this.Data.from == 0) $('#from').datepicker('setDate',null);
+        if (this.Data.from === 0) $('#from').datepicker('setDate',null);
         else $('#from').datepicker('setDate',$.datepicker.parseDate('@',(this.Data.from)));
-        if (this.Data.till == 0) $('#till').datepicker('setDate',null);
+        if (this.Data.till === 0) $('#till').datepicker('setDate',null);
         else $('#till').datepicker('setDate',$.datepicker.parseDate('@',(this.Data.till)));
     };
     
@@ -95,9 +98,11 @@ function ControlsUpdate() {
     };
     
     this.breadcrumbs_update = function() {
-        var _Settings = this.Settings.Application; // Shortcut
-        var thidRef = this;
-        var output = '&nbsp;:: ';
+        var _Settings, output;
+        var thisRef = this;
+        
+        _Settings = this.Settings.Application; // Shortcut
+        output = '&nbsp;:: ';
         // id=breadcrumbs
         if (this.Data.user || !_Settings.userSelection) {
             if (this.Data.tid) {
@@ -119,7 +124,7 @@ function ControlsUpdate() {
         $('#breadcrumbs').html(output);
         
         // Set up events
-        $('#breadcrumbs a').click( function() { thisRef.breadcrumbs_click(this) });
+        $('#breadcrumbs a').click( function() { thisRef.breadcrumbs_click(this); });
     };
     
     this.charts_prepTable = function(chtCnt, tableTarget, domIdPrefix) {
@@ -154,26 +159,28 @@ function ControlsUpdate() {
     };
     
     this.chartsTable_load = function(tData, domIdPrefix, cnt) {
+        var i, j, table, tHead, tHeadTr, tHeadTd, tBody, tBodyTr, tBodyTd;
+    
         $('#'+domIdPrefix+cnt).empty();
-        var table = $('<table></table>').attr({
+        table = $('<table></table>').attr({
             'cellpadding':'0px',
             'cellspacing':'1px'
         }).addClass('chartTable').css('border','1px #aaaaaa solid');
         if (tData.width !== undefined) table.css('width',tData.width);
         
-        var tHead = $('<thead></thead>');
-        var tHeadTr = $('<tr></tr>').addClass('chartTableHeadTr');
-        for (var i=0;i<tData.tblLabels.length;i++) {
-            var tHeadTd = $('<td></td>').addClass('chartTableHeadTd').text(tData.tblLabels[i]);
+        tHead = $('<thead></thead>');
+        tHeadTr = $('<tr></tr>').addClass('chartTableHeadTr');
+        for (i=0;i<tData.tblLabels.length;i++) {
+            tHeadTd = $('<td></td>').addClass('chartTableHeadTd').text(tData.tblLabels[i]);
             tHeadTr.append(tHeadTd);
         }
         tHead.append(tHeadTr);
         
-        var tBody = $('<tbody></tbody>');
-        for (var i=0;i<tData.tblData.length;i++) {
-            var tBodyTr = $('<tr></tr>');
-            for (var j=0;j<tData.tblData[i].length;j++) {
-                var tBodyTd = $('<td></td>').html(tData.tblData[i][j].html);
+        tBody = $('<tbody></tbody>');
+        for (i=0;i<tData.tblData.length;i++) {
+            tBodyTr = $('<tr></tr>');
+            for (j=0;j<tData.tblData[i].length;j++) {
+                tBodyTd = $('<td></td>').html(tData.tblData[i][j].html);
                 if (tData.tblData[i][j].bgcolor !== undefined) {
                     tBodyTd.css('background-color',tData.tblData[i][j].bgcolor);
                 }
@@ -200,7 +207,7 @@ function ControlsUpdate() {
             'id':'butt_'+domIdPrefix+cnt,
             'type':'button',
             'value':'Load Chart'
-        }).click(function(){ thisRef.drawChtRequestButton_click(this, _charts, domIdPrefix, cnt) }));
+        }).click(function(){ thisRef.drawChtRequestButton_click(this, _charts, domIdPrefix, cnt); }));
         $('#'+domIdPrefix+cnt).append(chtMessageFrame);
     };
     
@@ -213,19 +220,32 @@ function ControlsUpdate() {
     };
     
     this.drawFilters = function() {
-        if (this.appDisplayState() == 'mains') var _Settings = this.Settings.Mains; // Shortcut
-        else if (this.appDisplayState() == 'subs') var _Settings = this.Settings.Subs; // Shortcut
-        
+        var i, j, _Settings, optArr, mainSpan, filter, option;
         var thisRef = this;
-        var optArr = [];
+        
+        var emptyFunc = function() {/*do nothing*/};
+        var returnEmptyObjFunc = function() { return {}; };
+        var handleAjaxData = function(data){
+            try {
+                thisRef.Data.mem.filters[_Settings.filters[i].urlVariable] = data;
+                optArr = _Settings.filters[i].options.translateData(data);
+            } catch(err1) {
+                if (thisRef.Settings.Application.debugMode) thisRef.setupErrorDialog(err1);
+            }
+        };
+    
+        if (this.appDisplayState() == 'mains') _Settings = this.Settings.Mains; // Shortcut
+        else if (this.appDisplayState() == 'subs') _Settings = this.Settings.Subs; // Shortcut
+        
+        optArr = [];
         
         if (_Settings.filters !== undefined) {
             $('#dataFiltersInputs').empty();
-            for (var i=0;i<_Settings.filters.length;i++) {
-                var mainSpan = $('<span></span>').attr('id','filter_'+_Settings.filters[i].urlVariable).addClass('filterItems').html(_Settings.filters[i].label+'<br />');
+            for (i=0;i<_Settings.filters.length;i++) {
+                mainSpan = $('<span></span>').attr('id','filter_'+_Settings.filters[i].urlVariable).addClass('filterItems').html(_Settings.filters[i].label+'<br />');
                 
                 if (_Settings.filters[i].fieldType == 'text' || _Settings.filters[i].fieldType == 'date' || _Settings.filters[i].fieldType == 'datetime') {
-                    var filter = $('<input></input>').attr({
+                    filter = $('<input></input>').attr({
                         'type':'text',
                         'id':_Settings.filters[i].urlVariable,
                         'value':this.Data.filters[_Settings.filters[i].urlVariable]
@@ -233,38 +253,31 @@ function ControlsUpdate() {
                     mainSpan.append(filter);
                 } 
                 else if (_Settings.filters[i].fieldType == 'select' || _Settings.filters[i].fieldType == 'multiselect') {
-                    var filter = $('<select></select>').attr('id',_Settings.filters[i].urlVariable);
+                    filter = $('<select></select>').attr('id',_Settings.filters[i].urlVariable);
                     
                     if (_Settings.filters[i].fieldType == 'multiselect') filter.attr('multiple','multiple');
                     
                     if (_Settings.filters[i].options.dataURL !== undefined) {
                         if (this.Data.mem.filters[_Settings.filters[i].urlVariable] === undefined) {
-                            if (_Settings.filters[i].options.dataURL_params === undefined) _Settings.filters[i].options.dataURL_params = function() { return {}; };
-                            this.Data.ajax_getData_sync('filter', _Settings.filters[i].options.dataURL, _Settings.filters[i].options.dataURL_params(this.Data), function(data){
-                                try {
-                                    thisRef.Data.mem.filters[_Settings.filters[i].urlVariable] = data;
-                                    optArr = _Settings.filters[i].options.translateData(data);
-                                } catch(err) {
-                                    if (thisRef.Settings.Application.debugMode) thisRef.setupErrorDialog(err);
-                                }
-                            }, function(){});
+                            if (_Settings.filters[i].options.dataURL_params === undefined) _Settings.filters[i].options.dataURL_params = returnEmptyObjFunc;
+                            this.Data.ajax_getData_sync('filter', _Settings.filters[i].options.dataURL, _Settings.filters[i].options.dataURL_params(this.Data), handleAjaxData, emptyFunc);
                         } else {
                             try {
                                 optArr = _Settings.filters[i].options.translateData(this.Data.mem.filters[_Settings.filters[i].urlVariable]);
-                            } catch(err) {
-                                if (thisRef.Settings.Application.debugMode) thisRef.setupErrorDialog(err);
+                            } catch(err2) {
+                                if (thisRef.Settings.Application.debugMode) thisRef.setupErrorDialog(err2);
                             }
                         }
                     } else {
                         try {
                             optArr = _Settings.filters[i].options.translateData(this.Data);
-                        } catch(err) {
-                            if (thisRef.Settings.Application.debugMode) thisRef.setupErrorDialog(err);
+                        } catch(err3) {
+                            if (thisRef.Settings.Application.debugMode) thisRef.setupErrorDialog(err3);
                         }
                     }
-                    if (optArr == false) return false;
-                    if (optArr.length > 0) for (var j=0;j<optArr.length;j++) {
-                        var option = $('<option></option>').attr('value',optArr[j][0]).text(optArr[j][1]);
+                    if (optArr === false) return false;
+                    if (optArr.length > 0) for (j=0;j<optArr.length;j++) {
+                        option = $('<option></option>').attr('value',optArr[j][0]).text(optArr[j][1]);
                         if (_Settings.filters[i].fieldType == 'multiselect') {
                             if (optArr[j][0] == thisRef.Data.filters[_Settings.filters[i].urlVariable] || $.inArray(optArr[j][0], thisRef.Data.filters[_Settings.filters[i].urlVariable]) != -1) option.attr('selected','selected');
                         } else {
@@ -281,7 +294,7 @@ function ControlsUpdate() {
             }
             
             // Turn on date pickers
-            for (var i=0;i<_Settings.filters.length;i++) {
+            for (i=0;i<_Settings.filters.length;i++) {
                 if (_Settings.filters[i].fieldType == 'date') {
                     $('#'+_Settings.filters[i].urlVariable).datepicker({
                         dateFormat: 'yy-mm-dd',
@@ -313,28 +326,34 @@ function ControlsUpdate() {
     };
     
     this.filtersUpdate = function() {
+        var i, _Settings;
+        var thisRef = this;
+        
+        var addSelectOption = function(j) {
+            $(this).removeAttr('selected');
+            if ($(this).val() == thisRef.Data.filters[_Settings.filters[i].urlVariable]) $(this).attr('selected','selected');
+        };
+        
+        var addMultiSelectOption = function(j) {
+            try {
+                $(this).removeAttr('selected');
+                if ($(this).val() == thisRef.Data.filters[_Settings.filters[i].urlVariable] || $.inArray($(this).val(), thisRef.Data.filters[_Settings.filters[i].urlVariable])) $(this).attr('selected','selected');
+            } catch(err) {/*do nothing*/}
+        };
+    
         if (this.appDisplayState() != 'users') {
-            if (this.appDisplayState() == 'mains') var _Settings = this.Settings.Mains; // Shortcut
-            else if (this.appDisplayState() == 'subs') var _Settings = this.Settings.Subs; // Shortcut
+            if (this.appDisplayState() == 'mains') _Settings = this.Settings.Mains; // Shortcut
+            else if (this.appDisplayState() == 'subs') _Settings = this.Settings.Subs; // Shortcut
             
-            var thisRef = this;
             if (_Settings.filters !== undefined) {
-                for (var i=0;i<_Settings.filters.length;i++) {
+                for (i=0;i<_Settings.filters.length;i++) {
                     if (_Settings.filters[i].fieldType == 'text' || _Settings.filters[i].fieldType == 'date') {
                         $('.filterItems #'+_Settings.filters[i].urlVariable).attr('value', this.Data.filters[_Settings.filters[i].urlVariable]);
                     } 
                     else if (_Settings.filters[i].fieldType == 'select') {
-                        $('.filterItems #'+_Settings.filters[i].urlVariable+' option').each( function(j){
-                            $(this).removeAttr('selected');
-                            if ($(this).val() == thisRef.Data.filters[_Settings.filters[i].urlVariable]) $(this).attr('selected','selected');
-                        });
+                        $('.filterItems #'+_Settings.filters[i].urlVariable+' option').each( addSelectOption );
                     } else if (_Settings.filters[i].fieldType == 'multiselect') {
-                        $('.filterItems #'+_Settings.filters[i].urlVariable+' option').each( function(j){
-                            try {
-                                $(this).removeAttr('selected');
-                                if ($(this).val() == thisRef.Data.filters[_Settings.filters[i].urlVariable] || $.inArray($(this).val(), thisRef.Data.filters[_Settings.filters[i].urlVariable])) $(this).attr('selected','selected');
-                            } catch(err) {/*do nothing*/}
-                        });
+                        $('.filterItems #'+_Settings.filters[i].urlVariable+' option').each( addMultiSelectOption );
                     }
                     
                     this.filtersSubmit_OnOff(i);
@@ -346,14 +365,3 @@ function ControlsUpdate() {
         }
     };
 }
-
-
-
-
-
-
-
-
-
-
-

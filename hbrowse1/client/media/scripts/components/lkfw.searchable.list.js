@@ -21,10 +21,14 @@
             'srchFldLbl': 'Search'
         };
         
+        var elCnt = 0;
+        
         var _buildList = function(elCnt) {
-            var sFieldDiv = $('<div></div>').addClass(_config.srchFieldId+'_div');
-            var sFieldForm = $('<form></form>').attr('method','get');
-            var sFieldInput = $('<input />').attr({
+            var i, sFieldDiv, sFieldForm, sFieldInput, sList, sLi;
+        
+            sFieldDiv = $('<div></div>').addClass(_config.srchFieldId+'_div');
+            sFieldForm = $('<form></form>').attr('method','get');
+            sFieldInput = $('<input />').attr({
                 type: 'text',
                 value: '',
                 name: _config.srchFieldId+'_'+elCnt,
@@ -33,40 +37,19 @@
             
             sFieldDiv.append(sFieldForm.append(_config.srchFldLbl).append(sFieldInput));
             
-            var sList = $('<ul></ul>').attr('id', _config.listId+'_'+elCnt);
+            sList = $('<ul></ul>').attr('id', _config.listId+'_'+elCnt);
             
-            var sLi;
-            for (key in _config.items) {
-                sLi = $('<li></li>').text(_config.items[key]);
+            for (i=0;i<_config.items.length;i++) {
+                sLi = $('<li></li>').text(_config.items[i]);
                 sList.append(sLi);
             }
             
             var output = sFieldDiv.after(sList);
             
             return output;
-        }
-        
-        /*var _buildList = function(elCnt) {
-            var list = '';
-		    list += '<div class="srchField_div">';
-            list += '<form method="get">';
-			list += _config.srchFldLbl+'<input type="text" value="" name="srchField_'+elCnt+'" id="srchField_'+elCnt+'" />';
-            list += '</form>';
-			list += '</div>';
-            list += '<ul id="'+_config.listId+'_'+elCnt+'">';
-            
-            for (key in _config.items) {
-                list += '<li>'+_config.items[key]+'</li>';
-            }
-            
-            list += '</ul>';
-            
-            return list;
-        }*/
+        };
  
         if (settings) $.extend(_config, settings);
-        
-        var elCnt = 0;
         this.each(function() {
             // element-specific code here
             $(this).empty().append(_buildList(elCnt));

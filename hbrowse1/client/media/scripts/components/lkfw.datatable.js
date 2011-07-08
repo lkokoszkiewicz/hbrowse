@@ -36,36 +36,87 @@
             var _tablePlus = 'media/images/table_plus.png';
             var _tableMinus = 'media/images/table_minus.png';
             
+            var _isSimpleHeaders = function() {
+                return $.isArray(_config.tblLabels);
+            };
+            
+            var _headerRow = function(contentArr) {
+                var i, j, colHeadersTr, index, sum, colHeader;
+                colHeadersTr = $('<tr></tr>');
+                for (i=0;i<contentArr.length;i++) {
+                    if (contentArr[i][0] == '=SUM') {
+                        index = parseInt(i, 10);
+                        if (contentArr[i][3] !== undefined && contentArr[i][3] !== false) index = contentArr[i][3];
+                        sum = 0;
+                        for (j=0;j<_config.items.length;j++) {
+                            sum = (sum + parseInt(_config.items[j][index], 10));
+                        }
+                        colHeader = $('<th></th>').text(sum);
+                        if (contentArr[i][4] !== undefined) colHeader.css(contentArr[i][4]);
+                    } else {
+                        colHeader = $('<th></th>').text(contentArr[i][0]);
+                        if (contentArr[i][4] !== undefined) colHeader.css(contentArr[i][4]);
+                    }
+                    if (contentArr[i][1] > 0) colHeader.attr('rowspan',contentArr[i][1]);
+                    if (contentArr[i][2] > 0) colHeader.attr('colspan',contentArr[i][2]);
+                    if (!_config.expandableRows || i!==0) colHeader.addClass('tblSort');
+                    colHeadersTr.append(colHeader);
+                }
+                return colHeadersTr;
+            };
+            
+            var _countTableColumns = function() {
+                var i, colCount;
+                if (_isSimpleHeaders()) {
+                    return _config.tblLabels.length;
+                } else {
+                    colCount = 0;
+                    if (_config.tblLabels.header.groups !== undefined) {
+                        for (i=0;i<_config.tblLabels.header.groups.length;i++) {
+                            if (_config.tblLabels.header.groups[i][2] === 0) colCount++;
+                        }
+                    }
+                    if (_config.tblLabels.header.labels !== undefined) {
+                        for (i=0;i<_config.tblLabels.header.labels.length;i++) {
+                            if (_config.tblLabels.header.labels[i][2] === 0) colCount++;
+                        }
+                    }
+                    return colCount;
+                }
+            };
+            
             var _buildTable = function(elCnt) {
-                var table = $('<table></table>').attr({
+                var i, table, colHeaders, colHeader, colFooters, tblHead, tblFoot, colHeaderGroups, colFooterGroups;
+                
+                table = $('<table></table>').attr({
                     id: 'dataTable_'+elCnt,
                     cellpadding: '0',
                     cellspacing: '1'
                 }).addClass('display');
                 if (_isSimpleHeaders()) {
-                    var colHeaders = $('<tr></tr>');
-                    for (i in _config.tblLabels) {
-                        var colHeader = $('<th></th>').text(_config.tblLabels[i]);
-                        if (!_config.expandableRows || i!=0) colHeader.addClass('tblSort');
+                    colHeaders = $('<tr></tr>');
+                    for (i=0; i<_config.tblLabels.length; i++) {
+                        colHeader = $('<th></th>').text(_config.tblLabels[i]);
+                        if (!_config.expandableRows || i!==0) colHeader.addClass('tblSort');
                         colHeaders.append(colHeader);
                     }
-                    var colFooters = colHeaders.clone();
-                    var tblHead = $('<thead></thead>').append(colHeaders);
-                    var tblFoot = $('<tfoot></tfoot>').append(colFooters);
+                    colFooters = colHeaders.clone();
+                    tblHead = $('<thead></thead>').append(colHeaders);
+                    tblFoot = $('<tfoot></tfoot>').append(colFooters);
                     
                     table.append(tblHead);
                     table.append(tblFoot);
                 } else {
                     if (_config.tblLabels.header !== undefined) {
-                        var tblHead = $('<thead></thead>');
+                        tblHead = $('<thead></thead>');
                         
                         if (_config.tblLabels.header.groups !== undefined) {
-                            var colHeaderGroups = _headerRow(_config.tblLabels.header.groups);
+                            colHeaderGroups = _headerRow(_config.tblLabels.header.groups);
                             tblHead.append(colHeaderGroups);
                         }
                         
                         if (_config.tblLabels.header.labels !== undefined) {
-                            var colHeaders = _headerRow(_config.tblLabels.header.labels);
+                            colHeaders = _headerRow(_config.tblLabels.header.labels);
                             tblHead.append(colHeaders);
                         }
                         
@@ -73,15 +124,15 @@
                     }
                     
                     if (_config.tblLabels.footer !== undefined) {
-                        var tblFoot = $('<tfoot></tfoot>');
+                        tblFoot = $('<tfoot></tfoot>');
                         
                         if (_config.tblLabels.footer.labels !== undefined) {
-                            var colFooters = _headerRow(_config.tblLabels.footer.labels);
+                            colFooters = _headerRow(_config.tblLabels.footer.labels);
                             tblFoot.append(colFooters);
                         }
                         
                         if (_config.tblLabels.footer.groups !== undefined) {
-                            var colFooterGroups = _headerRow(_config.tblLabels.footer.groups);
+                            colFooterGroups = _headerRow(_config.tblLabels.footer.groups);
                             tblFoot.append(colFooterGroups);
                         }
                         
@@ -93,26 +144,25 @@
             };
             
             var _buildExpandedRow = function(trID, trClass, inputObj) {
-                //var inputObj = _config.fnERContent(trID[0]);
-                var tr, td, tdKEY, tdVAL;
+                var i, j, tr, td, tdKEY, tdVAL, mainTR, mainTD, properties, propertiesTable, table, dataTable, colHeaders, colHeader, tblHead, tblBody, evenOdd, evenOddClass;
                 
-                var mainTR = $('<tr></tr>').attr({
+                mainTR = $('<tr></tr>').attr({
                     'id': 'expand_'+trID[0]
                 }).addClass('expand').addClass(trClass);
-                var mainTD = $('<td></td>').attr({
+                mainTD = $('<td></td>').attr({
                     'colspan': _countTableColumns()
                 }).addClass('sorting_1');
                 
-                for (var j=0;j<inputObj.length;j++) {
+                for (j=0;j<inputObj.length;j++) {
                     // Building properties table - start
                     if (inputObj[j][0] == 'properties' && inputObj[j][1]) {
-                        var properties = inputObj[j][1];
-                        var propertiesTable = $('<table></table>').attr({
+                        properties = inputObj[j][1];
+                        propertiesTable = $('<table></table>').attr({
                             cellpadding: '0',
                             cellspacing: '1'
                         }).addClass('expTable');
                         
-                        for (i in properties) {
+                        for (i=0;i<properties.length;i++) {
                             tr = $('<tr></tr>');
                             tdKEY = $('<td></td>').addClass('orKEYS').html(properties[i][0]);
                             tdVAL = $('<td></td>').addClass('orVALS').html(properties[i][1]);
@@ -128,38 +178,35 @@
                     
                     // Building data table - start
                     else if (inputObj[j][0] == 'table' && inputObj[j][1]) {
-                        var table = inputObj[j][1];
-                        var dataTable = $('<table></table>').attr({
+                        table = inputObj[j][1];
+                        dataTable = $('<table></table>').attr({
                             id: 'expandDataTable_'+trID[0],
                             cellpadding: '0',
                             cellspacing: '1'
                         }).addClass('display').addClass('expandDataTable').css('margin-bottom','10px');
-                        var colHeaders = $('<tr></tr>');
-                        for (i in table.tblLabels) {
-                            var colHeader = $('<th></th>').html(table.tblLabels[i]);
+                        colHeaders = $('<tr></tr>');
+                        for (i=0;i<table.tblLabels.length;i++) {
+                            colHeader = $('<th></th>').html(table.tblLabels[i]);
                             colHeaders.append(colHeader);
                         }
                         //var colFooters = colHeaders.clone();
-                        var tblHead = $('<thead></thead>').append(colHeaders);
-                        var tblBody = $('<tbody></tbody>');
+                        tblHead = $('<thead></thead>').append(colHeaders);
+                        tblBody = $('<tbody></tbody>');
                         
-                        var evenOdd = 3;
-                        for (var i=0;i<table.tblData.length;i++) {
-                            if ((evenOdd % 2) == 1) var evenOddClass = 'odd';
-                            else var evenOddClass = 'even';
+                        evenOdd = 3;
+                        for (i=0;i<table.tblData.length;i++) {
+                            if ((evenOdd % 2) == 1) evenOddClass = 'odd';
+                            else evenOddClass = 'even';
                             tr = $('<tr></tr>').addClass(evenOddClass).addClass('gradeU');
-                            for (var j=0;j<table.tblData[i].length;j++) {
+                            for (j=0;j<table.tblData[i].length;j++) {
                                 tr.append($('<td></td>').addClass('expDataTableTd').html(table.tblData[i][j]));
                             }
                             tblBody.append(tr);
                             evenOdd++;
                         }
                         
-                        //var tblFoot = $('<tfoot></tfoot>').append(colFooters);
-                        
                         dataTable.append(tblHead);
                         dataTable.append(tblBody);
-                        //dataTable.append(tblFoot);
                         
                         mainTD.append(dataTable);
                     }
@@ -182,14 +229,16 @@
             };
             
             var _expandClick = function(dTable) {
+                var trID, inputObj, isNotCurrent;
+                
                 $('.rExpand').unbind();
                 $('.rExpand').click(function(){
-                    var trID = dTable.fnGetPosition( this );
+                    trID = dTable.fnGetPosition( this );
                     if (_config.multipleER) {
-                        if ($('#expand_'+trID[0]).length == 0) {
+                        if ($('#expand_'+trID[0]).length === 0) {
                             $('#tablePlus_'+trID[0]).attr('src', _tableMinus);
                             // Create row
-                            var inputObj = _config.fnERContent(trID[0]);
+                            inputObj = _config.fnERContent(trID[0]);
                             $(this).parent().after(_buildExpandedRow(trID, $(this).parent().attr('class'), inputObj));
                             _config.fnERContentPostProcess(trID[0], inputObj);
                         }
@@ -201,14 +250,14 @@
                     }
                     else {
                         // Close other
-                        var isNotCurrent = ($('#expand_'+trID[0]).length == 0);
+                        isNotCurrent = ($('#expand_'+trID[0]).length === 0);
                         $('.expand').remove();
                         $('.tablePlus').attr('src', _tablePlus);
                         
                         // Open current
                         if (isNotCurrent) {
                             $(this).children('.tablePlus').attr('src', _tableMinus);
-                            var inputObj = _config.fnERContent(trID[0]);
+                            inputObj = _config.fnERContent(trID[0]);
                             $(this).parent().after(_buildExpandedRow(trID, $(this).parent().attr('class'), inputObj));
                             _config.fnERContentPostProcess(trID[0], inputObj);
                         }
@@ -223,40 +272,14 @@
                 return $(window).height()-370;
             };
             
-            var _isSimpleHeaders = function() {
-                return $.isArray(_config.tblLabels);
-            };
-            
-            var _headerRow = function(contentArr) {
-                var colHeadersTr = $('<tr></tr>');
-                for (i in contentArr) {
-                    if (contentArr[i][0] == '=SUM') {
-                        var index = parseInt(i);
-                        if (contentArr[i][3] !== undefined && contentArr[i][3] != false) index = contentArr[i][3];
-                        var sum = 0;
-                        for (var j=0;j<_config.items.length;j++) {
-                            sum = (sum + parseInt(_config.items[j][index]));
-                        }
-                        var colHeader = $('<th></th>').text(sum);
-                        if (contentArr[i][4] !== undefined) colHeader.css(contentArr[i][4]);
-                    } else {
-                        var colHeader = $('<th></th>').text(contentArr[i][0]);
-                        if (contentArr[i][4] !== undefined) colHeader.css(contentArr[i][4]);
-                    }
-                    if (contentArr[i][1] > 0) colHeader.attr('rowspan',contentArr[i][1]);
-                    if (contentArr[i][2] > 0) colHeader.attr('colspan',contentArr[i][2]);
-                    if (!_config.expandableRows || i!=0) colHeader.addClass('tblSort');
-                    colHeadersTr.append(colHeader);
-                }
-                return colHeadersTr;
-            };
-            
             var _updateTableFooterSums = function(elCnt) {
-                var labelsSums = [];
+                var i, j, labelsSums, th, sum;
+            
+                labelsSums = [];
                 
-                for (var i=0; i<_config.tblLabels.footer.labels.length;i++) {
+                for (i=0; i<_config.tblLabels.footer.labels.length;i++) {
                     if (_config.tblLabels.footer.labels[i][0] == '=SUM') {
-                        if (_config.tblLabels.footer.labels[i][3] === undefined || _config.tblLabels.footer.labels[i][3] == false) {
+                        if (_config.tblLabels.footer.labels[i][3] === undefined || _config.tblLabels.footer.labels[i][3] === false) {
                             labelsSums.push([i,i]);
                         } else {
                             labelsSums.push([i,_config.tblLabels.footer.labels[i][3]]);
@@ -264,11 +287,11 @@
                     }
                 }
                 
-                for (var i=0;i<labelsSums.length;i++) {
-                    var th = $('#dataTable_'+elCnt+' tfoot tr').first().children().eq(labelsSums[i][0]);
-                    var sum = 0;
-                    for (var j=0;j<_config.items.length;j++) {
-                        sum = (sum + parseInt(_config.items[j][labelsSums[i][1]]));
+                for (i=0;i<labelsSums.length;i++) {
+                    th = $('#dataTable_'+elCnt+' tfoot tr').first().children().eq(labelsSums[i][0]);
+                    sum = 0;
+                    for (j=0;j<_config.items.length;j++) {
+                        sum = (sum + parseInt(_config.items[j][labelsSums[i][1]], 10));
                     }
                     th.text(sum);
                 }
@@ -294,24 +317,7 @@
                 }
             };
             
-            var _countTableColumns = function() {
-                if (_isSimpleHeaders()) {
-                    return _config.tblLabels.length;
-                } else {
-                    var colCount = 0;
-                    if (_config.tblLabels.header.groups !== undefined) {
-                        for (var i=0;i<_config.tblLabels.header.groups.length;i++) {
-                            if (_config.tblLabels.header.groups[i][2] == 0) colCount++;
-                        }
-                    }
-                    if (_config.tblLabels.header.labels !== undefined) {
-                        for (var i=0;i<_config.tblLabels.header.labels.length;i++) {
-                            if (_config.tblLabels.header.labels[i][2] == 0) colCount++;
-                        }
-                    }
-                    return colCount;
-                }
-            };
+            var i, tableColumnsCount, elCnt, dTable, dTablesArr, dTableOptions, bSort, aaSorting;
             
             if (settings) $.extend(_config, settings);
             if (!_isSimpleHeaders()) _config.tblLabels = settings.tblLabels();
@@ -320,9 +326,9 @@
                 // Adding first column with + sign
                 // Setting up column settings if they are not exists
                 if (!_config.dataTable.aoColumns) {
-                    _config.dataTable.aoColumns = Array();
-                    var tableColumnsCount = _countTableColumns();
-                    for (var i=0;i<tableColumnsCount;i++) {
+                    _config.dataTable.aoColumns = [];
+                    tableColumnsCount = _countTableColumns();
+                    for (i=0;i<tableColumnsCount;i++) {
                         _config.dataTable.aoColumns.push(null);
                     }
                 }
@@ -331,7 +337,7 @@
                 //alert( _config.tblLabels.header.groups + "\n" + _config.tblLabels.footer.labels );
                 
                 // Adding PLUS image to every row
-                for (var i=0; i<_config.items.length; i++) {
+                for (i=0; i<_config.items.length; i++) {
                     _config.items[i] = $.merge([_givPlus(i)], _config.items[i]);
                 }
                 
@@ -343,20 +349,20 @@
                 }],_config.dataTable.aoColumns);
             }
             
-            var elCnt = 0;
-            var dTablesArr = Array();
+            elCnt = 0;
+            dTablesArr = [];
             this.each(function() {
 		        dTable = _config.dTable[elCnt];
                 if (!dTable) {
-                    var bSort = true;
-                    if (_config.sorting == false) {
-                        var aaSorting = [[0,'asc']];
+                    bSort = true;
+                    if (_config.sorting === false) {
+                        aaSorting = [[0,'asc']];
                         bSort = false;
                     }
-                    else var aaSorting = [[_config.sorting[0],_config.sorting[1]]];
+                    else aaSorting = [[_config.sorting[0],_config.sorting[1]]];
                     $(this).empty().append(_buildTable(elCnt));
                     
-                    var dTableOptions = {
+                    dTableOptions = {
 					        "bJQueryUI": false,
 					        "sPaginationType": "full_numbers",
 					        "bAutoWidth":false,
@@ -383,7 +389,7 @@
                 }
                 if (_config.expandableRows) _expandClick(dTable);
                 $('.tblSort').click( function() { _config.fnTableSorting(this); } );
-                //_expandInit(dTable);
+                
                 elCnt++;
             });
             

@@ -8,17 +8,22 @@
 // 17.01.2011 First production release (v1.0.0)
 //
 
-function Data(ajaxAnimation, _Settings, jsonp) {
-    var settings = _Settings.Application.modelDefaults();
-    if (this.tid == '' || this.user == '') var tSettings = _Settings.Mains;
-    else var tSettings = _Settings.Subs;
+/*JSHINT*/
+/*global _Cache: false*/
+
+function Data(ajaxAnimation, _Settings) {
+    var i, settings, tSettings, jsonp;
+    
+    settings = _Settings.Application.modelDefaults();
+    if (this.tid === '' || this.user === '') tSettings = _Settings.Mains;
+    else tSettings = _Settings.Subs;
     
     // Copy val instead create reference
     this.copyVal = function(val) {
         return val;
     };
     
-    var jsonp = _Settings.Application.jsonp
+    jsonp = _Settings.Application.jsonp;
     // general values
     this.user = settings.user;
     this.from = settings.from;
@@ -38,30 +43,30 @@ function Data(ajaxAnimation, _Settings, jsonp) {
         
     // Data
     this.mem = {
-        users: Array(),
+        users: [],
         mains: {
             user: '',
             timestamp: 0,
-            data: Array()
+            data: []
         },
         subs: {
             user: '',
             tid: '',
             timestamp: 0,
-            data: Array()
+            data: []
         },
         filters:{}
     };
     
     // Setting up user defined filters
     if (_Settings.Mains.filters !== undefined) {
-        for (var i=0;i<_Settings.Mains.filters.length;i++) {
+        for (i=0;i<_Settings.Mains.filters.length;i++) {
             this.filters[_Settings.Mains.filters[i].urlVariable] = this.copyVal(_Settings.Mains.filters[i].value);
         }
     }
     // Setting up user defined filters
     if (_Settings.Subs.filters !== undefined) {
-        for (var i=0;i<_Settings.Subs.filters.length;i++) {
+        for (i=0;i<_Settings.Subs.filters.length;i++) {
             this.filters[_Settings.Subs.filters[i].urlVariable] = this.copyVal(_Settings.Subs.filters[i].value);
         }
     }
@@ -70,33 +75,35 @@ function Data(ajaxAnimation, _Settings, jsonp) {
     this.xmlhttprequest = null;
     
     this.quickSetup = function(params, ts2iso) {
+        var i;
         var settings = _Settings.Application.modelDefaults();
-        this.user = (params['user'] || settings.user);
-        this.from = parseInt(this.iso2ts(params['from']) || settings.from);
-        this.till = parseInt(this.iso2ts(params['till'],2) || settings.till);
-        this.timeRange = ( (params['timeRange'] == '') ? params['timeRange'] : (params['timeRange'] || settings.timeRange) );
-        this.refresh = (params['refresh'] || settings.refresh);
-        this.tid = (params['tid'] || settings.tid);
-        this.p = (params['p'] || settings.p);
-        this.records = (parseInt(params['records']) || this.copyVal(tSettings.iDisplayLength));
-        this.or = (params['or'] || settings.or);
-        this.sorting = (params['sorting'] || []);
-        this.uparam = (params['uparam'] || settings.uparam);
+        
+        this.user = (params.user || settings.user);
+        this.from = parseInt((this.iso2ts(params.from) || settings.from), 10);
+        this.till = parseInt((this.iso2ts(params.till,2) || settings.till), 10);
+        this.timeRange = ( (params.timeRange === '') ? params.timeRange : (params.timeRange || settings.timeRange) );
+        this.refresh = (params.refresh || settings.refresh);
+        this.tid = (params.tid || settings.tid);
+        this.p = (params.p || settings.p);
+        this.records = (parseInt(params.records, 10) || this.copyVal(tSettings.iDisplayLength));
+        this.or = (params.or || settings.or);
+        this.sorting = (params.sorting || []);
+        this.uparam = (params.uparam || settings.uparam);
         
         // make this.or an array of ints
-        for (i in this.or) {
-            this.or[i] = parseInt(this.or[i]);
+        for (i=0;i<this.or.length;i++) {
+            this.or[i] = parseInt(this.or[i], 10);
         }
         
         // Setting up user defined filters
-        if (_Settings.Mains.filters !== undefined && (this.tid == '' || this.user == '')) {
-            for (var i=0;i<_Settings.Mains.filters.length;i++) {
+        if (_Settings.Mains.filters !== undefined && (this.tid === '' || this.user === '')) {
+            for (i=0;i<_Settings.Mains.filters.length;i++) {
                 this.filters[_Settings.Mains.filters[i].urlVariable] = (params[_Settings.Mains.filters[i].urlVariable] || this.copyVal(_Settings.Mains.filters[i].value));
             }
         }
         // Setting up user defined filters
         if (_Settings.Subs.filters !== undefined) {
-            for (var i=0;i<_Settings.Subs.filters.length;i++) {
+            for (i=0;i<_Settings.Subs.filters.length;i++) {
                 this.filters[_Settings.Subs.filters[i].urlVariable] = (params[_Settings.Subs.filters[i].urlVariable] || this.copyVal(_Settings.Subs.filters[i].value));
             }
         }
@@ -114,18 +121,18 @@ function Data(ajaxAnimation, _Settings, jsonp) {
     
     // Dates handling - Start
     this.iso2ts = function(date, mode) {
-        if (typeof mode == 'undefined') mode = 1;
-        if (date == 0 || typeof date == 'undefined') return 0;
+        if (typeof mode === 'undefined') mode = 1;
+        if (date === 0 || typeof date === 'undefined') return 0;
         else {
             if (mode == 1) return $.datepicker.formatDate('@', $.datepicker.parseDate('yy-mm-dd',date));
-            else if (mode == 2) return parseInt($.datepicker.formatDate('@', $.datepicker.parseDate('yy-mm-dd',date))) + 86399000;
+            else if (mode == 2) return parseInt($.datepicker.formatDate('@', $.datepicker.parseDate('yy-mm-dd',date)), 10) + 86399000;
             else return 0;
         }
     };
     
     this.ts2iso = function(date, mode) {
-        if (typeof mode == 'undefined') mode = 1;
-        if (date == 0 || typeof date == 'undefined') return '';
+        if (typeof mode === 'undefined') mode = 1;
+        if (date === 0 || typeof date === 'undefined') return '';
         else {
             if (mode == 1) return $.datepicker.formatDate('yy-mm-dd', $.datepicker.parseDate('@',date));
             else if (mode == 2) return $.datepicker.formatDate('yy-mm-dd', $.datepicker.parseDate('@',date)) + ' 00:00';
@@ -136,24 +143,24 @@ function Data(ajaxAnimation, _Settings, jsonp) {
     
     this.changeFromTill = function(which, timestamp) {
         var output = true;
-        if (timestamp == '') timestamp = 0;
-        else timestamp = parseInt(timestamp);
+        if (timestamp === '') timestamp = 0;
+        else timestamp = parseInt(timestamp, 10);
         
         if (which == 'from') {
-            if (timestamp > this.till && timestamp != 0) {
+            if (timestamp > this.till && timestamp !== 0) {
                 this.till = (timestamp + 86399000);
             }
-            else if (timestamp == 0) {
+            else if (timestamp === 0) {
                 timestamp = (this.till - 86399000);
                 output = false;
             }
             this.from = timestamp;
         }
         else if (which == 'till') {
-            if (((timestamp+86399000) < this.from || this.from == 0) && timestamp != 0) {
+            if (((timestamp+86399000) < this.from || this.from === 0) && timestamp !== 0) {
                 this.from = timestamp;
             }
-            else if (timestamp == 0) {
+            else if (timestamp === 0) {
                 timestamp = this.till;
                 output = false;
             }
@@ -201,26 +208,27 @@ function Data(ajaxAnimation, _Settings, jsonp) {
     
     // Get job subs from server
     this.ajax_getData = function(xhrName, url, params, fSuccess, fFailure) {
+        var i, currentUrl, portIndex, port, isNumber, index, urlChar, paramsString, key, data;
         var thisRef = this;
         
-        currentUrl = window.location.toString()
+        currentUrl = window.location.toString();
         portIndex = currentUrl.indexOf('?port=');
         if (portIndex > -1) {
             
-            port = ''           
+            port = '';
             isNumber = true;    
-            index = portIndex + 6       
+            index = portIndex + 6;
         
             while(isNumber){
-                char = currentUrl[index];
-                if(char == '0' || char == '1' || char =='2' ||
-                   char == '3' || char == '4' || char =='5' ||
-                   char == '6' || char == '7' || char =='8' || char =='9'){
+                urlChar = currentUrl[index];
+                if(urlChar == '0' || urlChar == '1' || urlChar =='2' ||
+                   urlChar == '3' || urlChar == '4' || urlChar =='5' ||
+                   urlChar == '6' || urlChar == '7' || urlChar =='8' || urlChar =='9'){
                     port = port + currentUrl[index];
                     index++;
                 }
                 else{
-                    isNumber = false
+                    isNumber = false;
                 }
                 
             }
@@ -229,11 +237,15 @@ function Data(ajaxAnimation, _Settings, jsonp) {
         }
 
         
-        var paramsString = '';
-        for (x in params) { paramsString += x+'='+params[x]+'&' }
-        var key = $.base64Encode(xhrName+'^'+url+'#'+paramsString);
+        paramsString = '';
+        for (i in params) {
+            if (params.hasOwnProperty(i)) {
+                paramsString += i+'='+params[i]+'&';
+            }
+        }
+        key = $.base64Encode(xhrName+'^'+url+'#'+paramsString);
         
-        var data = _Cache.get(key);
+        data = _Cache.get(key);
         if (data) {
             fSuccess(data);
         } else if (url) {
@@ -266,29 +278,30 @@ function Data(ajaxAnimation, _Settings, jsonp) {
     
     // Get job subs from server
     this.ajax_getData_sync = function(xhrName, url, params, fSuccess, fFailure, obj) {
+        var i, currentUrl, portIndex, port, isNumber, index, urlChar, paramsString, key, data;
         if ( obj === undefined ) {
             obj = '';
         }
         var thisRef = this;
         
-        currentUrl = window.location.toString()
+        currentUrl = window.location.toString();
         portIndex = currentUrl.indexOf('?port=');
         if (portIndex > -1) {
             
-            port = ''           
+            port = '';
             isNumber = true;    
-            index = portIndex + 6       
+            index = portIndex + 6;
         
             while(isNumber){
-                char = currentUrl[index];
-                if(char == '0' || char == '1' || char =='2' ||
-                   char == '3' || char == '4' || char =='5' ||
-                   char == '6' || char == '7' || char =='8' || char =='9'){
+                urlChar = currentUrl[index];
+                if(urlChar == '0' || urlChar == '1' || urlChar =='2' ||
+                   urlChar == '3' || urlChar == '4' || urlChar =='5' ||
+                   urlChar == '6' || urlChar == '7' || urlChar =='8' || urlChar =='9'){
                     port = port + currentUrl[index];
                     index++;
                 }
                 else{
-                    isNumber = false
+                    isNumber = false;
                 }
                 
             }
@@ -296,12 +309,16 @@ function Data(ajaxAnimation, _Settings, jsonp) {
             url = this.addPortNumber(url, port);            
         }
         
-        var paramsString = '';
-        for (x in params) { paramsString += x+'='+params[x]+'&' }
-        var key = $.base64Encode(xhrName+'^'+url+'#'+paramsString);
+        paramsString = '';
+        for (i in params) {
+            if (params.hasOwnProperty(i)) {
+                paramsString += i+'='+params[i]+'&';
+            }
+        }
+        key = $.base64Encode(xhrName+'^'+url+'#'+paramsString);
 
         //ajaxAnimation.addClass(xhrName).show();
-        var data = _Cache.get(key);
+        data = _Cache.get(key);
         if (data) {
             fSuccess(data, obj);
         } else if (url) {
@@ -327,59 +344,4 @@ function Data(ajaxAnimation, _Settings, jsonp) {
             });
         }
     };
-}
-
-var simpleEncoding = 
-  'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-// This function scales the submitted values so that
-// maxVal becomes the highest value.
-function simpleEncode(valueArray,maxValue) {
-  var chartData = ['s:'];
-  for (var i = 0; i < valueArray.length; i++) {
-    var currentValue = valueArray[i];
-    if (!isNaN(currentValue) && currentValue >= 0) {
-    chartData.push(simpleEncoding.charAt(Math.round((simpleEncoding.length-1) * 
-      currentValue / maxValue)));
-    }
-      else {
-      chartData.push('_');
-      }
-  }
-  return chartData.join('');
-}
-
-// Same as simple encoding, but for extended encoding.
-var EXTENDED_MAP=
-  'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-.';
-var EXTENDED_MAP_LENGTH = EXTENDED_MAP.length;
-function extendedEncode(arrVals, maxVal) {
-  var chartData = '';
-
-  for(i = 0, len = arrVals.length; i < len; i++) {
-    // In case the array vals were translated to strings.
-    var numericVal = new Number(arrVals[i]);
-    // Scale the value to maxVal.
-    var scaledVal = Math.floor(EXTENDED_MAP_LENGTH * 
-        EXTENDED_MAP_LENGTH * numericVal / maxVal);
-
-    if(scaledVal > (EXTENDED_MAP_LENGTH * EXTENDED_MAP_LENGTH) - 1) {
-      chartData += "..";
-    } else if (scaledVal < 0) {
-      chartData += '__';
-    } else {
-      // Calculate first and second digits and add them to the output.
-      var quotient = Math.floor(scaledVal / EXTENDED_MAP_LENGTH);
-      var remainder = scaledVal - EXTENDED_MAP_LENGTH * quotient;
-      chartData += EXTENDED_MAP.charAt(quotient) + EXTENDED_MAP.charAt(remainder);
-    }
-  }
-
-  return chartData;
-}
-
-function copyObj(o) {
-    function F() {}
-    F.prototype = o;
-    return new F();
 }
