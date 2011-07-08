@@ -17,15 +17,17 @@
         var clockTimeoutID;
         
         var _drawTooltip = function(el) {
+            var scroll, offset, height, top, left, posShift, tTipConfig;
+        
             try {
-                var scroll = $(document).scrollTop();
-                var offset = $(el).offset();
-                var height = $(el).height();
+                scroll = $(document).scrollTop();
+                offset = $(el).offset();
+                height = $(el).height();
                 
                 // Choosing right content for the tip
-                if (_config.take == 'none') var tTipConfig = {};
-                else if (_config.take == 'html') var tTipConfig = _config.content[$(el).html()];
-                else var tTipConfig = _config.content[$(el).attr(_config.take)];
+                if (_config.take == 'none') tTipConfig = {};
+                else if (_config.take == 'html') tTipConfig = _config.content[$(el).html()];
+                else tTipConfig = _config.content[$(el).attr(_config.take)];
                 
                 var mainDiv = $('<div></div>').css({
                     'display':'none',
@@ -49,9 +51,10 @@
                 
                 $('body').append(mainDiv);
                 
-                var top = parseInt(mainDiv.css('top').replace('px',''));
-                var left = parseInt(mainDiv.css('left').replace('px',''))
-                var posShift = {'top':0,'left':0};
+                top = parseInt(mainDiv.css('top').replace('px',''), 10);
+                left = parseInt(mainDiv.css('left').replace('px',''), 10);
+                posShift = {'top':0,'left':0};
+                
                 if (tTipConfig.posShift !== undefined) {
                     posShift.top = tTipConfig.posShift[0];
                     posShift.left = tTipConfig.posShift[1];
@@ -61,11 +64,11 @@
                 }
                 
                 if (_config.place == 'bottom') {
-                    top = (top+parseInt($(el).height())+8) + posShift.top;
+                    top = (top+parseInt($(el).height(), 10)+8) + posShift.top;
                     left = left+posShift.left;
                     
                 } else {
-                    top = (top-parseInt(mainDiv.height())-13) + posShift.top;
+                    top = (top-parseInt(mainDiv.height(), 10)-13) + posShift.top;
                     left = left+posShift.left;
                 }
                 
@@ -78,7 +81,7 @@
                 
                 if (_config.clickable) {
                     mainDiv.hover(function(){overTooltip = true;},function(){
-                        if (overTooltip == true) {
+                        if (overTooltip === true) {
                             $('.lkfw_tooltip'+_config.classDist).fadeOut(_config.fadeOut,function(){$('.lkfw_tooltip'+_config.classDist).detach();});
                         }
                         overTooltip = false;
@@ -98,7 +101,7 @@
                 var timeout = 0;
                 if (_config.clickable) timeout = 800;
                 clockTimeoutID = setTimeout(function(){
-                    if (overTooltip == false) {
+                    if (overTooltip === false) {
                         $('.lkfw_tooltip'+_config.classDist).fadeOut(_config.fadeOut,function(){$('.lkfw_tooltip'+_config.classDist).detach();});
                     }
                 }, timeout);

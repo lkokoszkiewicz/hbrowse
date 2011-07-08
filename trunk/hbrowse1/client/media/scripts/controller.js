@@ -9,16 +9,16 @@
 // 31.03.2011 Major v1.2.0 release (many changes to settings and core of the application)
 //
 
-// Inherits from Events()
-Controller.prototype = new Events();
+/*JSHINT*/
+/*global Settings: false, Data: false, Highcharts: false, Events: false*/
 
 function Controller() {
     // Data class initialization
     this.Settings = new Settings();
     this.Data = new Data($('#ajaxAnimation'), this.Settings);
     
-    this.mainsTable = Array();
-    this.subsTable = Array();
+    this.mainsTable = [];
+    this.subsTable = [];
     
     this.appDisplayState = function() {
         var _Settings = this.Settings.Application; // Shortcut
@@ -45,20 +45,20 @@ function Controller() {
         
         if (this.appDisplayState() == 'subs') {
             // Show subs
-            this.mainsTable = Array();
+            this.mainsTable = [];
             this.drawSubsTable();
         }
         else if (this.appDisplayState() == 'mains') {
             //show mains
             this.Data.uparam = [];
-            this.subsTable = Array();
+            this.subsTable = [];
             this.drawMainsTable();
         }
         else if (this.appDisplayState() == 'users') {
             // Show users
             this.Data.uparam = [];
-            this.mainsTable = Array();
-            this.subsTable = Array();
+            this.mainsTable = [];
+            this.subsTable = [];
             this.drawUsers();
         }
         this.timeRange_update();
@@ -90,9 +90,9 @@ function Controller() {
                 srchFldLbl: _Settings.searchLabel
             });
             
-            $('#users_0 li').unbind('click').click( function() { thisRef.userListItem_Click(this) });
-            $('#users_0 li').unbind('mouseover').mouseover( function() { thisRef.userListItem_MouseOver(this) });
-            $('#users_0 li').unbind('mouseout').mouseout( function() { thisRef.userListItem_MouseOut(this) });
+            $('#users_0 li').unbind('click').click( function() { thisRef.userListItem_Click(this); });
+            $('#users_0 li').unbind('mouseover').mouseover( function() { thisRef.userListItem_MouseOver(this); });
+            $('#users_0 li').unbind('mouseout').mouseout( function() { thisRef.userListItem_MouseOut(this); });
             thisRef.breadcrumbs_update();
         };
         
@@ -125,7 +125,7 @@ function Controller() {
             thisRef.generateUserDropdownOptions();
             
             if (!(this.Data.user || $.bbq.getState('user'))) thisRef.drawUsers();
-        }
+        };
         
         // Get the users list from ajax call
         this.Data.ajax_getData('usersReq', _Settings.dataURL, _Settings.dataURL_params(this.Data), getData, function(){});
@@ -154,15 +154,15 @@ function Controller() {
                 expandableRows: _Settings.expandableRows,
                 multipleER: _Settings.multipleER,
                 items: data,
-                tblLabels: _Settings['tblLabels'],
+                tblLabels: _Settings.tblLabels,
                 rowsToExpand: thisRef.Data.or,
                 useScrollerPlugin: ( (_Settings.useScrollerPlugin !== undefined) ? _Settings.useScrollerPlugin : false ),
                 sorting: (thisRef.Data.sorting.length > 0 ? thisRef.Data.sorting : _Settings.sorting),
-                fnERContent:function(dataID){ return thisRef.expand_click(dataID) },
-                fnERContentPostProcess:function(expandedID,inputObj){ return thisRef.expand_click_postprocess(expandedID,inputObj,true) },
-                fnContentChange: function(el) { thisRef.mainsTableContent_change(el) },
-                fnERClose: function(dataID) { thisRef.erClose_click(dataID) },
-                fnTableSorting: function(el) { thisRef.tableSorting_click(el,thisRef.mainsTable[0]) },
+                fnERContent:function(dataID){ return thisRef.expand_click(dataID); },
+                fnERContentPostProcess:function(expandedID,inputObj){ return thisRef.expand_click_postprocess(expandedID,inputObj,true); },
+                fnContentChange: function(el) { thisRef.mainsTableContent_change(el); },
+                fnERClose: function(dataID) { thisRef.erClose_click(dataID); },
+                fnTableSorting: function(el) { thisRef.tableSorting_click(el,thisRef.mainsTable[0]); },
                 dataTable: {
                     iDisplayLength: thisRef.Data.records,//_Settings.iDisplayLength,
                     sPaginationType: "input",
@@ -259,14 +259,14 @@ function Controller() {
                 expandableRows: _Settings.expandableRows,
                 multipleER: _Settings.multipleER,
                 items: data,
-                tblLabels: _Settings['tblLabels'],
+                tblLabels: _Settings.tblLabels,
                 useScrollerPlugin: ( (_Settings.useScrollerPlugin !== undefined) ? _Settings.useScrollerPlugin : false ),
                 sorting: (thisRef.Data.sorting.length > 0 ? thisRef.Data.sorting : _Settings.sorting),
-                fnERContent:function(dataID){ return thisRef.expand_click(dataID) },
-                fnERContentPostProcess:function(expandedID,inputObj){ return thisRef.expand_click_postprocess(expandedID,inputObj,false) },
-                fnContentChange: function(el) { thisRef.subsTableContent_change(el) },
-                fnERClose: function(dataID) { thisRef.erClose_click(dataID) },
-                fnTableSorting: function(el) { thisRef.tableSorting_click(el,thisRef.subsTable[0]) },
+                fnERContent:function(dataID){ return thisRef.expand_click(dataID); },
+                fnERContentPostProcess:function(expandedID,inputObj){ return thisRef.expand_click_postprocess(expandedID,inputObj,false); },
+                fnContentChange: function(el) { thisRef.subsTableContent_change(el); },
+                fnERClose: function(dataID) { thisRef.erClose_click(dataID); },
+                fnTableSorting: function(el) { thisRef.tableSorting_click(el,thisRef.subsTable[0]); },
                 dataTable: {
                     iDisplayLength: thisRef.Data.records,//_Settings.iDisplayLength,
                     sPaginationType: "input",
@@ -288,6 +288,7 @@ function Controller() {
         // Arguments:
         //   data - object returned by ajax call
         var getData = function(data) {
+            var tSettings, tPages;
             var mainSubs = _Settings.getDataArray(data);
             var t = new Date();
             
@@ -340,7 +341,7 @@ function Controller() {
     
     this.drawChart = function(_charts, domIdPrefix, cnt, forceDraw) {
         if (forceDraw === undefined) forceDraw = false;
-        if (_charts[cnt].onDemand === undefined) _charts[cnt]['onDemand'] = false;
+        if (_charts[cnt].onDemand === undefined) _charts[cnt].onDemand = false;
         
         var thisRef = this;
         
@@ -350,9 +351,9 @@ function Controller() {
         };
         
         var hChartDraw = function(hData) {
-            if (hData.chart === undefined) hData['chart'] = {};
-            hData.chart['renderTo'] = domIdPrefix+cnt;
-            hData['credits'] = false;
+            if (hData.chart === undefined) hData.chart = {};
+            hData.chart.renderTo = domIdPrefix+cnt;
+            hData.credits = false;
             new Highcharts.Chart(hData);
         };
         
@@ -361,15 +362,19 @@ function Controller() {
         };
         
         var getData = function(data, chart) {
-            var translatedData = chart.translateData(data);
-            if (translatedData == false) {
+            var i, translatedData, gData, hData, tData;
+            
+            translatedData = chart.translateData(data);
+            if (translatedData === false) {
                 thisRef.drawNoDataMessage(_charts, domIdPrefix, cnt);
                 return false;
             }
             if (chart.type == 'gchart') {
-                var gData = [];
-                for (key in translatedData) { // Adding dynamic variables
-                    gData.push(key+'='+translatedData[key]);
+                gData = [];
+                for (i in translatedData) { // Adding dynamic variables
+                    if (translatedData.hasOwnProperty(i)) {
+                        gData.push(i+'='+translatedData[i]);
+                    }
                 }
                 gChartDraw(gData);
             }
@@ -383,11 +388,11 @@ function Controller() {
             }
         };
         
-        if (_charts[cnt].onDemand == false || forceDraw == true) {
+        if (_charts[cnt].onDemand === false || forceDraw === true) {
             // Get the data from ajax call
             if (_charts[cnt].dataURL) {
                 if (_charts[cnt].dataURL_params === undefined) _charts[cnt].dataURL_params = function() { return {}; };
-                this.Data.ajax_getData_sync('chartData_'+i, _charts[cnt].dataURL, _charts[cnt].dataURL_params(this.Data), getData, function(){},_charts[cnt]);
+                this.Data.ajax_getData_sync('chartData_'+cnt, _charts[cnt].dataURL, _charts[cnt].dataURL_params(this.Data), getData, function(){},_charts[cnt]);
             }
             else {
                 getData(this.Data.mem, _charts[cnt]);
@@ -451,7 +456,7 @@ function Controller() {
     // "Init" initializes the monitoring system
     this.Init = function() {
         var _Settings = this.Settings.Application; // Shortcut
-        thisRef = this;
+        var thisRef = this;
         
         // Application settings
         // Remove users drop down box
@@ -465,16 +470,16 @@ function Controller() {
         $("#dialog-message").dialog({autoOpen: false});
         
         // Events definitions
-        $('#timeRange').change( function() { thisRef.timeRange_Change(this) });
-        $('#refresh').change( function() { thisRef.refresh_Change(this) });
-        $('#refreshImg').click( function() { thisRef.viewUpdater() } );
+        $('#timeRange').change( function() { thisRef.timeRange_Change(this); });
+        $('#refresh').change( function() { thisRef.refresh_Change(this); });
+        $('#refreshImg').click( function() { thisRef.viewUpdater(); } );
         
         // Activate datepicker
         $('#from, #till').datepicker({
             dateFormat: 'yy-mm-dd',
 			changeMonth: true,
 			changeYear: true
-		}).change( function() { thisRef.fromTill_Change(this) });
+		}).change( function() { thisRef.fromTill_Change(this); });
 		
 		// Activate tabs
         $("#siteTabs").tabs({select: function(event, ui) {
@@ -511,3 +516,6 @@ function Controller() {
         this.refresh_Change('#refresh');
     };
 }
+
+// Inherits from Events()
+Controller.prototype = new Events();
