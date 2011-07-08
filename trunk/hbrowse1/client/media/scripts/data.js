@@ -121,8 +121,8 @@ function Data(ajaxAnimation, _Settings) {
     
     // Dates handling - Start
     this.iso2ts = function(date, mode) {
-        if (typeof mode === 'undefined') mode = 1;
-        if (date === 0 || typeof date === 'undefined') return 0;
+        if (typeof mode === undefined) mode = 1;
+        if (date === 0 || typeof date === undefined) return 0;
         else {
             if (mode == 1) return $.datepicker.formatDate('@', $.datepicker.parseDate('yy-mm-dd',date));
             else if (mode == 2) return parseInt($.datepicker.formatDate('@', $.datepicker.parseDate('yy-mm-dd',date)), 10) + 86399000;
@@ -131,8 +131,8 @@ function Data(ajaxAnimation, _Settings) {
     };
     
     this.ts2iso = function(date, mode) {
-        if (typeof mode === 'undefined') mode = 1;
-        if (date === 0 || typeof date === 'undefined') return '';
+        if (typeof mode === undefined) mode = 1;
+        if (date === 0 || typeof date === undefined) return '';
         else {
             if (mode == 1) return $.datepicker.formatDate('yy-mm-dd', $.datepicker.parseDate('@',date));
             else if (mode == 2) return $.datepicker.formatDate('yy-mm-dd', $.datepicker.parseDate('@',date)) + ' 00:00';
