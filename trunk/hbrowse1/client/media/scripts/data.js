@@ -82,9 +82,9 @@ function Data(ajaxAnimation, _Settings) {
         this.from = parseInt((this.iso2ts(params.from) || settings.from), 10);
         this.till = parseInt((this.iso2ts(params.till,2) || settings.till), 10);
         this.timeRange = ( (params.timeRange === '') ? params.timeRange : (params.timeRange || settings.timeRange) );
-        this.refresh = (params.refresh || settings.refresh);
+        this.refresh = (parseInt(params.refresh, 10) || settings.refresh);
         this.tid = (params.tid || settings.tid);
-        this.p = (params.p || settings.p);
+        this.p = (parseInt(params.p, 10) || settings.p);
         this.records = (parseInt(params.records, 10) || this.copyVal(tSettings.iDisplayLength));
         this.or = (params.or || settings.or);
         this.sorting = (params.sorting || []);
@@ -121,8 +121,8 @@ function Data(ajaxAnimation, _Settings) {
     
     // Dates handling - Start
     this.iso2ts = function(date, mode) {
-        if (typeof mode === undefined) mode = 1;
-        if (date === 0 || typeof date === undefined) return 0;
+        if (mode === undefined) mode = 1;
+        if (date === 0 || date == '0' || date === undefined) return 0;
         else {
             if (mode == 1) return $.datepicker.formatDate('@', $.datepicker.parseDate('yy-mm-dd',date));
             else if (mode == 2) return parseInt($.datepicker.formatDate('@', $.datepicker.parseDate('yy-mm-dd',date)), 10) + 86399000;
@@ -131,8 +131,8 @@ function Data(ajaxAnimation, _Settings) {
     };
     
     this.ts2iso = function(date, mode) {
-        if (typeof mode === undefined) mode = 1;
-        if (date === 0 || typeof date === undefined) return '';
+        if (mode === undefined) mode = 1;
+        if (date === 0 || date == '0' || date === undefined) return '';
         else {
             if (mode == 1) return $.datepicker.formatDate('yy-mm-dd', $.datepicker.parseDate('@',date));
             else if (mode == 2) return $.datepicker.formatDate('yy-mm-dd', $.datepicker.parseDate('@',date)) + ' 00:00';
