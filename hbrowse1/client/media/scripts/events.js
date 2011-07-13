@@ -158,14 +158,15 @@ function Events() {
     };
     
     this.mainsTableContent_change = function(el) {
-        var _Settings = this.Settings.Mains; // Shortcut
+        var records, _Settings = this.Settings.Mains; // Shortcut
         var thisRef = this;
         if ($('#dataTable_0_paginate input').val() !== undefined) this.Data.p = $('#dataTable_0_paginate input').val();
         if (this.Data.noreload === false) {
             $('.tablePlus').attr('src', 'media/images/table_plus.png');
             this.Data.or = [];
         }
-        this.Data.records = parseInt($('#dataTable_0_length select').val(), 10);
+        records = parseInt($('#dataTable_0_length select').val(), 10);
+        if (!isNaN(records)) this.Data.records = records;
         $('#dataTable_0 tbody a.drilldown').closest('td').unbind();
         $('#dataTable_0 tbody a.drilldown').closest('td').click(function(){ 
             var aPos = thisRef.mainsTable[0].fnGetPosition(this);

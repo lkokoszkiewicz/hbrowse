@@ -12,11 +12,9 @@
 /*global _Cache: false*/
 
 function Data(ajaxAnimation, _Settings) {
-    var i, settings, tSettings, jsonp;
+    var i, settings, jsonp;
     
     settings = _Settings.Application.modelDefaults();
-    if (this.tid === '' || this.user === '') tSettings = _Settings.Mains;
-    else tSettings = _Settings.Subs;
     
     // Copy val instead create reference
     this.copyVal = function(val) {
@@ -32,7 +30,7 @@ function Data(ajaxAnimation, _Settings) {
     this.refresh = settings.refresh;
     this.tid = settings.tid;
     this.p = settings.p;
-    this.records = this.copyVal(tSettings.iDisplayLength);
+    this.records = 25;
     this.sorting = settings.sorting;
     this.or = settings.or; // opened table rows
     this.uparam = settings.uparam; // user defined params (for params that cannot be shared between use cases)
@@ -74,9 +72,18 @@ function Data(ajaxAnimation, _Settings) {
     // Ajax xmlhttprequest object used to store table data requests handlers
     this.xmlhttprequest = null;
     
+    this.selectTableSettings = function() {
+        var tSettings;
+        if (this.tid === '' || this.user === '') tSettings = _Settings.Mains;
+        else tSettings = _Settings.Subs;
+        
+        return tSettings;
+    };
+    
     this.quickSetup = function(params, ts2iso) {
         var i;
         var settings = _Settings.Application.modelDefaults();
+        var tSettings = this.selectTableSettings();
         
         this.user = (params.user || settings.user);
         this.from = parseInt((this.iso2ts(params.from) || settings.from), 10);
