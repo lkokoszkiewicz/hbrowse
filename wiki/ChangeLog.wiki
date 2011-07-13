@@ -1,5 +1,9 @@
 #labels Featured
 =Change Log=
+==v1.6.0==
+  * Added multiselect filter type
+  * General refactoring of the code
+
 ==v1.5.2==
   * Fixed bug when first open a page `filter_change` function generated en error
 
