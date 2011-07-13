@@ -1,6 +1,6 @@
 #labels Featured
 =Change Log=
-==v1.6.0==
+==v1.5.3==
   * Added multiselect filter type
   * General refactoring of the code
 
