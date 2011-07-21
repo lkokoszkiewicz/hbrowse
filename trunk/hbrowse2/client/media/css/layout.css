@@ -1,5 +1,9 @@
 body { font-family: arial, sans-serif; font-size:8pt; margin:0px; background-color:#666666/*#ADD1EB*/ }
 
+input,select { border:1px gray solid; background-color:#ffffff; font-size:9pt; margin:0px; }
+input[type=button] { cursor:pointer; }
+input[type=button]:hover { background-color:#dbeaf4; }
+
 #container { position:inherit; }
 #header { position:relative; }
 .tLabel_white { color:#ffffff; font-weight:bold; }
@@ -11,8 +15,11 @@ body { font-family: arial, sans-serif; font-size:8pt; margin:0px; background-col
 #topBeltMenu { float:left; width:100%; padding:0px; margin:0px; list-style-type:none; font-size:10pt; }
 #topBeltMenu a {float:left;width:50px;text-decoration:none;color:white;height:30px; line-height:30px; text-align:center; }
 
-#filtersToggleMenu { background-color:#aaaaaa;display:none; }
-#usersToggleMenu { background-color:#aaaaaa;display:none; }
+#filtersToggleMenu { position:relative; background-color:#F4E3C3; border-bottom:1px #F6BC37 solid; display:none; padding:2px; }
+#filtersArrow { position:absolute; top:-12px; left:12px; }
+#usersToggleMenu { position:relative; background-color:#e1f4c3; border-bottom:1px #adf637 solid; display:none; padding:2px; }
+#usersArrow { position:absolute; top:-12px; left:65px; }
+#userDropBox { font-weight:bold; color:#555555; }
 
 #breadcrumbs { background-color:#ffffff; }
 #breadcrumbs a { color:#3383BB; font-weight:bold; }
@@ -24,13 +31,13 @@ body { font-family: arial, sans-serif; font-size:8pt; margin:0px; background-col
 #timeSelect p { margin:0px; width:100%; text-align:center; }
 #timeSelect input,select { width:95px; }
 
-#refreshSelect { position:absolute; top:4px; right:185px; color:#ffffff; }
+#refreshSelect { position:absolute; top:6px; right:185px; color:#ffffff; }
 #refreshSelect select { width:170px; }
 #refreshSelect #refresh { width:145px; }
 #refreshSelect #refreshImg { vertical-align:middle; cursor:pointer; margin-bottom:2px; }
 #refreshSelect #refreshImg:hover { background-color:#666666; }
 
-#ajaxAnimation { position:absolute; top:6px; left:960px; width:43px; height:39px; display:none; }
+#ajaxAnimation { position:absolute; top:4px; left:155px; width:43px; height:39px; display:none; }
 #loadingTable { display:none; }
 
 #supportHelp { position:absolute; top:5px; right:5px; text-align:right; border-right:0px #e1e1e1 solid; font-size:9pt; background-color:#7FA4BF;text-align:center; }
@@ -38,19 +45,17 @@ body { font-family: arial, sans-serif; font-size:8pt; margin:0px; background-col
 #contentWrapper { background-color:#FFFFFF; margin-left:0px; margin-right:0px; }
 
 #content { position:relative; width:100%; }
-#siteTabs { padding-bottom:23px; }
+#siteTabs { padding-bottom:26px; }
 
-#dataFilters { display:none;position:relative;height:40px; }
-#submitFiltersDiv { position:absolute;right:10px;top:9px;}
-#dataFiltersInputs { position:absolute;top:2px;left:10px; }
-.filterItems { display:inline-block;margin-right:10px;vertical-align:top; }
+#dataFilters { display:none; }
+#submitFiltersDiv { margin-top:3px; background-color:#fdf5e6; width:100%; }
+#dataFiltersInputs {  }
+.filterItems { display:inline-block;margin-right:10px;vertical-align:top; font-weight:bold; color:#555555; }
 
 #footer { position:relative; bottom:0px; left:0px; width:100%; height:20px; background-color:#333333; border-top:3px #3383BB solid; margin:0px; }
 #footerTxt { position:absolute; top:2px; right:5px; color:#ffffff; font-weight:bold; }
 #footerTxtCredits { position:absolute; top:2px; left:5px; color:#ffffff; }
 #footer a { color:#dddddd; text-decoration:none; font-weight:bold; }
-
-input,select { border:1px gray solid; background-color:#ffffff; font-size:9pt; }
 
 .chartTbl { margin-bottom: 10px; }
 .chartImg { margin:15px; vertical-align:top; }
@@ -70,7 +75,14 @@ input,select { border:1px gray solid; background-color:#ffffff; font-size:9pt; }
 .chartTableHeadTd { background-color:#7FA4BF; font-weight:bold; color:white; border-bottom:2px #557f9d solid; border-top:2px #c4d5e1 solid; }
 
 /* Pagination style */
-.dataTable_paginate input { font-size:8pt; border:1px #AAAAAA solid; text-align:center; font-weight:bold; }
+.dataTable_paginate input { text-align:center; width:30px; margin:6px; }
 .paginate_button { font-size:9pt; font-weight:bold; color:#27415f; margin:0px; margin-left:2px; margin-right:2px; background-color:#ccd8e5; padding:4px; cursor:pointer; }
 .paginate_button:hover { background-color:#e4ebf3; }
 .paginate_page, .paginate_of { font-size:9pt; }
+
+/*MULTISELECT*/
+.ui-multiselect.hb-multiselect { background-color:#ffffff; background-image:url(); font-size:8pt; height:20px;border:1px gray solid; font-size:9pt; padding:0px;padding-left:3px; height:19px; }
+.ui-multiselect.hb-multiselect:hover { background-color:#dbeaf4; }
+
+
+

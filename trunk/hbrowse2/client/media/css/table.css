@@ -56,8 +56,8 @@
 
 .dataTables_length {
     position:absolute;
-    top:-36px;
-    left:130px;
+    top:-34px;
+    left:120px;
 	width: 40%;
 	color: #ffffff;
 	/*float: left;*/
@@ -65,7 +65,7 @@
 
 .dataTables_filter {
     position:absolute;
-    top:-36px;
+    top:-34px;
     right:0px;
 	width: 50%;
 	color: #ffffff;
@@ -82,6 +82,7 @@
     float:right;
 	/* width: 350px;*/
 	text-align: right;
+	padding:4px;
 	background-color: #e4ebf3;
 }
 

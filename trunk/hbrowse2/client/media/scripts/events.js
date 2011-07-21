@@ -29,16 +29,6 @@ function Events() {
         this.setupURL();
     };
     
-    this.timeRange_Change = function(el) {
-        this.Data.timeRange = $(el).val();
-        this.Data.from = 0;
-        this.Data.till = 0;
-        $('.tablePlus').attr('src', 'media/images/table_plus.png');
-        //this.Data.or = [];
-        this.Data.noreload = false;
-        this.setupURL();
-    };
-    
     this.refresh_Change = function(el) {
         var thisRef = this;
         this.Data.refresh = parseInt($(el).val(), 10);
@@ -48,18 +38,6 @@ function Events() {
         //this.Data.noreload = true;
         //$('.tablePlus').attr('src', 'media/images/table_plus.png');
         //this.Data.or = [];
-        this.Data.noreload = false;
-        this.setupURL();
-    };
-    
-    this.fromTill_Change = function(el) {
-        if( !this.Data.changeFromTill(el.id, ($.datepicker.formatDate('@',$(el).datepicker( "getDate" )))) ) {
-            if (this.Data[el.id] === 0) $(el).datepicker( "setDate", null );
-            else $(el).datepicker( "setDate", $.datepicker.parseDate('@',(this.Data[el.id])) );
-        }
-        this.Data.timeRange = '';
-        $('.tablePlus').attr('src', 'media/images/table_plus.png');
-        this.Data.or = [];
         this.Data.noreload = false;
         this.setupURL();
     };
@@ -309,7 +287,7 @@ function Events() {
             }
         }
         
-        $('#dataFiltersLabel').lkfw_tooltip({
+        /*$('#dataFiltersLabel').lkfw_tooltip({
             'content':{
                 'dataFiltersLabel':{
                     'html':div
@@ -318,12 +296,12 @@ function Events() {
             'take':'id',
             'place':'bottom',
             'classDist':'_filtersSummary',
-            'delay':500,
+            'delay':1000,
             'posShift':[12,-1],
             'css':{
                 'width':'215px'
             }
-        });
+        });*/
     };
     
     this.drawChtRequestButton_click = function(el, _charts, domIdPrefix, cnt) {

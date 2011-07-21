@@ -25,9 +25,6 @@ function Settings() {
         'modelDefaults': function() { // Here You can set up model (data.js) default values
             return {
                 'user': '',
-                'from': 0,
-                'till': 0,
-                'timeRange': 'lastDay',
                 'refresh': 0,
                 'tid': '',
                 'p': 1,
@@ -502,7 +499,7 @@ function Settings() {
             }
             return tasksArr;
         },
-        'tableActivityEvent': function(el) {
+        /*'tableActivityEvent': function(el) {
             $('.tblSort').lkfw_tooltip({
                 'content':{
                     'SchedulerJobId':{
@@ -516,7 +513,7 @@ function Settings() {
                 }
             });
             //alert('it works! (subs)');
-        },
+        },*/
         'filters':[
             {
                 'label':'Status',  // String
