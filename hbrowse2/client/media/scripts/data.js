@@ -24,9 +24,6 @@ function Data(ajaxAnimation, _Settings) {
     jsonp = _Settings.Application.jsonp;
     // general values
     this.user = settings.user;
-    this.from = settings.from;
-    this.till = settings.till;
-    this.timeRange = settings.timeRange;
     this.refresh = settings.refresh;
     this.tid = settings.tid;
     this.p = settings.p;
@@ -86,9 +83,6 @@ function Data(ajaxAnimation, _Settings) {
         var tSettings = this.selectTableSettings();
         
         this.user = (params.user || settings.user);
-        this.from = parseInt((this.iso2ts(params.from) || settings.from), 10);
-        this.till = parseInt((this.iso2ts(params.till,2) || settings.till), 10);
-        this.timeRange = ( (params.timeRange === '') ? params.timeRange : (params.timeRange || settings.timeRange) );
         this.refresh = (parseInt(params.refresh, 10) || settings.refresh);
         this.tid = (params.tid || settings.tid);
         this.p = (parseInt(params.p, 10) || settings.p);

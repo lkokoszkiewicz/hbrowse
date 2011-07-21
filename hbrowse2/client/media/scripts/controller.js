@@ -61,9 +61,7 @@ function Controller() {
             this.subsTable = [];
             this.drawUsers();
         }
-        this.timeRange_update();
         if (_Settings.userSelection) this.userDropdown_update(); // Update only if avaliable
-        this.fromTill_update();
         this.userRefresh_update();
         this.filtersUpdate();
         //this.breadcrumbs_update(); // Now changers after tables are loaded
@@ -432,9 +430,6 @@ function Controller() {
         
         var urlHash = {
             user:this.Data.user,
-            from:this.Data.ts2iso(this.Data.from),
-            till:this.Data.ts2iso(this.Data.till),
-            timeRange:this.Data.timeRange,
             refresh:this.Data.refresh,
             tid:this.Data.tid,
             p:this.Data.p,
@@ -462,7 +457,6 @@ function Controller() {
         // Remove users drop down box
         if (!_Settings.userSelection && _Settings.userSelection !== undefined) $('#userDropBox').hide();
         if (!_Settings.dataRefresh && _Settings.dataRefresh !== undefined) $('#refreshDropBox').hide();
-        if (!_Settings.timeRangeSelection && _Settings.timeRangeSelection !== undefined) $('#timeSelect').hide();
         $('title').text(_Settings.pageTitle); // Set page title
         $('#footerTxt').html(_Settings.footerTxt); // Set footer text
         $('#supportLnk').attr('href', _Settings.supportLnk);
@@ -470,16 +464,20 @@ function Controller() {
         $("#dialog-message").dialog({autoOpen: false});
         
         // Events definitions
-        $('#timeRange').change( function() { thisRef.timeRange_Change(this); });
         $('#refresh').change( function() { thisRef.refresh_Change(this); });
         $('#refreshImg').click( function() { thisRef.viewUpdater(); } );
-        
-        // Activate datepicker
-        $('#from, #till').datepicker({
-            dateFormat: 'yy-mm-dd',
-			changeMonth: true,
-			changeYear: true
-		}).change( function() { thisRef.fromTill_Change(this); });
+        $('#toggleFilters').toggle(function(){
+            if ($('#usersToggleMenu').css('display') == 'block') $('#toggleUsers').trigger('click');
+            $('#filtersToggleMenu').slideDown(100);
+        }, function() {
+            $('#filtersToggleMenu').slideUp(100);
+        });
+        $('#toggleUsers').toggle(function(){
+            if ($('#filtersToggleMenu').css('display') == 'block') $('#toggleFilters').trigger('click');
+            $('#usersToggleMenu').slideDown(100);
+        }, function() {
+            $('#usersToggleMenu').slideUp(100);
+        });
 		
 		// Activate tabs
         $("#siteTabs").tabs({select: function(event, ui) {
