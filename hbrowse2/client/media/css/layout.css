@@ -9,7 +9,7 @@ input[type=button]:hover { background-color:#dbeaf4; }
 .tLabel_white { color:#ffffff; font-weight:bold; }
 .tLabel_blue { color:#3383BB; font-weight:bold; }
 #header a { color:#ffffff; text-decoration:none; }
-#header a:hover { background-color:#2C4558; }
+#header #topBeltMenu a:hover { background-color:#2C4558; }
 
 #topBelt { width:100%; height:30px; background-color:#333333; margin-bottom:0px; border-bottom:3px #3383BB solid; }
 #topBeltMenu { float:left; width:100%; padding:0px; margin:0px; list-style-type:none; font-size:10pt; }
@@ -21,7 +21,7 @@ input[type=button]:hover { background-color:#dbeaf4; }
 #usersArrow { position:absolute; top:-12px; left:65px; }
 #userDropBox { font-weight:bold; color:#555555; }
 
-#breadcrumbs { background-color:#ffffff; }
+#breadcrumbs { background-color:#ffffff; padding-top:7px; }
 #breadcrumbs a { color:#3383BB; font-weight:bold; }
 #breadcrumbs a:hover { color:#5992bb; }
 
