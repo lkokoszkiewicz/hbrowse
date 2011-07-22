@@ -538,9 +538,9 @@ function Settings() {
                 'options':{}
             },
             {
-                'label':'Text filter',  // String
-                'urlVariable':'textfilter2',  // String - lower cased, no spaces, no special characters
-                'fieldType':'text',  // String (text|select|date)
+                'label':'Date filter',  // String
+                'urlVariable':'datefilter',  // String - lower cased, no spaces, no special characters
+                'fieldType':'date',  // String (text|select|date)
                 'value':'',
                 'options':{}
             }
