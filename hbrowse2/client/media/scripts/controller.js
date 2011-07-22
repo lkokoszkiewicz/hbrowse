@@ -436,7 +436,8 @@ function Controller() {
             records:this.Data.records,
             sorting:this.Data.sorting,
             or:this.Data.or,
-            uparam:this.Data.uparam
+            uparam:this.Data.uparam,
+            activemenu:this.Data.activemenu
         };
         
         if (this.appDisplayState() == 'mains') {
@@ -467,16 +468,28 @@ function Controller() {
         $('#refresh').change( function() { thisRef.refresh_Change(this); });
         $('#refreshImg').click( function() { thisRef.viewUpdater(); } );
         $('#toggleFilters').toggle(function(){
+            thisRef.Data.activemenu = 1;
+            thisRef.Data.noreload = true;
             if ($('#usersToggleMenu').css('display') == 'block') $('#toggleUsers').trigger('click');
             $('#filtersToggleMenu').slideDown(100);
+            thisRef.setupURL();
         }, function() {
+            if (thisRef.Data.activemenu == 1) thisRef.Data.activemenu = 0;
+            thisRef.Data.noreload = true;
             $('#filtersToggleMenu').slideUp(100);
+            thisRef.setupURL();
         });
         $('#toggleUsers').toggle(function(){
+            thisRef.Data.activemenu = 2;
+            thisRef.Data.noreload = true;
             if ($('#filtersToggleMenu').css('display') == 'block') $('#toggleFilters').trigger('click');
             $('#usersToggleMenu').slideDown(100);
+            thisRef.setupURL();
         }, function() {
+            if (thisRef.Data.activemenu == 2) thisRef.Data.activemenu = 0;
+            thisRef.Data.noreload = true;
             $('#usersToggleMenu').slideUp(100);
+            thisRef.setupURL();
         });
 		
 		// Activate tabs
@@ -487,6 +500,18 @@ function Controller() {
         
         // Setup Data from URL
         this.Data.quickSetup($.bbq.getState());
+        
+        // Open active menu
+        switch(this.Data.activemenu) {
+            case 1:
+                $('#toggleFilters').trigger('click');
+                break;
+            case 2:
+                $('#toggleUsers').trigger('click');
+                break;
+            default:
+                break;
+        }
         
         // Get and setup users list
         this.getUsers();

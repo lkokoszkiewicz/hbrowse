@@ -31,6 +31,7 @@ function Data(ajaxAnimation, _Settings) {
     this.sorting = settings.sorting;
     this.or = settings.or; // opened table rows
     this.uparam = settings.uparam; // user defined params (for params that cannot be shared between use cases)
+    this.activemenu = 0;
     
     this.noreload = false;
     
@@ -90,6 +91,7 @@ function Data(ajaxAnimation, _Settings) {
         this.or = (params.or || settings.or);
         this.sorting = (params.sorting || []);
         this.uparam = (params.uparam || settings.uparam);
+        this.activemenu = (parseInt(params.activemenu, 10) || 0);
         
         // make this.or an array of ints
         for (i=0;i<this.or.length;i++) {

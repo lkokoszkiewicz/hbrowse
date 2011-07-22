@@ -287,7 +287,7 @@ function Events() {
             }
         }
         
-        /*$('#dataFiltersLabel').lkfw_tooltip({
+        $('#dataFiltersLabel').lkfw_tooltip({
             'content':{
                 'dataFiltersLabel':{
                     'html':div
@@ -297,11 +297,11 @@ function Events() {
             'place':'bottom',
             'classDist':'_filtersSummary',
             'delay':1000,
-            'posShift':[12,-1],
+            'posShift':[-5,-1],
             'css':{
                 'width':'215px'
             }
-        });*/
+        });
     };
     
     this.drawChtRequestButton_click = function(el, _charts, domIdPrefix, cnt) {
