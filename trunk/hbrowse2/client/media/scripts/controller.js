@@ -460,17 +460,17 @@ function Controller() {
         if (!_Settings.dataRefresh && _Settings.dataRefresh !== undefined) $('#refreshDropBox').hide();
         $('title').text(_Settings.pageTitle); // Set page title
         $('#footerTxt').html(_Settings.footerTxt); // Set footer text
-        $('#supportLnk').attr('href', _Settings.supportLnk);
+        $('#menuHelp a').attr('href', _Settings.supportLnk);
         $('#logo').css('background-image', 'url('+_Settings.logoLnk+')');
         $("#dialog-message").dialog({autoOpen: false});
         
         // Events definitions
         $('#refresh').change( function() { thisRef.refresh_Change(this); });
         $('#refreshImg').click( function() { thisRef.viewUpdater(); } );
-        $('#toggleFilters').toggle(function(){
+        $('#menuFilters a').toggle(function(){
             thisRef.Data.activemenu = 1;
             thisRef.Data.noreload = true;
-            if ($('#usersToggleMenu').css('display') == 'block') $('#toggleUsers').trigger('click');
+            if ($('#usersToggleMenu').css('display') == 'block') $('#menuUsers a').trigger('click');
             $('#filtersToggleMenu').slideDown(100);
             thisRef.setupURL();
         }, function() {
@@ -479,10 +479,10 @@ function Controller() {
             $('#filtersToggleMenu').slideUp(100);
             thisRef.setupURL();
         });
-        $('#toggleUsers').toggle(function(){
+        $('#menuUsers a').toggle(function(){
             thisRef.Data.activemenu = 2;
             thisRef.Data.noreload = true;
-            if ($('#filtersToggleMenu').css('display') == 'block') $('#toggleFilters').trigger('click');
+            if ($('#filtersToggleMenu').css('display') == 'block') $('#menuFilters a').trigger('click');
             $('#usersToggleMenu').slideDown(100);
             thisRef.setupURL();
         }, function() {
