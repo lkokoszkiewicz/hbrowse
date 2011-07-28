@@ -1,17 +1,3 @@
-/* User List styles */
-.srchField_div { background-color:#eeeeee; border:1px #888888 solid; 
-    -moz-border-radius-topleft: 6px; -webkit-border-top-left-radius: 6px; border-top-left-radius: 6px; 
-    -moz-border-radius-topright: 6px; -webkit-border-top-right-radius: 6px; border-top-right-radius: 6px; 
-    -moz-border-radius-bottomleft: 6px; -webkit-border-bottom-left-radius: 6px; border-bottom-left-radius: 6px; 
-    -moz-border-radius-bottomright: 6px; -webkit-border-bottom-right-radius: 6px; border-bottom-right-radius: 6px; 
-}
-
-.srchField_div form { margin:5px; }
-
-#users_0 { list-style-type: none; padding-left:10px; }
-#users_0 li { border-bottom:1px gray solid; width:300px; padding:3px; font-size:9pt; font-weight:bold; color:gray; cursor:pointer; }
-
-
 table { border:0px }
 
 .alignRight { text-align:right; }

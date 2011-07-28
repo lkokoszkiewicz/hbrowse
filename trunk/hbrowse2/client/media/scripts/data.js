@@ -40,17 +40,17 @@ function Data(ajaxAnimation, _Settings) {
     // Data
     this.mem = {
         users: [],
-        mains: {
+        table: {
             user: '',
             timestamp: 0,
             data: []
-        },
+        },/*
         subs: {
             user: '',
             tid: '',
             timestamp: 0,
             data: []
-        },
+        },*/
         filters:{}
     };
     

@@ -21,7 +21,7 @@ function Settings() {
         'usersListLbl': 'Users List', // Label of user list search field, example: 'Users List'
         'mainsLbl': 'Tasks', // Name of mains content, example: 'Tasks'
         'subsLbL': 'Jobs', // Name of subs content, example: 'Jobs'
-        'debugMode': false, // Display debug messages on errors inside dataTranslate functions? (true|false)
+        'debugMode': true, // Display debug messages on errors inside dataTranslate functions? (true|false)
         'modelDefaults': function() { // Here You can set up model (data.js) default values
             return {
                 'user': '',
@@ -56,7 +56,7 @@ function Settings() {
         /*'dataURL_params': function(Data) {
             return {};
         },*/
-        'searchLabel': 'Search for user ', // Label of the search field
+        'searchLabel': 'Search ', // Label of the search field
         // Function, translates ajax response onto searchable list plugin data format
         // Output: [user1, user2, ...]
         'translateData': function(dataJSON) {
@@ -72,6 +72,7 @@ function Settings() {
     
     // Mains settings - START
     this.Mains = {
+        'tableID':'mains',
         'dataURL': 'gangataskstable', // Mains URL for ajax request
         // Function, ajax request parameters
         // Input: Data - application Data model, rowDataSet - clicked row data (from ajax datatable response)
@@ -204,7 +205,7 @@ function Settings() {
                 'noUnknClick':'U'
             };
             var status = classTranslate[$(el).find('a').attr('class').replace("drilldown ","")];
-            var tid = Data.mem.mains.data[rowIndex].TASKMONID;
+            var tid = Data.mem.table.data[rowIndex].TASKMONID;
             
             return {'tid':tid,filters:{'status':status}};
         },
@@ -219,7 +220,7 @@ function Settings() {
                 // translates data onto requires format:
                 // {"chd":"t:60,40","chl":"Hello|World"}
                 'translateData':function(dataMem) {
-                    var data = dataMem.mains.data;
+                    var data = dataMem.table.data;
                     var dataLen = data.length;
                     
                     if (dataLen > 0) {
@@ -283,7 +284,7 @@ function Settings() {
                 // translates data onto requires format:
                 // {"chd":"t:60,40","chl":"Hello|World"}
                 'translateData':function(dataMem) {
-                    var data = dataMem.mains.data;
+                    var data = dataMem.table.data;
                     var dataLen = data.length;
                     
                     if (dataLen > 0) {
@@ -377,6 +378,7 @@ function Settings() {
     
     // Subs settings - START
     this.Subs = {
+        'tableID':'subs',
         'dataURL': 'gangataskjobs', // Subs list URL for ajax request
         // Function, ajax request parameters
         // Output: {'<parameter_name>':<parameter_value>,...} (default: {})
@@ -553,7 +555,7 @@ function Settings() {
                 // translates data onto requires format:
                 // {"chd":"t:60,40","chl":"Hello|World"}
                 'translateData':function(dataMem) {
-                    var data = dataMem.subs.data;
+                    var data = dataMem.table.data;
                     var dataLen = data.length;
                     
                     if (dataLen > 0) {
@@ -617,7 +619,7 @@ function Settings() {
                 // translates data onto requires format:
                 // {"chd":"t:60,40","chl":"Hello|World"}
                 'translateData':function(dataMem) {
-                    var data = dataMem.subs.data;
+                    var data = dataMem.table.data;
                     var dataLen = data.length;
                     
                     if (dataLen > 0) {

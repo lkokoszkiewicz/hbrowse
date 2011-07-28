@@ -52,6 +52,7 @@ $(document).ready( function() {
                     <li id="menuFilters"><a class="topBeltMenu">Filters</a></li>
                     <li id="menuUsers"><a class="topBeltMenu">Users</a></li>
                     <li id="menuHelp"><a class="topBeltMenu" href="#" title="Support" target="_blank">Help</a></li>
+                    <li id="loadingAnimation"><img id="ajaxAnimation" src="media/images/loading.gif" width="24" height="22" alt="loading animation" /></li>
                 </ul>
             </div>
             <div id="filtersToggleMenu">
@@ -59,16 +60,16 @@ $(document).ready( function() {
                     <div id="dataFiltersInputs"></div>
                     <div id="submitFiltersDiv"><input id="submitFilters" type="button" value="Submit" /></div>
                 </div>
-                <div id="filtersArrow"><img src="media/images/filtersArrow.png" alt="" /></div>
+                <!--<div id="filtersArrow"><img src="media/images/filtersArrow.png" alt="" /></div>-->
             </div>
             <div id="usersToggleMenu">
-                <table>
+                <!--<table>
                     <tr id="userDropBox">
                         <td class="alignRight"><span>User&nbsp;</span></td>
                         <td><select id="userSelect_dropdown"></select></td>
                     </tr>
-                </table>
-                <div id="usersArrow"><img src="media/images/filtersArrow.png" alt="" /></div>
+                </table>-->
+                <!--<div id="usersArrow"><img src="media/images/filtersArrow.png" alt="" /></div>-->
             </div>
             <div id="breadcrumbs">&nbsp;</div>
             <div id="logo"></div>
@@ -83,7 +84,6 @@ $(document).ready( function() {
                 </select>
                 <img id="refreshImg" src="media/images/refresh.png" alt="refresh" />
             </div>
-            <div id="ajaxAnimation"><img src="media/images/loading.gif" width="24" height="22" alt="loading animation" /></div>
         </div>
         <div id="content">
             <div id="topTableCharts"></div>

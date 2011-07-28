@@ -14,6 +14,7 @@ input[type=button]:hover { background-color:#dbeaf4; }
 #topBelt { width:100%; height:30px; background-color:#333333; margin-bottom:0px; border-bottom:3px #3383BB solid; }
 #topBeltMenu { float:left; width:100%; padding:0px; margin:0px; list-style-type:none; font-size:10pt; }
 #topBeltMenu a.topBeltMenu {float:left;width:50px;text-decoration:none;color:white;height:30px; line-height:30px; text-align:center; }
+#topBeltMenu .selected { background-image:url(../images/filtersArrow.png);background-position:center bottom;background-repeat:no-repeat; }
 
 #filtersToggleMenu { position:relative; background-color:#F4E3C3; border-bottom:1px #F6BC37 solid; display:none; padding:2px; }
 #filtersArrow { position:absolute; top:-12px; left:34px; }
@@ -38,7 +39,7 @@ input[type=button]:hover { background-color:#dbeaf4; }
 #refreshSelect #refreshImg { vertical-align:middle; cursor:pointer; margin-bottom:2px; }
 #refreshSelect #refreshImg:hover { background-color:#666666; }
 
-#ajaxAnimation { position:absolute; top:4px; left:175px; width:43px; height:39px; display:none; }
+#ajaxAnimation { display:none; margin-top:3px; }
 #loadingTable { display:none; }
 
 #supportHelp { position:absolute; top:5px; right:5px; text-align:right; border-right:0px #e1e1e1 solid; font-size:9pt; background-color:#7FA4BF;text-align:center; }
@@ -48,7 +49,7 @@ input[type=button]:hover { background-color:#dbeaf4; }
 #content { position:relative; width:100%; }
 #siteTabs { padding-bottom:26px; }
 
-#dataFilters { display:none; }
+#dataFilters {  }
 #submitFiltersDiv { margin-top:3px; background-color:#fdf5e6; width:100%; }
 #dataFiltersInputs {  }
 .filterItems { display:inline-block;margin-right:10px;vertical-align:top; font-weight:bold; color:#555555; }
@@ -91,6 +92,14 @@ input[type=button]:hover { background-color:#dbeaf4; }
 
 /*FILTERS SUMMARY*/
 .lkfw_tooltip_filtersSummary { background-color:#ffffff;border:1px #3383BB solid; border-top-width:0px; border-bottom-width:3px; border-left-width:0px; padding:5px; }
+
+/* User List styles */
+.srchField_div { background-color:#f3fde4; padding:2px; font-weight:bold; color:#555555; padding-left:5px; }
+.srchField_div form {  }
+#srchListWrapper_0 { height:150px; width:350px; overflow:auto; margin:3px; border:1px gray solid; background-color:#f3fde4; }
+#users_0 { list-style-type: none; padding:0px; margin:0px; }
+#users_0 li { border-bottom:1px #dddddd solid; padding:1px; padding-left:3px; font-size:9pt; font-weight:bold; color:#555555; cursor:pointer; }
+#users_0 li:hover { background-color:#ffffff; }
 
 
 

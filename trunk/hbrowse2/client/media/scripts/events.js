@@ -25,6 +25,7 @@ function Events() {
 
     this.userListItem_Click = function(el) {
         this.Data.user = $(el).text();
+        this.Data.tid = '';
         this.Data.noreload = false;
         this.setupURL();
     };
@@ -40,14 +41,6 @@ function Events() {
         //this.Data.or = [];
         this.Data.noreload = false;
         this.setupURL();
-    };
-    
-    this.userListItem_MouseOver = function(el) {
-        $(el).css('background-color','#d7e6f1');
-    };
-    
-    this.userListItem_MouseOut = function(el) {
-        $(el).css('background-color','#ffffff');
     };
     
     this.breadcrumbs_click = function(el) {
