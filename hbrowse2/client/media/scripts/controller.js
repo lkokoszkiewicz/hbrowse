@@ -17,8 +17,8 @@ function Controller() {
     this.Settings = new Settings();
     this.Data = new Data($('#ajaxAnimation'), this.Settings);
     
-    this.mainsTable = [];
-    this.subsTable = [];
+    this.Tables = {'mains':[],'subs':[]};
+    //this.subsTable = [];
     
     this.appDisplayState = function() {
         var _Settings = this.Settings.Application; // Shortcut
@@ -46,25 +46,29 @@ function Controller() {
         if (this.appDisplayState() == 'subs') {
             // Show subs
             this.mainsTable = [];
-            this.drawSubsTable();
+            this.drawMainsTable(this.Settings.Subs);
+            $('#content').show();
         }
         else if (this.appDisplayState() == 'mains') {
             //show mains
             this.Data.uparam = [];
             this.subsTable = [];
-            this.drawMainsTable();
+            this.drawMainsTable(this.Settings.Mains);
+            $('#content').show();
         }
         else if (this.appDisplayState() == 'users') {
             // Show users
             this.Data.uparam = [];
             this.mainsTable = [];
             this.subsTable = [];
-            this.drawUsers();
+            this.breadcrumbs_update();
+            $('#content').hide();
+            this.hideShowFilters('hide');
+            if (this.Data.activemenu != 2) $('#menuUsers a').trigger('click');
+            //this.drawUsers();
         }
-        if (_Settings.userSelection) this.userDropdown_update(); // Update only if avaliable
         this.userRefresh_update();
         this.filtersUpdate();
-        //this.breadcrumbs_update(); // Now changers after tables are loaded
         this.setupURL();
     };
     
@@ -82,20 +86,18 @@ function Controller() {
             $('#topTableCharts').empty();
             // Charts tab chandling - finish
             
-            $('#tableContent').lkfw_searchableList({
+            $('#usersToggleMenu').lkfw_searchableList({
                 listId: 'users',
                 items: thisRef.Data.mem.users,
                 srchFldLbl: _Settings.searchLabel
             });
             
             $('#users_0 li').unbind('click').click( function() { thisRef.userListItem_Click(this); });
-            $('#users_0 li').unbind('mouseover').mouseover( function() { thisRef.userListItem_MouseOver(this); });
-            $('#users_0 li').unbind('mouseout').mouseout( function() { thisRef.userListItem_MouseOut(this); });
-            thisRef.breadcrumbs_update();
+            //thisRef.breadcrumbs_update();
         };
         
         // Hide filters panel
-        $('#dataFilters').hide();
+        thisRef.hideShowFilters('hide');//$('#dataFilters').hide();
         
         // Draw searchable list
         if (this.Data.mem.users) draw();
@@ -122,7 +124,7 @@ function Controller() {
             
             thisRef.generateUserDropdownOptions();
             
-            if (!(this.Data.user || $.bbq.getState('user'))) thisRef.drawUsers();
+            /*if (!(this.Data.user || $.bbq.getState('user'))) */thisRef.drawUsers();
         };
         
         // Get the users list from ajax call
@@ -131,9 +133,9 @@ function Controller() {
     
     // "drawDataTable" draws data table for subs (in ganga nomenclature)
     // or mains (in CMS nomenclature)
-    this.drawMainsTable = function() {
+    this.drawMainsTable = function(_Settings) {
         var thisRef = this;
-        var _Settings = this.Settings.Mains; // Shortcut
+        //var _Settings = this.Settings.Mains; // Shortcut
         
         if (_Settings.dataURL_params === undefined) _Settings.dataURL_params = function() { return {}; };
         
@@ -147,7 +149,7 @@ function Controller() {
             // Charts tab handling - finish
             
             thisRef.mainsTable = $('#tableContent').lkfw_dataTable({
-                dTable: thisRef.mainsTable,
+                dTable: thisRef.Tables[_Settings.tableID],
                 tableId: 'mains',
                 expandableRows: _Settings.expandableRows,
                 multipleER: _Settings.multipleER,
@@ -187,7 +189,7 @@ function Controller() {
             var tSettings, tPages;
             
             // Save the data
-            thisRef.Data.mem.mains = {
+            thisRef.Data.mem.table = {
                 user: this.Data.user,
                 timestamp: Math.floor(t.getTime()/1000),
                 data: userMains
@@ -223,8 +225,8 @@ function Controller() {
             });
             
             // Hide filters panel
-            if (_Settings.filters !== undefined) $('#dataFilters').show();
-            else $('#dataFilters').hide();
+            if (_Settings.filters !== undefined) thisRef.hideShowFilters('show');//$('#dataFilters').show();
+            else thisRef.hideShowFilters('hide');//$('#dataFilters').hide();
             
             thisRef.executeCharts(_Settings.charts, 'cht_', '#chartContent');
             thisRef.executeCharts(_Settings.topTableCharts, 'topTblcht_', '#topTableCharts', true);
@@ -236,7 +238,7 @@ function Controller() {
         this.Data.ajax_getData('mainsReq', _Settings.dataURL, _Settings.dataURL_params(this.Data), getData, function(){});
     };
     
-    this.drawSubsTable = function() {
+    /*this.drawSubsTable = function() {
         var thisRef = this;
         var _Settings = this.Settings.Subs; // Shortcut
         
@@ -324,8 +326,8 @@ function Controller() {
             });
             
             // Hide filters panel
-            if (_Settings.filters !== undefined) $('#dataFilters').show();
-            else $('#dataFilters').hide();
+            if (_Settings.filters !== undefined) thisRef.hideShowFilters('show');//$('#dataFilters').show();
+            else thisRef.hideShowFilters('hide');//$('#dataFilters').hide();
             
             thisRef.executeCharts(_Settings.charts, 'cht_', '#chartContent');
             thisRef.executeCharts(_Settings.topTableCharts, 'topTblcht_', '#topTableCharts', true);
@@ -335,7 +337,7 @@ function Controller() {
         $('#loadingTable').delay(800).fadeIn(400); // Dim content area
         $('#breadcrumbs a').css('color','#888888').unbind();
         this.Data.ajax_getData('subsReq', _Settings.dataURL, _Settings.dataURL_params(this.Data), getData, function(){});
-    };
+    };*/
     
     this.drawChart = function(_charts, domIdPrefix, cnt, forceDraw) {
         if (forceDraw === undefined) forceDraw = false;
@@ -456,7 +458,7 @@ function Controller() {
         
         // Application settings
         // Remove users drop down box
-        if (!_Settings.userSelection && _Settings.userSelection !== undefined) $('#userDropBox').hide();
+        //if (!_Settings.userSelection && _Settings.userSelection !== undefined) $('#userDropBox').hide();
         if (!_Settings.dataRefresh && _Settings.dataRefresh !== undefined) $('#refreshDropBox').hide();
         $('title').text(_Settings.pageTitle); // Set page title
         $('#footerTxt').html(_Settings.footerTxt); // Set footer text
@@ -470,25 +472,34 @@ function Controller() {
         $('#menuFilters a').toggle(function(){
             thisRef.Data.activemenu = 1;
             thisRef.Data.noreload = true;
-            if ($('#usersToggleMenu').css('display') == 'block') $('#menuUsers a').trigger('click');
+            if ($('#usersToggleMenu').css('display') == 'block') {
+                $('#menuUsers a').trigger('click').removeClass('selected');
+            }
             $('#filtersToggleMenu').slideDown(100);
+            $('#menuFilters a').addClass('selected');
             thisRef.setupURL();
-        }, function() {
-            if (thisRef.Data.activemenu == 1) thisRef.Data.activemenu = 0;
+        }, function(event, urlFlag) {
+            if (urlFlag === undefined) urlFlag = true;
+            if (thisRef.Data.activemenu == 1 && urlFlag) thisRef.Data.activemenu = 0;
             thisRef.Data.noreload = true;
             $('#filtersToggleMenu').slideUp(100);
+            $('#menuFilters a').removeClass('selected');
             thisRef.setupURL();
         });
         $('#menuUsers a').toggle(function(){
             thisRef.Data.activemenu = 2;
             thisRef.Data.noreload = true;
-            if ($('#filtersToggleMenu').css('display') == 'block') $('#menuFilters a').trigger('click');
+            if ($('#filtersToggleMenu').css('display') == 'block') {
+                $('#menuFilters a').trigger('click').removeClass('selected');
+            }
             $('#usersToggleMenu').slideDown(100);
+            $('#menuUsers a').addClass('selected');
             thisRef.setupURL();
         }, function() {
             if (thisRef.Data.activemenu == 2) thisRef.Data.activemenu = 0;
             thisRef.Data.noreload = true;
             $('#usersToggleMenu').slideUp(100);
+            $('#menuUsers a').removeClass('selected');
             thisRef.setupURL();
         });
 		
@@ -504,17 +515,17 @@ function Controller() {
         // Open active menu
         switch(this.Data.activemenu) {
             case 1:
-                $('#toggleFilters').trigger('click');
+                $('#menuFilters a').trigger('click');
                 break;
             case 2:
-                $('#toggleUsers').trigger('click');
+                $('#menuUsers a').trigger('click');
                 break;
             default:
                 break;
         }
         
-        // Get and setup users list
-        this.getUsers();
+        // Init users search
+        if (_Settings.userSelection) this.getUsers();
         
         // Bind the event onhashchange
         $(window).bind('hashchange', function(){

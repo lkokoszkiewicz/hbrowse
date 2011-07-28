@@ -16,6 +16,7 @@
     $.fn.lkfw_searchableList = function(settings) {
         var _config = {
             'listId': 'srchList',
+            'listWrapId': 'srchListWrapper',
             'srchFieldId': 'srchField',
             'items': [],
             'srchFldLbl': 'Search'
@@ -24,7 +25,7 @@
         var elCnt = 0;
         
         var _buildList = function(elCnt) {
-            var i, sFieldDiv, sFieldForm, sFieldInput, sList, sLi;
+            var i, sFieldDiv, sFieldForm, sFieldInput, sListWrapDiv, sList, sLi;
         
             sFieldDiv = $('<div></div>').addClass(_config.srchFieldId+'_div');
             sFieldForm = $('<form></form>').attr('method','get');
@@ -37,6 +38,7 @@
             
             sFieldDiv.append(sFieldForm.append(_config.srchFldLbl).append(sFieldInput));
             
+            sListWrapDiv = $('<div></div>').attr('id',  _config.listWrapId+'_'+elCnt);
             sList = $('<ul></ul>').attr('id', _config.listId+'_'+elCnt);
             
             for (i=0;i<_config.items.length;i++) {
@@ -44,7 +46,9 @@
                 sList.append(sLi);
             }
             
-            var output = sFieldDiv.after(sList);
+            sListWrapDiv.append(sList);
+            
+            var output = sFieldDiv.after(sListWrapDiv);
             
             return output;
         };

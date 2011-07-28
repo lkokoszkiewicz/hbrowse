@@ -68,9 +68,10 @@ function ControlsUpdate() {
         var thisRef = this;
         
         _Settings = this.Settings.Application; // Shortcut
-        output = '&nbsp;:: ';
+        
         // id=breadcrumbs
         if (this.Data.user || !_Settings.userSelection) {
+            output = '&nbsp;:: ';
             if (this.Data.tid) {
                 // show subs
                 if (_Settings.userSelection) output += '<a>'+_Settings.usersListLbl+'</a> &raquo; <span class="bold">' + this.Data.user + '</span> &raquo; ';
@@ -84,7 +85,7 @@ function ControlsUpdate() {
         }
         else {
             // show users
-            output += 'Users List';
+            output = '';
         }
         
         $('#breadcrumbs').html(output);
@@ -183,6 +184,16 @@ function ControlsUpdate() {
         chtMessageFrame.append('<span class="chartTitle">'+_charts[cnt].name+'</span><br />There is no data<br />to draw a chart');
         $('#'+domIdPrefix+cnt).empty();
         $('#'+domIdPrefix+cnt).append(chtMessageFrame);
+    };
+    
+    this.hideShowFilters = function(action) {
+        if (action == 'show') {
+            if ($('#filtersToggleMenu').css('display') != 'block' && this.Data.activemenu == 1) $('#menuFilters a').trigger('click');
+            $('#menuFilters,#menuFiltersIcon').show();
+        } else if (action == 'hide') {
+            if ($('#filtersToggleMenu').css('display') == 'block') $('#menuFilters a').trigger('click',[false]);
+            $('#menuFilters,#menuFiltersIcon').hide();
+        }
     };
     
     this.drawFilters = function() {
@@ -285,7 +296,7 @@ function ControlsUpdate() {
             
             $('#submitFilters').click(function(){ thisRef.filtersSubmit_click(this); });
             
-            $('#dataFilters').show();
+            this.hideShowFilters('show');//$('#dataFilters').show();
             
             this.filter_change();
         }
