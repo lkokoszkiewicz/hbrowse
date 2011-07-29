@@ -77,7 +77,7 @@ function Controller() {
             this.breadcrumbs_update();
             $('#content').hide();
             this.hideShowFilters('hide');
-            if (this.Data.activemenu != 2) $('#menuUsers a').trigger('click');
+            if (this.Data.activemenu != 2) $('#dropDownMenu2').trigger('click');
             //this.drawUsers();
         }
             
