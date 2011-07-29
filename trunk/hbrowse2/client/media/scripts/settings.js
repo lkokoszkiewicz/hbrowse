@@ -27,6 +27,7 @@ function Settings() {
                 'user': '',
                 'refresh': 0,
                 'tid': '',
+                'initialTable': 'Mains',
                 'p': 1,
                 'sorting': [],
                 'or': [], // opened table rows
