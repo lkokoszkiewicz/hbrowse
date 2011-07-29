@@ -30,6 +30,53 @@ function Events() {
         this.setupURL();
     };
     
+    this.openMenu_Click = function(el, noActiveMenuReset) {
+        if (noActiveMenuReset === undefined) noActiveMenuReset = false;
+        
+        var menuID;
+        
+        // Pick clicked menuID (url variable value, eg. 1 or 2)
+        menuID = $(el).attr('id').replace("dropDownMenu", "");
+        
+        // Close other opened menus
+        if (this.Data.activemenu !== 0 && this.Data.activemenu != menuID) {
+            $('#dropDownMenu'+this.Data.activemenu).trigger('click', [true]).removeClass('selected');
+        }
+        
+        // Slide down the menu
+        $( $(el).attr('href') ).slideDown(100);
+        
+        // Add a class `selected` to the top menu element
+        $(el).addClass('selected');
+        
+        if (!noActiveMenuReset) {
+            this.Data.activemenu = menuID;
+            this.Data.noreload = true;
+            this.setupURL();
+        }
+    };
+    
+    this.closeMenu_Click = function(el, noActiveMenuReset) {
+        if (noActiveMenuReset === undefined) noActiveMenuReset = false;
+        
+        var menuID;
+        
+        // Pick clicked menuID (url variable value, eg. 1 or 2)
+        menuID = $(el).attr('id').replace("dropDownMenu", "");
+        
+        // slide up the menu
+        $( $(el).attr('href') ).slideUp(100);
+        
+        // Remove a class `selected` to the top menu element
+        $(el).removeClass('selected');
+        
+        if (!noActiveMenuReset) {
+            this.Data.activemenu = 0;
+            this.Data.noreload = true;
+            this.setupURL();
+        }
+    };
+    
     this.refresh_Change = function(el) {
         var thisRef = this;
         this.Data.refresh = parseInt($(el).val(), 10);

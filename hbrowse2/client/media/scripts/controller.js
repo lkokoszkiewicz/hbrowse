@@ -38,6 +38,17 @@ function Controller() {
         }
     };
     
+    this.openActiveMenu = function() {
+        // Open active menu
+        if (this.Data.activemenu !== 0) {
+            if (!$('#dropDownMenu'+this.Data.activemenu).hasClass('selected')) {
+                $('#dropDownMenu'+this.Data.activemenu).trigger('click',[true]);
+            }
+        } else {
+            $('.dropDown.selected').trigger('click',[true]);
+        }
+    };
+    
     // "viewUpdater" function updates all page controls
     // and decides what to display based on available data
     this.viewUpdater = function() {
@@ -46,6 +57,7 @@ function Controller() {
         if (this.appDisplayState() == 'subs') {
             // Show subs
             this.mainsTable = [];
+            this.openActiveMenu();
             this.drawMainsTable(this.Settings.Subs);
             $('#content').show();
         }
@@ -53,6 +65,7 @@ function Controller() {
             //show mains
             this.Data.uparam = [];
             this.subsTable = [];
+            this.openActiveMenu();
             this.drawMainsTable(this.Settings.Mains);
             $('#content').show();
         }
@@ -67,6 +80,9 @@ function Controller() {
             if (this.Data.activemenu != 2) $('#menuUsers a').trigger('click');
             //this.drawUsers();
         }
+            
+        // Create filters elements
+        this.drawFilters();
         this.userRefresh_update();
         this.filtersUpdate();
         this.setupURL();
@@ -172,9 +188,6 @@ function Controller() {
                 }
             });
             thisRef.breadcrumbs_update();
-            
-            // Create filters elements
-            thisRef.drawFilters();
             
             $('#loadingTable').stop(true, true).fadeOut(400);
         };
@@ -434,6 +447,7 @@ function Controller() {
             user:this.Data.user,
             refresh:this.Data.refresh,
             tid:this.Data.tid,
+            table:this.Data.table,
             p:this.Data.p,
             records:this.Data.records,
             sorting:this.Data.sorting,
@@ -469,38 +483,10 @@ function Controller() {
         // Events definitions
         $('#refresh').change( function() { thisRef.refresh_Change(this); });
         $('#refreshImg').click( function() { thisRef.viewUpdater(); } );
-        $('#menuFilters a').toggle(function(){
-            thisRef.Data.activemenu = 1;
-            thisRef.Data.noreload = true;
-            if ($('#usersToggleMenu').css('display') == 'block') {
-                $('#menuUsers a').trigger('click').removeClass('selected');
-            }
-            $('#filtersToggleMenu').slideDown(100);
-            $('#menuFilters a').addClass('selected');
-            thisRef.setupURL();
-        }, function(event, urlFlag) {
-            if (urlFlag === undefined) urlFlag = true;
-            if (thisRef.Data.activemenu == 1 && urlFlag) thisRef.Data.activemenu = 0;
-            thisRef.Data.noreload = true;
-            $('#filtersToggleMenu').slideUp(100);
-            $('#menuFilters a').removeClass('selected');
-            thisRef.setupURL();
-        });
-        $('#menuUsers a').toggle(function(){
-            thisRef.Data.activemenu = 2;
-            thisRef.Data.noreload = true;
-            if ($('#filtersToggleMenu').css('display') == 'block') {
-                $('#menuFilters a').trigger('click').removeClass('selected');
-            }
-            $('#usersToggleMenu').slideDown(100);
-            $('#menuUsers a').addClass('selected');
-            thisRef.setupURL();
-        }, function() {
-            if (thisRef.Data.activemenu == 2) thisRef.Data.activemenu = 0;
-            thisRef.Data.noreload = true;
-            $('#usersToggleMenu').slideUp(100);
-            $('#menuUsers a').removeClass('selected');
-            thisRef.setupURL();
+        $('.dropDown').toggle(function(event, noActiveMenuReset){
+            thisRef.openMenu_Click(this, noActiveMenuReset);
+        }, function(event, noActiveMenuReset) {
+            thisRef.closeMenu_Click(this, noActiveMenuReset);
         });
 		
 		// Activate tabs
@@ -511,18 +497,6 @@ function Controller() {
         
         // Setup Data from URL
         this.Data.quickSetup($.bbq.getState());
-        
-        // Open active menu
-        switch(this.Data.activemenu) {
-            case 1:
-                $('#menuFilters a').trigger('click');
-                break;
-            case 2:
-                $('#menuUsers a').trigger('click');
-                break;
-            default:
-                break;
-        }
         
         // Init users search
         if (_Settings.userSelection) this.getUsers();

@@ -188,11 +188,15 @@ function ControlsUpdate() {
     
     this.hideShowFilters = function(action) {
         if (action == 'show') {
-            if ($('#filtersToggleMenu').css('display') != 'block' && this.Data.activemenu == 1) $('#menuFilters a').trigger('click');
-            $('#menuFilters,#menuFiltersIcon').show();
+            if ($( $('#dropDownMenu1').attr('href') ).css('display') != 'block' && this.Data.activemenu == 1) {
+                $('#dropDownMenu1').trigger('click');
+            }
+            $('#dropDownMenu1,#dataFiltersLabel').parent('li').show();
         } else if (action == 'hide') {
-            if ($('#filtersToggleMenu').css('display') == 'block') $('#menuFilters a').trigger('click',[false]);
-            $('#menuFilters,#menuFiltersIcon').hide();
+            if ($( $('#dropDownMenu1').attr('href') ).css('display') == 'block') {
+                $('#dropDownMenu1').trigger('click');
+            }
+            $('#dropDownMenu1,#dataFiltersLabel').parent('li').hide();
         }
     };
     
