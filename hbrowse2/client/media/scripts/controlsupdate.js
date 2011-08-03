@@ -188,13 +188,13 @@ function ControlsUpdate() {
     
     this.hideShowFilters = function(action) {
         if (action == 'show') {
-            if ($( $('#dropDownMenu1').attr('href') ).css('display') != 'block' && this.Data.activemenu == 1) {
-                $('#dropDownMenu1').trigger('click');
+            if (/*$( $('#dropDownMenu1').attr('href') ).css('display') != 'block' && */this.Data.activemenu == 1) {
+                $('#dropDownMenu1').trigger('click',[true]);
             }
             $('#dropDownMenu1,#dataFiltersLabel').parent('li').show();
         } else if (action == 'hide') {
-            if ($( $('#dropDownMenu1').attr('href') ).css('display') == 'block') {
-                $('#dropDownMenu1').trigger('click');
+            if (/*$( $('#dropDownMenu1').attr('href') ).css('display') == 'block'*/this.Data.activemenu == 1) {
+                $('#dropDownMenu1').trigger('click',[true]);
             }
             $('#dropDownMenu1,#dataFiltersLabel').parent('li').hide();
         }
@@ -203,24 +203,26 @@ function ControlsUpdate() {
     this.drawFilters = function() {
         var i, j, _Settings, optArr, mainSpan, filter, option;
         var thisRef = this;
-        
-        var emptyFunc = function() {/*do nothing*/};
-        var returnEmptyObjFunc = function() { return {}; };
-        var handleAjaxData = function(data){
-            try {
-                thisRef.Data.mem.filters[_Settings.filters[i].urlVariable] = data;
-                optArr = _Settings.filters[i].options.translateData(data);
-            } catch(err1) {
-                if (thisRef.Settings.Application.debugMode) thisRef.setupErrorDialog(err1);
-            }
-        };
     
         if (this.appDisplayState() == 'mains') _Settings = this.Settings.Mains; // Shortcut
         else if (this.appDisplayState() == 'subs') _Settings = this.Settings.Subs; // Shortcut
-        
-        optArr = [];
+        else _Settings = {};
         
         if (_Settings.filters !== undefined) {
+        
+            var emptyFunc = function() {/*do nothing*/};
+            var returnEmptyObjFunc = function() { return {}; };
+            var handleAjaxData = function(data){
+                try {
+                    thisRef.Data.mem.filters[_Settings.filters[i].urlVariable] = data;
+                    optArr = _Settings.filters[i].options.translateData(data);
+                } catch(err1) {
+                    if (thisRef.Settings.Application.debugMode) thisRef.setupErrorDialog(err1);
+                }
+            };
+            
+            optArr = [];
+            
             $('#dataFiltersInputs').empty();
             for (i=0;i<_Settings.filters.length;i++) {
                 mainSpan = $('<span></span>').attr('id','filter_'+_Settings.filters[i].urlVariable).addClass('filterItems').html(_Settings.filters[i].label+'<br />');
@@ -318,7 +320,7 @@ function ControlsUpdate() {
         var addMultiSelectOption = function(j) {
             try {
                 $(this).removeAttr('selected');
-                if ($(this).val() == thisRef.Data.filters[_Settings.filters[i].urlVariable] || $.inArray($(this).val(), thisRef.Data.filters[_Settings.filters[i].urlVariable])) $(this).attr('selected','selected');
+                if ($(this).val() == thisRef.Data.filters[_Settings.filters[i].urlVariable] || $.inArray($(this).val(), thisRef.Data.filters[_Settings.filters[i].urlVariable]) != -1) $(this).attr('selected','selected');
             } catch(err) {/*do nothing*/}
         };
     

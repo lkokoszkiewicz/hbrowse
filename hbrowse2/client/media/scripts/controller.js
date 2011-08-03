@@ -38,15 +38,21 @@ function Controller() {
         }
     };
     
-    this.openActiveMenu = function() {
+    this.openActiveMenu = function() {//alert('inside function openActiveMenu');
         // Open active menu
         if (this.Data.activemenu !== 0) {
+            //alert('menu active');
             if (!$('#dropDownMenu'+this.Data.activemenu).hasClass('selected')) {
+                //alert('clicking to open');
                 $('#dropDownMenu'+this.Data.activemenu).trigger('click',[true]);
+                //alert('clicked');
             }
         } else {
+            //alert('clicking ot close');
             $('.dropDown.selected').trigger('click',[true]);
+            //alert('clicked to close');
         }
+        //alert('exiting function openActiveMenu');
     };
     
     // "viewUpdater" function updates all page controls
@@ -77,15 +83,20 @@ function Controller() {
             this.breadcrumbs_update();
             $('#content').hide();
             this.hideShowFilters('hide');
-            if (this.Data.activemenu != 2) $('#dropDownMenu2').trigger('click');
+            this.Data.activemenu = 2;
+            this.openActiveMenu();
+            //if (this.Data.activemenu != 2) $('#dropDownMenu2').trigger('click');
             //this.drawUsers();
         }
-            
-        // Create filters elements
-        this.drawFilters();
-        this.userRefresh_update();
-        this.filtersUpdate();
-        this.setupURL();
+        try {    
+            // Create filters elements
+            this.drawFilters();
+            this.userRefresh_update();
+            this.filtersUpdate();
+            this.setupURL();
+        } catch(err) {
+            if (_Settings.debugMode) this.setupErrorDialog(err);
+        }
     };
     
     // "drawUsers" draws users selection page
@@ -113,7 +124,7 @@ function Controller() {
         };
         
         // Hide filters panel
-        thisRef.hideShowFilters('hide');//$('#dataFilters').hide();
+        //if (this.appDisplayState() == 'users') thisRef.hideShowFilters('hide');//$('#dataFilters').hide();
         
         // Draw searchable list
         if (this.Data.mem.users) draw();
