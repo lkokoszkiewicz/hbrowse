@@ -93,6 +93,7 @@ function Controller() {
             this.drawFilters();
             this.userRefresh_update();
             this.filtersUpdate();
+            this.noreload = true;
             this.setupURL();
         } catch(err) {
             if (_Settings.debugMode) this.setupErrorDialog(err);

@@ -94,6 +94,7 @@ function Events() {
         var _Settings = this.Settings.Application; // Shortcut
         if ($(el).text() == _Settings.usersListLbl) {
             this.Data.user = '';
+            this.Data.table = '';
         }
         this.Data.tid = '';
         this.Data.sorting = [];
