@@ -87,7 +87,7 @@ function Data(ajaxAnimation, _Settings) {
         this.user = (params.user || settings.user);
         this.refresh = (parseInt(params.refresh, 10) || settings.refresh);
         this.tid = (params.tid || settings.tid);
-        this.table = (params.table || settings.initialTable);
+        this.table = (params.table || '');
         this.p = (parseInt(params.p, 10) || settings.p);
         this.records = (parseInt(params.records, 10) || this.copyVal(tSettings.iDisplayLength));
         this.or = (params.or || settings.or);
