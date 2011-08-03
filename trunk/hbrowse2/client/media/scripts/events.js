@@ -43,17 +43,17 @@ function Events() {
             $('#dropDownMenu'+this.Data.activemenu).trigger('click', [true]).removeClass('selected');
         }
         
-        // Slide down the menu
-        $( $(el).attr('href') ).slideDown(100);
-        
-        // Add a class `selected` to the top menu element
-        $(el).addClass('selected');
-        
         if (!noActiveMenuReset) {
             this.Data.activemenu = menuID;
             this.Data.noreload = true;
             this.setupURL();
         }
+        
+        // Slide down the menu
+        $( $(el).attr('href') ).slideDown(100);
+        
+        // Add a class `selected` to the top menu element
+        $(el).addClass('selected');
     };
     
     this.closeMenu_Click = function(el, noActiveMenuReset) {
@@ -64,17 +64,17 @@ function Events() {
         // Pick clicked menuID (url variable value, eg. 1 or 2)
         menuID = $(el).attr('id').replace("dropDownMenu", "");
         
-        // slide up the menu
-        $( $(el).attr('href') ).slideUp(100);
-        
-        // Remove a class `selected` to the top menu element
-        $(el).removeClass('selected');
-        
         if (!noActiveMenuReset) {
             this.Data.activemenu = 0;
             this.Data.noreload = true;
             this.setupURL();
         }
+        
+        // slide up the menu
+        $( $(el).attr('href') ).slideUp(100);
+        
+        // Remove a class `selected` to the top menu element
+        $(el).removeClass('selected');
     };
     
     this.refresh_Change = function(el) {
@@ -111,11 +111,11 @@ function Events() {
     
         if (this.appDisplayState() == 'mains') {
             _Settings = this.Settings.Mains; // Shortcut
-            rowDataSet = this.Data.mem.mains.data[dataID];
+            rowDataSet = this.Data.mem.table.data[dataID];
         }
         else {
             _Settings = this.Settings.Subs; // Shortcut
-            rowDataSet = this.Data.mem.subs.data[dataID];
+            rowDataSet = this.Data.mem.table.data[dataID];
         }
         
         var processData = function(jsonDataSet) {
@@ -255,6 +255,7 @@ function Events() {
         else if (this.appDisplayState() == 'subs') _Settings = this.Settings.Subs; // Shortcut
         
         for (i=0;i<_Settings.filters.length;i++) {
+            if (_Settings.filters[i].urlVariable == 'status') alert($('.filterItems #'+_Settings.filters[i].urlVariable).val());
             this.Data.filters[_Settings.filters[i].urlVariable] = ($('.filterItems #'+_Settings.filters[i].urlVariable).val() || '');
             this.filtersSubmit_OnOff(i);
         }
