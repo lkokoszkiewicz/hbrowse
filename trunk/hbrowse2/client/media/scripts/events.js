@@ -255,7 +255,6 @@ function Events() {
         else if (this.appDisplayState() == 'subs') _Settings = this.Settings.Subs; // Shortcut
         
         for (i=0;i<_Settings.filters.length;i++) {
-            if (_Settings.filters[i].urlVariable == 'status') alert($('.filterItems #'+_Settings.filters[i].urlVariable).val());
             this.Data.filters[_Settings.filters[i].urlVariable] = ($('.filterItems #'+_Settings.filters[i].urlVariable).val() || '');
             this.filtersSubmit_OnOff(i);
         }
