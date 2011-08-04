@@ -17,20 +17,21 @@ function Controller() {
     this.Settings = new Settings();
     this.Data = new Data($('#ajaxAnimation'), this.Settings);
     
-    this.Tables = {'mains':[],'subs':[]};
+    this.Table = []; //{'mains':[],'subs':[]};
     //this.subsTable = [];
     
     this.appDisplayState = function() {
         var _Settings = this.Settings.Application; // Shortcut
         if (this.Data.user || !_Settings.userSelection) {
-            if (this.Data.tid) {
+            /*if (this.Data.tid) {
                 // Show subs
                 return 'subs';
             }
             else {
                 //show mains
                 return 'mains';
-            }
+            }*/
+            return 'table';
         }
         else if (_Settings.userSelection) {
             // Show users
@@ -60,19 +61,19 @@ function Controller() {
     this.viewUpdater = function() {
         var _Settings = this.Settings.Application; // Shortcut
         
-        if (this.appDisplayState() == 'subs') {
+        /*if (this.appDisplayState() == 'subs') {
             // Show subs
             this.mainsTable = [];
             this.openActiveMenu();
             this.drawMainsTable(this.Settings.Subs);
             $('#content').show();
         }
-        else if (this.appDisplayState() == 'mains') {
-            //show mains
+        else */if (this.appDisplayState() == 'table') {
+            //show table
             this.Data.uparam = [];
-            this.subsTable = [];
+            this.Table = [];
             this.openActiveMenu();
-            this.drawMainsTable(this.Settings.Mains);
+            this.drawMainsTable(this.Settings[this.Data.table]);
             $('#content').show();
         }
         else if (this.appDisplayState() == 'users') {
@@ -177,7 +178,7 @@ function Controller() {
             // Charts tab handling - finish
             
             thisRef.mainsTable = $('#tableContent').lkfw_dataTable({
-                dTable: thisRef.Tables[_Settings.tableID],
+                dTable: thisRef.Table,//s[_Settings.tableID],
                 tableId: 'mains',
                 expandableRows: _Settings.expandableRows,
                 multipleER: _Settings.multipleER,

@@ -208,7 +208,7 @@ function Settings() {
             var status = classTranslate[$(el).find('a').attr('class').replace("drilldown ","")];
             var tid = Data.mem.table.data[rowIndex].TASKMONID;
             
-            return {'tid':tid,filters:{'status':status}};
+            return {'tid':tid,'table':'Subs',filters:{'status':status}};
         },
         /*'tableActivityEvent': function(el) {
             //alert('it works! (mains)');

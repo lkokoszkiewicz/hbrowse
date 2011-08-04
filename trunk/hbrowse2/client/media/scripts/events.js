@@ -24,8 +24,11 @@ function Events() {
     };
 
     this.userListItem_Click = function(el) {
+        var settings = this.Settings.Application.modelDefaults();
+    
         this.Data.user = $(el).text();
         this.Data.tid = '';
+        this.Data.table = settings.initialTable;
         this.Data.noreload = false;
         this.setupURL();
     };
@@ -110,14 +113,17 @@ function Events() {
         var _Settings, rowDataSet, output;
         var thisRef = this;
     
-        if (this.appDisplayState() == 'mains') {
+        /*if (this.appDisplayState() == 'mains') {
             _Settings = this.Settings.Mains; // Shortcut
             rowDataSet = this.Data.mem.table.data[dataID];
         }
         else {
             _Settings = this.Settings.Subs; // Shortcut
             rowDataSet = this.Data.mem.table.data[dataID];
-        }
+        }*/
+        
+        _Settings = this.Settings[this.Data.table]; // Shortcut
+        rowDataSet = this.Data.mem.table.data[dataID];
         
         var processData = function(jsonDataSet) {
             if (jsonDataSet === undefined) jsonDataSet = false;
@@ -210,6 +216,7 @@ function Events() {
         if (dParams) {
             if (dParams.uparam !== undefined) this.Data.uparam = dParams.uparam;
             if (dParams.tid !== undefined) this.Data.tid = dParams.tid;
+            if (dParams.table !== undefined) this.Data.table = dParams.table;
             if (dParams.filters !== undefined) {
                 for (i in dParams.filters) {
                     if (dParams.filters.hasOwnProperty(i)) {
@@ -270,8 +277,10 @@ function Events() {
     this.filtersSubmit_OnOff = function(i) {
         var _Settings;
     
-        if (this.appDisplayState() == 'mains') _Settings = this.Settings.Mains; // Shortcut
-        else if (this.appDisplayState() == 'subs') _Settings = this.Settings.Subs; // Shortcut
+        //if (this.appDisplayState() == 'mains') _Settings = this.Settings.Mains; // Shortcut
+        //else if (this.appDisplayState() == 'subs') _Settings = this.Settings.Subs; // Shortcut
+        
+        _Settings = this.Settings[this.Data.table]; // Shortcut
         
         if (_Settings.filters[i].options.On !== undefined && this.Data.filters[_Settings.filters[i].urlVariable] !== '') {
             _Settings.filters[i].options.On(this.Data);
@@ -287,14 +296,16 @@ function Events() {
         // Prepare html for the filters summary
         div = $('<div></div>').append($('<h3></h3>').html('Filters Summary').css('margin','0px 0px 3px 0px'));
         // Check the state of the app and load proper settings
-        switch (this.appDisplayState()) {
+        /*switch (this.appDisplayState()) {
             case 'mains':
                 _Settings = this.Settings.Mains;
                 break;
             case 'subs':
                 _Settings = this.Settings.Subs;
                 break;
-        }
+        }*/
+        
+        _Settings = this.Settings[this.Data.table]; // Shortcut
         
         // loop through the filters array
         for (i=0; i<_Settings.filters.length;i++) {
