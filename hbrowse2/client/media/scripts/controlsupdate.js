@@ -204,9 +204,12 @@ function ControlsUpdate() {
         var i, j, _Settings, optArr, mainSpan, filter, option;
         var thisRef = this;
     
-        if (this.appDisplayState() == 'mains') _Settings = this.Settings.Mains; // Shortcut
-        else if (this.appDisplayState() == 'subs') _Settings = this.Settings.Subs; // Shortcut
-        else _Settings = {};
+        //if (this.appDisplayState() == 'mains') _Settings = this.Settings.Mains; // Shortcut
+        //else if (this.appDisplayState() == 'subs') _Settings = this.Settings.Subs; // Shortcut
+        //else _Settings = {};
+        
+        _Settings = this.Settings[this.Data.table]; // Shortcut
+        if (_Settings === undefined) _Settings = {};
         
         if (_Settings.filters !== undefined) {
         
@@ -227,12 +230,17 @@ function ControlsUpdate() {
             for (i=0;i<_Settings.filters.length;i++) {
                 mainSpan = $('<span></span>').attr('id','filter_'+_Settings.filters[i].urlVariable).addClass('filterItems').html(_Settings.filters[i].label+'<br />');
                 
-                if (_Settings.filters[i].fieldType == 'text' || _Settings.filters[i].fieldType == 'date' || _Settings.filters[i].fieldType == 'datetime') {
+                if (_Settings.filters[i].fieldType == 'text' || _Settings.filters[i].fieldType == 'hidden' || _Settings.filters[i].fieldType == 'date' || _Settings.filters[i].fieldType == 'datetime') {
                     filter = $('<input></input>').attr({
                         'type':'text',
                         'id':_Settings.filters[i].urlVariable,
                         'value':this.Data.filters[_Settings.filters[i].urlVariable]
                     });
+                    
+                    if (_Settings.filters[i].fieldType == 'hidden') {
+                        mainSpan.css('display','none');
+                    }
+                    
                     mainSpan.append(filter);
                 } 
                 else if (_Settings.filters[i].fieldType == 'select' || _Settings.filters[i].fieldType == 'multiselect') {

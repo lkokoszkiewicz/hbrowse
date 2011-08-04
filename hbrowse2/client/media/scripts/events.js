@@ -215,7 +215,6 @@ function Events() {
         if ($.isFunction(_Settings.drillDownHandler)) dParams = _Settings.drillDownHandler(this.Data, el, rowIndex);
         if (dParams) {
             if (dParams.uparam !== undefined) this.Data.uparam = dParams.uparam;
-            if (dParams.tid !== undefined) this.Data.tid = dParams.tid;
             if (dParams.table !== undefined) this.Data.table = dParams.table;
             if (dParams.filters !== undefined) {
                 for (i in dParams.filters) {

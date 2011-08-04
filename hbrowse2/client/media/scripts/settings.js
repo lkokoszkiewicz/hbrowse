@@ -26,7 +26,7 @@ function Settings() {
             return {
                 'user': '',
                 'refresh': 0,
-                'tid': '',
+                'table':'',
                 'initialTable': 'Mains',
                 'p': 1,
                 'sorting': [],
@@ -208,7 +208,7 @@ function Settings() {
             var status = classTranslate[$(el).find('a').attr('class').replace("drilldown ","")];
             var tid = Data.mem.table.data[rowIndex].TASKMONID;
             
-            return {'tid':tid,'table':'Subs',filters:{'status':status}};
+            return {'table':'Subs',filters:{'status':status,'tid':tid}};
         },
         /*'tableActivityEvent': function(el) {
             //alert('it works! (mains)');
@@ -386,7 +386,7 @@ function Settings() {
         'dataURL_params': function(Data) {
             //alert(Data.filters.status);
             obj = {
-                'taskmonid':Data.tid,
+                'taskmonid':Data.filters.tid,
                 'what':(Data.filters.status || 'all')
             };
             return obj;
@@ -544,6 +544,13 @@ function Settings() {
                 'label':'Date filter',  // String
                 'urlVariable':'datefilter',  // String - lower cased, no spaces, no special characters
                 'fieldType':'date',  // String (text|select|date)
+                'value':'',
+                'options':{}
+            },
+            {
+                'label':'Task ID',  // String
+                'urlVariable':'tid',  // String - lower cased, no spaces, no special characters
+                'fieldType':'hidden',  // String (text|hidden|select|date|datetime)
                 'value':'',
                 'options':{}
             }
