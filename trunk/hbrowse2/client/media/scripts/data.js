@@ -25,8 +25,7 @@ function Data(ajaxAnimation, _Settings) {
     // general values
     this.user = settings.user;
     this.refresh = settings.refresh;
-    this.tid = settings.tid;
-    this.table = settings.initialTable;
+    this.table = settings.table;
     this.p = settings.p;
     this.records = 25;
     this.sorting = settings.sorting;
@@ -45,26 +44,16 @@ function Data(ajaxAnimation, _Settings) {
             user: '',
             timestamp: 0,
             data: []
-        },/*
-        subs: {
-            user: '',
-            tid: '',
-            timestamp: 0,
-            data: []
-        },*/
+        },
         filters:{}
     };
     
     // Setting up user defined filters
-    if (_Settings.Mains.filters !== undefined) {
-        for (i=0;i<_Settings.Mains.filters.length;i++) {
-            this.filters[_Settings.Mains.filters[i].urlVariable] = this.copyVal(_Settings.Mains.filters[i].value);
-        }
-    }
-    // Setting up user defined filters
-    if (_Settings.Subs.filters !== undefined) {
-        for (i=0;i<_Settings.Subs.filters.length;i++) {
-            this.filters[_Settings.Subs.filters[i].urlVariable] = this.copyVal(_Settings.Subs.filters[i].value);
+    if (this.table != '') {
+        if (_Settings[this.table].filters !== undefined) {
+            for (i=0;i<_Settings[this.table].filters.length;i++) {
+                this.filters[_Settings[this.table].filters[i].urlVariable] = this.copyVal(_Settings[this.table].filters[i].value);
+            }
         }
     }
     
@@ -80,13 +69,12 @@ function Data(ajaxAnimation, _Settings) {
     };
     
     this.quickSetup = function(params, ts2iso) {
-        var i;
+        var i, filter;
         var settings = _Settings.Application.modelDefaults();
         var tSettings = this.selectTableSettings();
         
         this.user = (params.user || settings.user);
         this.refresh = (parseInt(params.refresh, 10) || settings.refresh);
-        this.tid = (params.tid || settings.tid);
         this.table = (params.table || '');
         this.p = (parseInt(params.p, 10) || settings.p);
         this.records = (parseInt(params.records, 10) || this.copyVal(tSettings.iDisplayLength));
@@ -101,15 +89,13 @@ function Data(ajaxAnimation, _Settings) {
         }
         
         // Setting up user defined filters
-        if (_Settings.Mains.filters !== undefined && (this.tid === '' || this.user === '')) {
-            for (i=0;i<_Settings.Mains.filters.length;i++) {
-                this.filters[_Settings.Mains.filters[i].urlVariable] = (params[_Settings.Mains.filters[i].urlVariable] || this.copyVal(_Settings.Mains.filters[i].value));
-            }
-        }
-        // Setting up user defined filters
-        if (_Settings.Subs.filters !== undefined) {
-            for (i=0;i<_Settings.Subs.filters.length;i++) {
-                this.filters[_Settings.Subs.filters[i].urlVariable] = (params[_Settings.Subs.filters[i].urlVariable] || this.copyVal(_Settings.Subs.filters[i].value));
+        if (this.table != '') {
+            if (_Settings[this.table].filters !== undefined) {
+                for (i=0;i<_Settings[this.table].filters.length;i++) {
+                    filter = _Settings[this.table].filters[i];
+                    //alert(_Settings[this.table].filters[i].urlVariable+': '+(params[_Settings[this.table].filters[i].urlVariable] || this.copyVal(_Settings[this.table].filters[i].value)));
+                    this.filters[filter.urlVariable] = (params[filter.urlVariable] == 'undefined' ? this.copyVal(filter.value) : params[filter.urlVariable]);
+                }
             }
         }
     };

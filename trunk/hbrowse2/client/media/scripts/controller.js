@@ -459,7 +459,6 @@ function Controller() {
         var urlHash = {
             user:this.Data.user,
             refresh:this.Data.refresh,
-            tid:this.Data.tid,
             table:this.Data.table,
             p:this.Data.p,
             records:this.Data.records,
@@ -469,11 +468,8 @@ function Controller() {
             activemenu:this.Data.activemenu
         };
         
-        if (this.appDisplayState() == 'mains') {
-            urlHash = updateHashwithFilters(urlHash, this.Settings.Mains);
-        }
-        else if (this.appDisplayState() == 'subs') {
-            urlHash = updateHashwithFilters(urlHash, this.Settings.Subs);
+        if (this.appDisplayState() == 'table') {
+            urlHash = updateHashwithFilters(urlHash, this.Settings[this.Data.table]);
         }
         $.bbq.pushState(urlHash,2);
     };
