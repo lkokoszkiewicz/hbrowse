@@ -325,8 +325,9 @@ function ControlsUpdate() {
         };
     
         if (this.appDisplayState() != 'users') {
-            if (this.appDisplayState() == 'mains') _Settings = this.Settings.Mains; // Shortcut
-            else if (this.appDisplayState() == 'subs') _Settings = this.Settings.Subs; // Shortcut
+            //if (this.appDisplayState() == 'mains') _Settings = this.Settings.Mains; // Shortcut
+            //else if (this.appDisplayState() == 'subs') _Settings = this.Settings.Subs; // Shortcut
+            _Settings = this.Settings[this.Data.table]; // Shortcut
             
             if (_Settings.filters !== undefined) {
                 for (i=0;i<_Settings.filters.length;i++) {
