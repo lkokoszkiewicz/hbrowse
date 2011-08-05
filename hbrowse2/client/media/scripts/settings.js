@@ -18,7 +18,7 @@ function Settings() {
         'footerTxt': 'Task Monitoring', // Footer text
         'supportLnk': 'http://code.google.com/p/hbrowse/w/list', // Link to support page
         'logoLnk': 'media/images/logo.png', // Link to page logo
-        'usersListLbl': 'Users List', // Label of user list search field, example: 'Users List'
+        'usersListLbl': 'Users', // Label of user list search field, example: 'Users List'
         'mainsLbl': 'Tasks', // Name of mains content, example: 'Tasks'
         'subsLbL': 'Jobs', // Name of subs content, example: 'Jobs'
         'debugMode': true, // Display debug messages on errors inside dataTranslate functions? (true|false)

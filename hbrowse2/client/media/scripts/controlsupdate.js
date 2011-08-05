@@ -64,7 +64,7 @@ function ControlsUpdate() {
     };
     
     this.breadcrumbs_update = function() {
-        var _Settings, output;
+        var i, _Settings, output, bcLength;
         var thisRef = this;
         
         _Settings = this.Settings.Application; // Shortcut
@@ -72,16 +72,20 @@ function ControlsUpdate() {
         // id=breadcrumbs
         if (this.Data.user || !_Settings.userSelection) {
             output = '&nbsp;:: ';
-            if (this.Data.tid) {
-                // show subs
-                if (_Settings.userSelection) output += '<a>'+_Settings.usersListLbl+'</a> &raquo; <span class="bold">' + this.Data.user + '</span> &raquo; ';
-                output += '<a>'+_Settings.mainsLbl+'</a> &raquo; ' + this.Data.tid;
+            // show table
+            if (_Settings.userSelection) output += '<a id="breadcrumbs_users">'+_Settings.usersListLbl+'</a> [ <span class="bold">' + this.Data.user + '</span> ] &raquo; ';
+            
+            bcLength = this.Data.breadcrumbs.length;
+            
+            for (i=0;i<bcLength;i++) {
+                if (this.Data.breadcrumbs[i].table != this.Data.table) {
+                    output += '<a href="#'+this.Data.breadcrumbs[i].url+'">'+this.Data.breadcrumbs[i].table+'</a> &raquo; ';
+                } else {
+                    this.Data.breadcrumbs.splice(i,(bcLength-i));
+                    break;
+                }
             }
-            else {
-                // show mains
-                if (_Settings.userSelection) output += '<a>'+_Settings.usersListLbl+'</a> &raquo; <span class="bold">' + this.Data.user + '</span> &raquo; ';
-                output += _Settings.mainsLbl;
-            }
+            output += this.Data.table;
         }
         else {
             // show users
@@ -91,7 +95,7 @@ function ControlsUpdate() {
         $('#breadcrumbs').html(output);
         
         // Set up events
-        $('#breadcrumbs a').click( function() { thisRef.breadcrumbs_click(this); });
+        $('#breadcrumbs #breadcrumbs_users').click( function() { thisRef.breadcrumbs_click(this); });
     };
     
     this.charts_prepTable = function(chtCnt, tableTarget, domIdPrefix) {

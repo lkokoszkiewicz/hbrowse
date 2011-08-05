@@ -79,8 +79,8 @@ function Controller() {
         else if (this.appDisplayState() == 'users') {
             // Show users
             this.Data.uparam = [];
-            this.mainsTable = [];
-            this.subsTable = [];
+            this.Data.breadcrumbs = [];
+            this.Table = [];
             this.breadcrumbs_update();
             $('#content').hide();
             this.hideShowFilters('hide');
