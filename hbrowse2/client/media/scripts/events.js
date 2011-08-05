@@ -93,34 +93,9 @@ function Events() {
         this.setupURL();
     };
     
-    this.breadcrumbs_click = function(el) {
-        var _Settings = this.Settings.Application; // Shortcut
-        if ($(el).text() == _Settings.usersListLbl) {
-            this.Data.user = '';
-            this.Data.table = '';
-        }
-        this.Data.tid = '';
-        this.Data.sorting = [];
-        this.Data.uparam = [];
-        this.Data.p = 1;
-        $('.tablePlus').attr('src', 'media/images/table_plus.png');
-        this.Data.or = [];
-        this.Data.noreload = false;
-        this.setupURL();
-    };
-    
     this.expand_click = function(dataID) {
         var _Settings, rowDataSet, output;
         var thisRef = this;
-    
-        /*if (this.appDisplayState() == 'mains') {
-            _Settings = this.Settings.Mains; // Shortcut
-            rowDataSet = this.Data.mem.table.data[dataID];
-        }
-        else {
-            _Settings = this.Settings.Subs; // Shortcut
-            rowDataSet = this.Data.mem.table.data[dataID];
-        }*/
         
         _Settings = this.Settings[this.Data.table]; // Shortcut
         rowDataSet = this.Data.mem.table.data[dataID];
@@ -281,9 +256,6 @@ function Events() {
     
     this.filtersSubmit_OnOff = function(i) {
         var _Settings;
-    
-        //if (this.appDisplayState() == 'mains') _Settings = this.Settings.Mains; // Shortcut
-        //else if (this.appDisplayState() == 'subs') _Settings = this.Settings.Subs; // Shortcut
         
         _Settings = this.Settings[this.Data.table]; // Shortcut
         
@@ -300,16 +272,8 @@ function Events() {
         
         // Prepare html for the filters summary
         div = $('<div></div>').append($('<h3></h3>').html('Filters Summary').css('margin','0px 0px 3px 0px'));
-        // Check the state of the app and load proper settings
-        /*switch (this.appDisplayState()) {
-            case 'mains':
-                _Settings = this.Settings.Mains;
-                break;
-            case 'subs':
-                _Settings = this.Settings.Subs;
-                break;
-        }*/
         
+        // Load proper Settings
         _Settings = this.Settings[this.Data.table]; // Shortcut
         
         // loop through the filters array
