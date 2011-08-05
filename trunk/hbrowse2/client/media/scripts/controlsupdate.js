@@ -71,9 +71,9 @@ function ControlsUpdate() {
         
         // id=breadcrumbs
         if (this.Data.user || !_Settings.userSelection) {
-            output = '&nbsp;:: ';
+            output = '&nbsp;';
             // show table
-            if (_Settings.userSelection) output += '<a id="breadcrumbs_users">'+_Settings.usersListLbl+'</a> [ <span class="bold">' + this.Data.user + '</span> ] &raquo; ';
+            if (_Settings.userSelection) output += '[ <span class="bold">' + this.Data.user + '</span> ] &raquo; ';
             
             bcLength = this.Data.breadcrumbs.length;
             
@@ -93,9 +93,6 @@ function ControlsUpdate() {
         }
         
         $('#breadcrumbs').html(output);
-        
-        // Set up events
-        $('#breadcrumbs #breadcrumbs_users').click( function() { thisRef.breadcrumbs_click(this); });
     };
     
     this.charts_prepTable = function(chtCnt, tableTarget, domIdPrefix) {

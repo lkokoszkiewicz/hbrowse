@@ -23,14 +23,7 @@ function Controller() {
     this.appDisplayState = function() {
         var _Settings = this.Settings.Application; // Shortcut
         if (this.Data.user || !_Settings.userSelection) {
-            /*if (this.Data.tid) {
-                // Show subs
-                return 'subs';
-            }
-            else {
-                //show mains
-                return 'mains';
-            }*/
+            // Show table
             return 'table';
         }
         else if (_Settings.userSelection) {
@@ -61,33 +54,19 @@ function Controller() {
     this.viewUpdater = function() {
         var _Settings = this.Settings.Application; // Shortcut
         
-        /*if (this.appDisplayState() == 'subs') {
-            // Show subs
-            this.mainsTable = [];
-            this.openActiveMenu();
-            this.drawMainsTable(this.Settings.Subs);
-            $('#content').show();
-        }
-        else */if (this.appDisplayState() == 'table') {
+        if (this.appDisplayState() == 'table') {
             //show table
-            this.Data.uparam = [];
-            this.Table = [];
             this.openActiveMenu();
             this.drawMainsTable(this.Settings[this.Data.table]);
             $('#content').show();
         }
         else if (this.appDisplayState() == 'users') {
             // Show users
-            this.Data.uparam = [];
-            this.Data.breadcrumbs = [];
-            this.Table = [];
             this.breadcrumbs_update();
             $('#content').hide();
             this.hideShowFilters('hide');
             this.Data.activemenu = 2;
             this.openActiveMenu();
-            //if (this.Data.activemenu != 2) $('#dropDownMenu2').trigger('click');
-            //this.drawUsers();
         }
         try {    
             // Create filters elements
@@ -446,6 +425,18 @@ function Controller() {
     // "setupURL" builds url fragmant for bookmarking
     this.setupURL = function() {
         var thisRef = this;
+        
+        if (this.appDisplayState() == 'table') {
+            //show table
+            this.Data.uparam = [];
+            this.Table = [];
+        }
+        else if (this.appDisplayState() == 'users') {
+            // Show users
+            this.Data.uparam = [];
+            this.Data.breadcrumbs = [];
+            this.Table = [];
+        }
             
         var updateHashwithFilters = function(urlHash, _Settings) {
             if (_Settings.filters !== undefined) {
