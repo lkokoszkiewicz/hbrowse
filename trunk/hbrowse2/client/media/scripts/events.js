@@ -211,6 +211,12 @@ function Events() {
         var i, _Settings, dParams = false;
         _Settings = this.Settings.Mains; // Shortcut
         
+        // Save breadcrumbs
+        this.Data.breadcrumbs.push({
+            'table':this.Data.table,
+            'url':$.param.fragment()
+        });
+        
         // setup model
         if ($.isFunction(_Settings.drillDownHandler)) dParams = _Settings.drillDownHandler(this.Data, el, rowIndex);
         if (dParams) {

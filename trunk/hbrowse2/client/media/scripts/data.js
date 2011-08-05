@@ -36,6 +36,7 @@ function Data(ajaxAnimation, _Settings) {
     this.noreload = false;
     
     this.filters = {};
+    this.breadcrumbs = [];
         
     // Data
     this.mem = {
