@@ -184,11 +184,11 @@ function Events() {
     
     this.drillDown_click = function(el, rowIndex) {
         var i, _Settings, dParams = false;
-        _Settings = this.Settings.Mains; // Shortcut
+        _Settings = this.Settings[this.Data.table]; // Shortcut
         
         // Save breadcrumbs
         this.Data.breadcrumbs.push({
-            'table':this.Data.table,
+            'table':_Settings.tableName,
             'url':$.param.fragment()
         });
         
