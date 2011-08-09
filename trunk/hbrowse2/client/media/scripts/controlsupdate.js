@@ -64,10 +64,15 @@ function ControlsUpdate() {
     };
     
     this.breadcrumbs_update = function() {
-        var i, _Settings, output, bcLength;
+        var i, _Settings, sDefaults, output, bcLength, url;
         var thisRef = this;
         
+        var addBC = function(url, table) {
+            return '<a href="#'+url+'">'+table+'</a> &raquo; ';
+        };
+        
         _Settings = this.Settings.Application; // Shortcut
+        sDefaults = _Settings.modelDefaults();
         
         // id=breadcrumbs
         if (this.Data.user || !_Settings.userSelection) {
@@ -78,14 +83,21 @@ function ControlsUpdate() {
             bcLength = this.Data.breadcrumbs.length;
             
             for (i=0;i<bcLength;i++) {
-                if (this.Data.breadcrumbs[i].table != this.Data.table) {
-                    output += '<a href="#'+this.Data.breadcrumbs[i].url+'">'+this.Data.breadcrumbs[i].table+'</a> &raquo; ';
+                if (this.Data.breadcrumbs[i].table != this.Settings[this.Data.table].tableName) {
+                    output += addBC(this.Data.breadcrumbs[i].url, this.Data.breadcrumbs[i].table);
                 } else {
                     this.Data.breadcrumbs.splice(i,(bcLength-i));
                     break;
                 }
             }
-            output += this.Data.table;
+            
+            if (bcLength == 0 && sDefaults.initialTable != this.Data.table && sDefaults.initialTable != '') {
+                url = 'user='+this.Data.user+'&refresh='+this.Data.refresh+'&table='+sDefaults.initialTable+'&p=1&records='+this.Data.records+'&activemenu=0';
+                output += addBC(url, this.Settings[sDefaults.initialTable].tableName);
+                // user=testuser5&refresh=0&table=Mains&p=1&records=25&activemenu=0
+            }
+            
+            output += this.Settings[this.Data.table].tableName;
         }
         else {
             // show users

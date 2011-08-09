@@ -311,9 +311,10 @@ function ControlsUpdate() {
                 }
                 else if (_Settings.filters[i].fieldType == 'multiselect') {
                     $('#'+_Settings.filters[i].urlVariable).multiselect({
-                        selectedText: "# of # selected",
+                        selectedText: "# of #",
                         classes:'hb-multiselect'
                     });
+                    $('button.ui-multiselect').css('width','130px');
                 }
             }
             

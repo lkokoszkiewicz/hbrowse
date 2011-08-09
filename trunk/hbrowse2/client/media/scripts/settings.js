@@ -73,7 +73,7 @@ function Settings() {
     
     // Mains settings - START
     this.Mains = {
-        'tableID':'mains',
+        'tableName': 'Tasks',
         'dataURL': 'gangataskstable', // Mains URL for ajax request
         // Function, ajax request parameters
         // Input: Data - application Data model, rowDataSet - clicked row data (from ajax datatable response)
@@ -379,7 +379,7 @@ function Settings() {
     
     // Subs settings - START
     this.Subs = {
-        'tableID':'subs',
+        'tableName':'Jobs',
         'dataURL': 'gangataskjobs', // Subs list URL for ajax request
         // Function, ajax request parameters
         // Output: {'<parameter_name>':<parameter_value>,...} (default: {})

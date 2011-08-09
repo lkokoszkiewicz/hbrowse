@@ -14,7 +14,7 @@
         };
         
         var overTooltip = false;
-        var clockTimeoutID;
+        var offTimeoutID, onTimeoutID;
         
         var _drawTooltip = function(el) {
             var scroll, offset, height, top, left, posShift, tTipConfig;
@@ -77,17 +77,28 @@
                     'left':left+'px'
                 });
                 
-                mainDiv.delay(_config.delay).fadeIn(_config.fadeIn);
-                
-                if (_config.clickable) {
-                    mainDiv.hover(function(){overTooltip = true;},function(){
-                        if (overTooltip === true) {
-                            $('.lkfw_tooltip'+_config.classDist).fadeOut(_config.fadeOut,function(){$('.lkfw_tooltip'+_config.classDist).detach();});
-                        }
-                        overTooltip = false;
-                    });
-                }
+                return mainDiv;
             } catch(err) {  }
+        };
+        
+        var _displayTooltip = function(mainDiv) {
+            //mainDiv.delay(_config.delay).fadeIn(_config.fadeIn);
+            if (_config.delay === 0) {
+                mainDiv.fadeIn(_config.fadeIn);
+            } else if (_config.delay >= 0) {
+                onTimeoutID = setTimeout(function(){
+                    mainDiv.fadeIn(_config.fadeIn);
+                }, _config.delay);
+            }
+            
+            if (_config.clickable) {
+                mainDiv.hover(function(){overTooltip = true;},function(){
+                    if (overTooltip === true) {
+                        $('.lkfw_tooltip'+_config.classDist).fadeOut(_config.fadeOut,function(){$('.lkfw_tooltip'+_config.classDist).detach();});
+                    }
+                    overTooltip = false;
+                });
+            }
         };
         
         if (settings) $.extend(_config, settings);
@@ -95,12 +106,21 @@
         this.each(function() {
             $(this).unbind('mouseenter mouseleave');
             $(this).hover(function(){
-                clearTimeout(clockTimeoutID);
-                _drawTooltip(this);
+                var mainDiv;
+                
+                clearTimeout(offTimeoutID);
+                
+                mainDiv = _drawTooltip(this);
+                
+                _displayTooltip(mainDiv);
             },function(){
                 var timeout = 0;
+                
+                clearTimeout(onTimeoutID);
+                
                 if (_config.clickable) timeout = 800;
-                clockTimeoutID = setTimeout(function(){
+                
+                offTimeoutID = setTimeout(function(){
                     if (overTooltip === false) {
                         $('.lkfw_tooltip'+_config.classDist).fadeOut(_config.fadeOut,function(){$('.lkfw_tooltip'+_config.classDist).detach();});
                     }
