@@ -49,6 +49,16 @@ function Controller() {
         //alert('exiting function openActiveMenu');
     };
     
+    this.resolveTable = function() {
+        var defaults;
+        if (this.Data.table != '') {
+            return this.Data.table;
+        } else {
+            defaults = this.Settings.Application.modelDefaults();
+            return defaults.Mains;
+        }
+    };
+    
     // "viewUpdater" function updates all page controls
     // and decides what to display based on available data
     this.viewUpdater = function() {
@@ -243,107 +253,6 @@ function Controller() {
         this.Data.ajax_getData('mainsReq', _Settings.dataURL, _Settings.dataURL_params(this.Data), getData, function(){});
     };
     
-    /*this.drawSubsTable = function() {
-        var thisRef = this;
-        var _Settings = this.Settings.Subs; // Shortcut
-        
-        if (_Settings.dataURL_params === undefined) _Settings.dataURL_params = function() { return {}; };
-        
-        // "draw" function is calling lkfw.datatable plugin to create table filled with data
-        var draw = function(data) {
-            // Charts tab handling - start
-            if (_Settings.charts !== undefined) $("#siteTabs").tabs("enable",1); // Enable charts tab
-            else $("#siteTabs").tabs("disable",1); // Disable charts tab
-            $("#siteTabs").tabs("select",0); // Select data table tab
-            $('#topTableCharts').empty();
-            // Charts tab handling - finish
-            
-            thisRef.subsTable = $('#tableContent').lkfw_dataTable({
-                dTable: thisRef.subsTable,
-                tableId: 'subs',
-                expandableRows: _Settings.expandableRows,
-                multipleER: _Settings.multipleER,
-                items: data,
-                tblLabels: _Settings.tblLabels,
-                useScrollerPlugin: ( (_Settings.useScrollerPlugin !== undefined) ? _Settings.useScrollerPlugin : false ),
-                sorting: (thisRef.Data.sorting.length > 0 ? thisRef.Data.sorting : _Settings.sorting),
-                fnERContent:function(dataID){ return thisRef.expand_click(dataID); },
-                fnERContentPostProcess:function(expandedID,inputObj){ return thisRef.expand_click_postprocess(expandedID,inputObj,false); },
-                fnContentChange: function(el) { thisRef.subsTableContent_change(el); },
-                fnERClose: function(dataID) { thisRef.erClose_click(dataID); },
-                fnTableSorting: function(el) { thisRef.tableSorting_click(el,thisRef.subsTable[0]); },
-                dataTable: {
-                    iDisplayLength: thisRef.Data.records,//_Settings.iDisplayLength,
-                    sPaginationType: "input",
-                    bLengthChange: ( (_Settings.aLengthMenu !== undefined) ? true : false ),
-                    aLengthMenu:( (_Settings.aLengthMenu !== undefined) ? _Settings.aLengthMenu : [10, 25, 50, 100] ),
-                    aoColumns: _Settings.aoColumns
-                }
-            });
-            thisRef.breadcrumbs_update();
-            
-            // Create filters elements
-            thisRef.drawFilters();
-            
-            $('#loadingTable').stop(true, true).fadeOut(400);
-        };
-        
-        // "getData" function converts data given by ajax request onto
-        // lkfw.datatable plugin readable format
-        // Arguments:
-        //   data - object returned by ajax call
-        var getData = function(data) {
-            var tSettings, tPages;
-            var mainSubs = _Settings.getDataArray(data);
-            var t = new Date();
-            
-            // Save the data
-            thisRef.Data.mem.subs = {
-                user: this.Data.user,
-                timestamp: Math.floor(t.getTime()/1000),
-                data: mainSubs
-            };
-            
-            // Draw data table
-            try {
-                draw(_Settings.translateData(mainSubs));
-            } catch(err) {
-                if (thisRef.Settings.Application.debugMode) thisRef.setupErrorDialog(err);
-            }
-            
-            tSettings = thisRef.subsTable[0].fnSettings();
-            tPages = parseInt( (tSettings.fnRecordsDisplay()-1) / tSettings._iDisplayLength, 10 ) + 1;
-            
-            if ( $.bbq.getState('p') && ($.bbq.getState('p') <= tPages) ) {
-                $('#url-page').trigger('click');  // Load page number from URL
-                thisRef.Data.noreload = true;  // tell keyup event that page has been reloaded (history is not working without this)
-                $('#dataTable_0_filter input').trigger('keyup');  // Recreate expand events for current page
-                thisRef.Data.noreload = false;  // Make sure that noreload is off after operation
-            } else {
-                thisRef.Data.p = 1;
-                $('#dataTable_0_filter input').trigger('keyup');  // Recreate expand events for current page
-                thisRef.Data.noreload = true;
-                thisRef.setupURL();
-            }
-            
-            $.each(thisRef.Data.or, function() {
-                $('#tablePlus_'+this).parent().trigger('click');
-            });
-            
-            // Hide filters panel
-            if (_Settings.filters !== undefined) thisRef.hideShowFilters('show');//$('#dataFilters').show();
-            else thisRef.hideShowFilters('hide');//$('#dataFilters').hide();
-            
-            thisRef.executeCharts(_Settings.charts, 'cht_', '#chartContent');
-            thisRef.executeCharts(_Settings.topTableCharts, 'topTblcht_', '#topTableCharts', true);
-        };
-        
-        // Get the data from ajax call
-        $('#loadingTable').delay(800).fadeIn(400); // Dim content area
-        $('#breadcrumbs a').css('color','#888888').unbind();
-        this.Data.ajax_getData('subsReq', _Settings.dataURL, _Settings.dataURL_params(this.Data), getData, function(){});
-    };*/
-    
     this.drawChart = function(_charts, domIdPrefix, cnt, forceDraw) {
         if (forceDraw === undefined) forceDraw = false;
         if (_charts[cnt].onDemand === undefined) _charts[cnt].onDemand = false;
@@ -500,6 +409,7 @@ function Controller() {
         
         // Init users search
         if (_Settings.userSelection) this.getUsers();
+        else $('#dropDownMenu2').parent('li').hide();
         
         // Bind the event onhashchange
         $(window).bind('hashchange', function(){

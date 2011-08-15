@@ -216,10 +216,6 @@ function ControlsUpdate() {
     this.drawFilters = function() {
         var i, j, _Settings, optArr, mainSpan, filter, option;
         var thisRef = this;
-    
-        //if (this.appDisplayState() == 'mains') _Settings = this.Settings.Mains; // Shortcut
-        //else if (this.appDisplayState() == 'subs') _Settings = this.Settings.Subs; // Shortcut
-        //else _Settings = {};
         
         _Settings = this.Settings[this.Data.table]; // Shortcut
         if (_Settings === undefined) _Settings = {};
@@ -346,8 +342,6 @@ function ControlsUpdate() {
         };
     
         if (this.appDisplayState() != 'users') {
-            //if (this.appDisplayState() == 'mains') _Settings = this.Settings.Mains; // Shortcut
-            //else if (this.appDisplayState() == 'subs') _Settings = this.Settings.Subs; // Shortcut
             _Settings = this.Settings[this.Data.table]; // Shortcut
             
             if (_Settings.filters !== undefined) {

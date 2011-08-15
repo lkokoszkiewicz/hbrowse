@@ -39,7 +39,8 @@ input[type=button]:hover { background-color:#dbeaf4; }
 #refreshSelect #refreshImg { vertical-align:middle; cursor:pointer; margin-bottom:2px; }
 #refreshSelect #refreshImg:hover { background-color:#666666; }
 
-#ajaxAnimation { display:none; margin-top:3px; }
+#loadingAnimation { position:absolute; right:420px; top:3px; }
+#ajaxAnimation { display:none; }
 #loadingTable { display:none; }
 
 #supportHelp { position:absolute; top:5px; right:5px; text-align:right; border-right:0px #e1e1e1 solid; font-size:9pt; background-color:#7FA4BF;text-align:center; }
