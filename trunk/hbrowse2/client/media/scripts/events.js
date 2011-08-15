@@ -294,6 +294,7 @@ function Events() {
                         if (_Settings.filters[i].urlVariable === undefined) selectElements = _Settings.filters[i].options.translateData();
                         else selectElements = _Settings.filters[i].options.translateData(this.Data.mem.filters[_Settings.filters[i].urlVariable]);
                         
+                        fElementsArr = [];
                         for (j=0;j<selectElements.length;j++) {
                             elIndex = $.inArray(selectElements[j][0], this.Data.filters[_Settings.filters[i].urlVariable]);
                             if (elIndex != -1) {
