@@ -1,7 +1,7 @@
 #labels Featured
 =Change Log=
 ==v1.6.1==
-  * Fixed bug with tooltip library when showing filters summary tooltip even after mouse through the filters layer
+  * Fixed bug with tooltip library when showing filters summary tooltip even after mouse through the filters label
   * Fixed bug when filters summary tooltip showed multiselect fields info incorrectly
 
 ==v1.6.0==
