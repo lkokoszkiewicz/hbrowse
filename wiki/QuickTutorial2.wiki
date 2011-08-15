@@ -213,7 +213,7 @@ Optional function that allows user to handle table change event (on changing sor
 It's an array of objects, each object represents different filter and all of the filters values are stored in a Controller.Data.filters object and you can use them (eg in dataURL_params functions) by doing Data.filters.{filter_urlVariable}. The filter object consists of the following elements:
    * label - */string/* filter label /displayed above the input field/ (default: '')
    * urlVariable - */string/* lower cased, no spaces, no special characters /used in url and inside Controller.Data object/ (default: 'filter')
-   * fieldType - */string/* accept 3 kinds of input types ('text' &#124; 'select' &#124; 'date') (default: 'text')
+   * fieldType - */string/* accept 3 kinds of input types ('text' | 'select' | 'multiselect' | 'date') (default: 'text')
    * value - */string/* Initial value for the filter (default: '')
    * options - */obejct/* there are several options that you can setup depending on _fieldType_ and needs, here is the example:
 {{{
@@ -385,7 +385,7 @@ Optional function that allows user to handle table change event (on changing sor
 It's an array of objects, each object represents different filter and all of the filters values are stored in a Controller.Data.filters object and you can use them (eg in dataURL_params functions) by doing Data.filters.{filter_urlVariable}. The filter object consists of the following elements:
    * label - */string/* filter label /displayed above the input field/ (default: '')
    * urlVariable - */string/* lower cased, no spaces, no special characters /used in url and inside Controller.Data object/ (default: 'filter')
-   * fieldType - */string/* accept 3 kinds of input types ('text' &#124; 'select' &#124; 'date') (default: 'text')
+   * fieldType - */string/* accept 3 kinds of input types ('text' | 'select' | 'multiselect' | 'date') (default: 'text')
    * value - */string/* Initial value for the filter (default: '')
    * options - */obejct/* there are several options that you can setup depending on _fieldType_ and needs, here is the example:
 {{{
