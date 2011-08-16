@@ -45,12 +45,14 @@ function Data(ajaxAnimation, _Settings) {
         mains: {
             user: '',
             timestamp: 0,
+            json: {},
             data: []
         },
         subs: {
             user: '',
             tid: '',
             timestamp: 0,
+            json: {},
             data: []
         },
         filters:{}

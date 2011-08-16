@@ -192,6 +192,7 @@ function Controller() {
             thisRef.Data.mem.mains = {
                 user: this.Data.user,
                 timestamp: Math.floor(t.getTime()/1000),
+                json: data,
                 data: userMains
             };
             
@@ -296,6 +297,7 @@ function Controller() {
             thisRef.Data.mem.subs = {
                 user: this.Data.user,
                 timestamp: Math.floor(t.getTime()/1000),
+                json: data,
                 data: mainSubs
             };
             
