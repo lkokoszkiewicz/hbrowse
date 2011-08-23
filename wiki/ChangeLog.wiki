@@ -1,5 +1,9 @@
 #labels Featured
 =Change Log=
+==v1.6.2==
+  * Fixed bug where system checks all of the multiple select items at once
+  * Update highcharts library
+
 ==v1.6.1==
   * Fixed bug with tooltip library when showing filters summary tooltip even after mouse through the filters label
   * Fixed bug when filters summary tooltip showed multiselect fields info incorrectly
