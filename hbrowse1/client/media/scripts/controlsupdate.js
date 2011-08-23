@@ -338,7 +338,7 @@ function ControlsUpdate() {
         var addMultiSelectOption = function(j) {
             try {
                 $(this).removeAttr('selected');
-                if ($(this).val() == thisRef.Data.filters[_Settings.filters[i].urlVariable] || $.inArray($(this).val(), thisRef.Data.filters[_Settings.filters[i].urlVariable])) $(this).attr('selected','selected');
+                if ($(this).val() == thisRef.Data.filters[_Settings.filters[i].urlVariable] || $.inArray($(this).val(), thisRef.Data.filters[_Settings.filters[i].urlVariable]) != -1) $(this).attr('selected','selected');
             } catch(err) {/*do nothing*/}
         };
     
