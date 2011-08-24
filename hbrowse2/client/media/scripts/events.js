@@ -239,8 +239,7 @@ function Events() {
     this.filtersSubmit_click = function(el) {
         var i, _Settings;
     
-        if (this.appDisplayState() == 'mains') _Settings = this.Settings.Mains; // Shortcut
-        else if (this.appDisplayState() == 'subs') _Settings = this.Settings.Subs; // Shortcut
+        _Settings = this.Settings[this.Data.table]; // Shortcut
         
         for (i=0;i<_Settings.filters.length;i++) {
             this.Data.filters[_Settings.filters[i].urlVariable] = ($('.filterItems #'+_Settings.filters[i].urlVariable).val() || '');

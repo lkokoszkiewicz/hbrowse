@@ -32,21 +32,23 @@ function Controller() {
         }
     };
     
-    this.openActiveMenu = function() {//alert('inside function openActiveMenu');
+    this.openActiveMenu = function() {
+        var i, menuIdList = [1,2];
         // Open active menu
         if (this.Data.activemenu !== 0) {
-            //alert('menu active');
+            // Close other menus
+            for (i=1;i<=menuIdList.length;i++) {
+                if (i != this.Data.activemenu && $('#dropDownMenu'+i).hasClass('selected')) {
+                    $('#dropDownMenu'+i).trigger('click',[true]);
+                }
+            }
+            // Open Active
             if (!$('#dropDownMenu'+this.Data.activemenu).hasClass('selected')) {
-                //alert('clicking to open');
                 $('#dropDownMenu'+this.Data.activemenu).trigger('click',[true]);
-                //alert('clicked');
             }
         } else {
-            //alert('clicking ot close');
             $('.dropDown.selected').trigger('click',[true]);
-            //alert('clicked to close');
         }
-        //alert('exiting function openActiveMenu');
     };
     
     this.resolveTable = function() {
