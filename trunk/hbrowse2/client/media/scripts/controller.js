@@ -209,7 +209,8 @@ function Controller() {
             thisRef.Data.mem.table = {
                 user: this.Data.user,
                 timestamp: Math.floor(t.getTime()/1000),
-                data: userMains
+                data: userMains,
+                json: data
             };
             
             // Draw data table
