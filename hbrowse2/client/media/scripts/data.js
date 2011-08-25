@@ -44,7 +44,8 @@ function Data(ajaxAnimation, _Settings) {
         table: {
             user: '',
             timestamp: 0,
-            data: []
+            data: [],
+            json:{}
         },
         filters:{}
     };

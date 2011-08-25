@@ -343,7 +343,7 @@
                 
                 // Setting up PLUS column
                 _config.dataTable.aoColumns = $.merge([{ 
-                    sWidth:'10px',
+                    sWidth:'5px',
                     bSortable:false, 
                     sClass:'rExpand'
                 }],_config.dataTable.aoColumns);
