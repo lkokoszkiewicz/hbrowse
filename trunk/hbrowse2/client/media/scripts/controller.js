@@ -400,6 +400,7 @@ function Controller() {
         }, function(event, noActiveMenuReset) {
             thisRef.closeMenu_Click(this, noActiveMenuReset);
         });
+        $('#submitFilters').click(function(){ thisRef.filtersSubmit_click(this); });
 		
 		// Activate tabs
         $("#siteTabs").tabs({select: function(event, ui) {
