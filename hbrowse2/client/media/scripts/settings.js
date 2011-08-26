@@ -517,11 +517,13 @@ function Settings() {
             });
             //alert('it works! (subs)');
         },*/
+        'filterGroups':['Group 1','Group 2'],
         'filters':[
             {
                 'label':'Status',  // String
                 'urlVariable':'status',  // String - lower cased, no spaces, no special characters
                 'fieldType':'multiselect',  // String (text|select|multiselect|date)
+                'groupIndex':0,
                 'value':'',
                 'options':{
                     // Function translates model or ajax data onto simple elements array
@@ -537,6 +539,7 @@ function Settings() {
                 'label':'Text filter',  // String
                 'urlVariable':'textfilter',  // String - lower cased, no spaces, no special characters
                 'fieldType':'text',  // String (text|select|date)
+                'groupIndex':0,
                 'value':'',
                 'options':{}
             },
@@ -544,6 +547,7 @@ function Settings() {
                 'label':'Date filter',  // String
                 'urlVariable':'datefilter',  // String - lower cased, no spaces, no special characters
                 'fieldType':'date',  // String (text|select|date)
+                'groupIndex':1,
                 'value':'',
                 'options':{}
             },
@@ -551,6 +555,7 @@ function Settings() {
                 'label':'Task ID',  // String
                 'urlVariable':'tid',  // String - lower cased, no spaces, no special characters
                 'fieldType':'hidden',  // String (text|hidden|select|date|datetime)
+                'groupIndex':1,
                 'value':'',
                 'options':{}
             }
