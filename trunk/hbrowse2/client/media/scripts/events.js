@@ -318,6 +318,7 @@ function Events() {
             'place':'bottom',
             'classDist':'_filtersSummary',
             'delay':1000,
+            'clickable':true,
             'posShift':[-5,-1],
             'css':{
                 'width':'215px'
