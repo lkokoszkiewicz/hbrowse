@@ -18,6 +18,7 @@ function Controller() {
     this.Data = new Data($('#ajaxAnimation'), this.Settings);
     
     this.Table = []; //{'mains':[],'subs':[]};
+    this.Filter = '';
     //this.subsTable = [];
     
     this.appDisplayState = function() {
