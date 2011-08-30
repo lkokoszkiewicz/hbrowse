@@ -238,8 +238,8 @@ function ControlsUpdate() {
         if (_Settings === undefined) _Settings = {};
         
         // if filters for a given table exists, draw controlls
-        if (_Settings.filters !== undefined) {
-        
+        if (_Settings.filters !== undefined && this.Filter != this.Data.table) {
+            this.Filter = this.Data.table;
             // defining empty functions to use as defaults for ajax functions
             var emptyFunc = function() {/*do nothing*/};
             var returnEmptyObjFunc = function() { return {}; };
@@ -432,7 +432,7 @@ function ControlsUpdate() {
                 if ($(this).val() == thisRef.Data.filters[_Settings.filters[i].urlVariable] || $.inArray($(this).val(), thisRef.Data.filters[_Settings.filters[i].urlVariable]) != -1) $(this).attr('selected','selected');
             } catch(err) {/*do nothing*/}
         };
-    
+        
         if (this.appDisplayState() != 'users') {
             _Settings = this.Settings[this.Data.table]; // Shortcut
             

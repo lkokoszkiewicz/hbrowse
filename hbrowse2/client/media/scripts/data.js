@@ -96,7 +96,7 @@ function Data(ajaxAnimation, _Settings) {
                 for (i=0;i<_Settings[this.table].filters.length;i++) {
                     filter = _Settings[this.table].filters[i];
                     //alert(_Settings[this.table].filters[i].urlVariable+': '+(params[_Settings[this.table].filters[i].urlVariable] || this.copyVal(_Settings[this.table].filters[i].value)));
-                    this.filters[filter.urlVariable] = (params[filter.urlVariable] == 'undefined' ? this.copyVal(filter.value) : params[filter.urlVariable]);
+                    this.filters[filter.urlVariable] = ((params[filter.urlVariable] === undefined || params[filter.urlVariable] == 'undefined') ? this.copyVal(filter.value) : params[filter.urlVariable]);
                 }
             }
         }
