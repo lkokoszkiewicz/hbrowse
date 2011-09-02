@@ -264,20 +264,8 @@ function ControlsUpdate() {
             if (_Settings.filterGroups !== undefined) {
                 var groups = [];
                 for (i=0;i<_Settings.filterGroups.length;i++) {
-                    groups.push($('<div></div>').css({
-                        'position':'relative',
-                        'border':'1px solid #F6BC37',
-                        'margin':'6px',
-                        'padding':'5px'
-                    }));
-                    groups[i].append($('<div></div>').css({
-                        'position':'absolute',
-                        'top':'-7px',
-                        'left':'2px',
-                        'color':'#937325',
-                        'background-color':'#F4E3C3',
-                        'font-weight':'bold'
-                    }).html(_Settings.filterGroups[i]));
+                    groups.push($('<div></div>').addClass('filterGroup'));
+                    groups[i].append($('<div></div>').addClass('filterGroupLabel').html(_Settings.filterGroups[i]));
                 }
             }
             
@@ -408,6 +396,7 @@ function ControlsUpdate() {
                         selectedText: "# of # selected",
                         classes:'hb-multiselect'
                     });
+                    $('button.ui-multiselect').css('width','130px');
                 }
             }
             
