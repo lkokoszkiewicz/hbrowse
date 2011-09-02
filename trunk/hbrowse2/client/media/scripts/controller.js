@@ -81,11 +81,8 @@ function Controller() {
             this.Data.activemenu = 2;
             this.openActiveMenu();
         }
-        try {    
-            // Create filters elements
-            this.drawFilters();
+        try {
             this.userRefresh_update();
-            this.filtersUpdate();
             this.noreload = true;
             this.setupURL();
         } catch(err) {
@@ -220,6 +217,10 @@ function Controller() {
             } catch(err) {
                 if (thisRef.Settings.Application.debugMode) thisRef.setupErrorDialog(err);
             }
+            
+            // Create filters elements
+            thisRef.drawFilters();
+            thisRef.filtersUpdate();
             
             // Setting up current page - START
             tSettings = thisRef.mainsTable[0].fnSettings();

@@ -2,7 +2,7 @@
 svn export trunk/hbrowse$1/client ../hbrowse_exports/hbrowse.test-$1-$2-$3/.
 mkdir ../hbrowse_exports/hbrowse.test-common-$1-$2-$3
 cp -R ../hbrowse_exports/hbrowse.test-$1-$2-$3/media/* ../hbrowse_exports/hbrowse.test-common-$1-$2-$3/.
-rm -rf ../hbrowse_exports/hbrowse.test-common-$1-$2-$3/css
+#rm -rf ../hbrowse_exports/hbrowse.test-common-$1-$2-$3/css
 rm -rf ../hbrowse_exports/hbrowse.test-common-$1-$2-$3/scripts/settings*
 cd ../hbrowse_exports/
 tar -pczf hbrowse.test-$1-$2-$3.tar.gz hbrowse.test-$1-$2-$3
