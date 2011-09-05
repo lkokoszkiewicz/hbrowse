@@ -520,18 +520,92 @@ function Settings() {
         'filterGroups':['Group 1','Group 2'],
         'filters':[
             {
-                'label':'Status',  // String
-                'urlVariable':'status',  // String - lower cased, no spaces, no special characters
+                'label':'Task Type',  // String
+                'urlVariable':'takstype',  // String - lower cased, no spaces, no special characters
                 'fieldType':'multiselect',  // String (text|select|multiselect|date)
                 'groupIndex':0,
                 'value':'',
                 'options':{
+                    'dataURL':'filters',
                     // Function translates model or ajax data onto simple elements array
                     // Input: data - data represents Data.mem object or ajax response depending on whether dataURL exists or not
                     // Output: [['el1','el1 label'],['el2','el2 label'], ...] - Can also be defined as a static list (when you don't want to
                     // load the data from url nor using Data.mem object)
-                    'translateData': function(data) {
-                        return [['P','Pending'],['R','Running'],['S','Successful'],['F','Failed'],['U','Unknown']];
+                    'translateData': function(jsonData) {
+                        var output = [], i, filteroptions = jsonData.basicData.TaskType;
+                        
+                        for (i=0;i<filteroptions.length;i++) {
+                            output.push([filteroptions[i].TASKTYPE,filteroptions[i].TASKTYPE]);
+                        }
+                        
+                        return output;
+                    },
+                    'disableFilterOptionsList': function(Data) {
+                        /*var output = [], i, filteroptions = Data.mem.filters.takstype.basicData.TaskType;
+                        
+                        for (i=0;i<filteroptions.length;i++) {
+                            output.push([
+                                filteroptions[i].TASKTYPE,
+                                [
+                                    [filteroptions[i].GroupName,['bphysics','egamma','exotics','generators','heavyion']]
+                                ]
+                            ]);
+                        }
+                        
+                        return [
+                            [
+                                'optionName',
+                                [
+                                    ['filterName',['bphysics','egamma','exotics','generators','heavyion']]
+                                ]
+                            ]
+                        ];*/
+                    }
+                }
+            },
+            {
+                'label':'Group',  // String
+                'urlVariable':'group',  // String - lower cased, no spaces, no special characters
+                'fieldType':'multiselect',  // String (text|select|multiselect|date)
+                'groupIndex':0,
+                'value':'',
+                'options':{
+                    'dataURL':'filters',
+                    // Function translates model or ajax data onto simple elements array
+                    // Input: data - data represents Data.mem object or ajax response depending on whether dataURL exists or not
+                    // Output: [['el1','el1 label'],['el2','el2 label'], ...] - Can also be defined as a static list (when you don't want to
+                    // load the data from url nor using Data.mem object)
+                    'translateData': function(jsonData) {
+                        var output = [], i, filteroptions = jsonData.basicData.Group;
+                        
+                        for (i=0;i<filteroptions.length;i++) {
+                            output.push([filteroptions[i].GroupName,filteroptions[i].GroupName]);
+                        }
+                        
+                        return output;
+                    }
+                }
+            },
+            {
+                'label':'Activity',  // String
+                'urlVariable':'activity',  // String - lower cased, no spaces, no special characters
+                'fieldType':'multiselect',  // String (text|select|multiselect|date)
+                'groupIndex':0,
+                'value':'',
+                'options':{
+                    'dataURL':'filters',
+                    // Function translates model or ajax data onto simple elements array
+                    // Input: data - data represents Data.mem object or ajax response depending on whether dataURL exists or not
+                    // Output: [['el1','el1 label'],['el2','el2 label'], ...] - Can also be defined as a static list (when you don't want to
+                    // load the data from url nor using Data.mem object)
+                    'translateData': function(jsonData) {
+                        var output = [], i, filteroptions = jsonData.basicData.Activity;
+                        
+                        for (i=0;i<filteroptions.length;i++) {
+                            output.push([filteroptions[i].AtlasGenActivity,filteroptions[i].AtlasGenActivity]);
+                        }
+                        
+                        return output;
                     }
                 }
             },
@@ -539,7 +613,7 @@ function Settings() {
                 'label':'Text filter',  // String
                 'urlVariable':'textfilter',  // String - lower cased, no spaces, no special characters
                 'fieldType':'text',  // String (text|select|date)
-                'groupIndex':0,
+                'groupIndex':1,
                 'value':'',
                 'options':{}
             },
