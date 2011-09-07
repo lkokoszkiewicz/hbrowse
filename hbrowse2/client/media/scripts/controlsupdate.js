@@ -399,18 +399,17 @@ function ControlsUpdate() {
                 
                     if (_Settings.filters[i].options.disableFilterOptionsList !== undefined) {
                         $.extend(mulitselectconf, {
-                            click: thisRef.multiselect_change,
-                            checkAll: thisRef.multiselect_change,
-                            uncheckAll: thisRef.multiselect_change
+                            click: function(event, ui) { thisRef.multiselect_change(event, ui, this) },
+                            checkAll: function(event, ui) { thisRef.multiselect_change(event, ui, this) },
+                            uncheckAll: function(event, ui) { thisRef.multiselect_change(event, ui, this) }
                         });
-                        //$('#'+_Settings.filters[i].urlVariable).bind('multiselectclick',this.multiselect_change);
                     }
                     
                     $('#'+_Settings.filters[i].urlVariable).multiselect(mulitselectconf);
                     $('button.ui-multiselect').css('width','130px');
                 }
                 else if (_Settings.filters[i].fieldType == 'select') {
-                    $('#'+_Settings.filters[i].urlVariable).change(this.multiselect_change);
+                    $('#'+_Settings.filters[i].urlVariable).change(function(event, ui) { thisRef.multiselect_change(event, ui, this) });
                 }
             }
             
