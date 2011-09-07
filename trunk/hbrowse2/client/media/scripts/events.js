@@ -266,8 +266,19 @@ function Events() {
     };
     
     // function to handle multiselect change events
-    this.multiselect_change = function(event, ui) {
-        alert(';)');
+    this.multiselect_change = function(event, ui, el) {
+        // Notes:
+        // to access event type do: event.type
+        // use disabled="disabled" to disable options rather then display:none
+        // use $.multiselect('getChecked'); to get selected options
+        // after turning off the items call $.multiselect('refresh'); (call also $('button.ui-multiselect').css('width','130px');)
+        var x, arr = [];
+        
+        for (x in ui) {
+            arr.push(x+':'+ui[x]);
+        }
+        
+        alert(arr);
     };
     
     this.filter_change = function() {
