@@ -265,6 +265,11 @@ function Events() {
         }
     };
     
+    // function to handle multiselect change events
+    this.multiselect_change = function(event, ui) {
+        alert(';)');
+    };
+    
     this.filter_change = function() {
         var i, j, div, _Settings, selectElements, elIndex, fElementsArr = [];
         var thisRef = this;

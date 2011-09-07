@@ -228,7 +228,7 @@ function ControlsUpdate() {
     };
     
     this.drawFilters = function() {
-        var i, j, _Settings, optArr, mainSpan, filter, option, groupIndex;
+        var i, j, _Settings, optArr, mainSpan, filter, option, groupIndex, mulitselectconf = {};
         var thisRef = this;
         
         // setting up a proper table settings
@@ -375,7 +375,7 @@ function ControlsUpdate() {
                 }
             }
             
-            // Turn on date pickers
+            // Turn on date pickers and create events
             for (i=0;i<_Settings.filters.length;i++) {
                 if (_Settings.filters[i].fieldType == 'date') {
                     $('#'+_Settings.filters[i].urlVariable).datepicker({
@@ -392,11 +392,25 @@ function ControlsUpdate() {
 		            });
                 }
                 else if (_Settings.filters[i].fieldType == 'multiselect') {
-                    $('#'+_Settings.filters[i].urlVariable).multiselect({
+                    mulitselectconf = {
                         selectedText: "# of # selected",
                         classes:'hb-multiselect'
-                    });
+                    };
+                
+                    if (_Settings.filters[i].options.disableFilterOptionsList !== undefined) {
+                        $.extend(mulitselectconf, {
+                            click: thisRef.multiselect_change,
+                            checkAll: thisRef.multiselect_change,
+                            uncheckAll: thisRef.multiselect_change
+                        });
+                        //$('#'+_Settings.filters[i].urlVariable).bind('multiselectclick',this.multiselect_change);
+                    }
+                    
+                    $('#'+_Settings.filters[i].urlVariable).multiselect(mulitselectconf);
                     $('button.ui-multiselect').css('width','130px');
+                }
+                else if (_Settings.filters[i].fieldType == 'select') {
+                    $('#'+_Settings.filters[i].urlVariable).change(this.multiselect_change);
                 }
             }
             
