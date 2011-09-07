@@ -521,7 +521,7 @@ function Settings() {
         'filters':[
             {
                 'label':'Task Type',  // String
-                'urlVariable':'takstype',  // String - lower cased, no spaces, no special characters
+                'urlVariable':'tasktype',  // String - lower cased, no spaces, no special characters
                 'fieldType':'multiselect',  // String (text|select|multiselect|date)
                 'groupIndex':0,
                 'value':'',
@@ -541,25 +541,19 @@ function Settings() {
                         return output;
                     },
                     'disableFilterOptionsList': function(Data) {
-                        /*var output = [], i, filteroptions = Data.mem.filters.takstype.basicData.TaskType;
+                        var output = [], i, filteroptions = Data.mem.filters.takstype.basicData.TaskType;
                         
                         for (i=0;i<filteroptions.length;i++) {
                             output.push([
                                 filteroptions[i].TASKTYPE,
                                 [
-                                    [filteroptions[i].GroupName,['bphysics','egamma','exotics','generators','heavyion']]
+                                    ['group',filteroptions[i].GroupName.split(',')],
+                                    ['activity',filteroptions[i].AtlasGenActivity.split(',')]
                                 ]
                             ]);
                         }
                         
-                        return [
-                            [
-                                'optionName',
-                                [
-                                    ['filterName',['bphysics','egamma','exotics','generators','heavyion']]
-                                ]
-                            ]
-                        ];*/
+                        return output;
                     }
                 }
             },
@@ -583,6 +577,21 @@ function Settings() {
                         }
                         
                         return output;
+                    },
+                    'disableFilterOptionsList': function(Data) {
+                        var output = [], i, filteroptions = Data.mem.filters.takstype.basicData.Group;
+                        
+                        for (i=0;i<filteroptions.length;i++) {
+                            output.push([
+                                filteroptions[i].GroupName,
+                                [
+                                    ['tasktype',filteroptions[i].TASKTYPE.split(',')],
+                                    ['activity',filteroptions[i].AtlasGenActivity.split(',')]
+                                ]
+                            ]);
+                        }
+                        
+                        return output;
                     }
                 }
             },
@@ -603,6 +612,21 @@ function Settings() {
                         
                         for (i=0;i<filteroptions.length;i++) {
                             output.push([filteroptions[i].AtlasGenActivity,filteroptions[i].AtlasGenActivity]);
+                        }
+                        
+                        return output;
+                    },
+                    'disableFilterOptionsList': function(Data) {
+                        var output = [], i, filteroptions = Data.mem.filters.takstype.basicData.Activity;
+                        
+                        for (i=0;i<filteroptions.length;i++) {
+                            output.push([
+                                filteroptions[i].AtlasGenActivity,
+                                [
+                                    ['tasktype',filteroptions[i].TASKTYPE.split(',')],
+                                    ['group',filteroptions[i].GroupName.split(',')]
+                                ]
+                            ]);
                         }
                         
                         return output;
