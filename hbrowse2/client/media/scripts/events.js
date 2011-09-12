@@ -273,6 +273,7 @@ function Events() {
         // use $.multiselect('getChecked'); to get selected options
         // after turning off the items call $.multiselect('refresh'); (call also $('button.ui-multiselect').css('width','130px');)
         
+        // return array with unique elements
         var unique = function(arrayName) {
             var newArray=new Array();
             label:for(var i=0; i<arrayName.length;i++ ) {  
@@ -285,17 +286,19 @@ function Events() {
             return newArray;
         }
         
-        var i, j, filter, disableFilters, checked, checkedArr = [], filtersToChange = {}, _Settings, _Filter;
+        var i, j, filter, filterID, optClass, disableFilters, checked, checkedArr = [], filtersToChange = {}, _Settings, _Filter;
         
         _Settings = this.Settings[this.Data.table]; // Shortcut
         
+        j = 0;
         for (i=0;i<_Settings.filters.length;i++) {
             if (_Settings.filters[i].urlVariable == $(el).attr('id')) {
                 _Filter = _Settings.filters[i];
+                j = 1;
                 break;
             }
-            return false;
         }
+        if (j == 0) return false;
         
         disableFilters = _Filter.options.disableFilterOptionsList(this.Data);
         checked = $('#'+_Filter.urlVariable).multiselect('getChecked');
@@ -305,22 +308,33 @@ function Events() {
         }
         
         for (i=0;i<disableFilters.length;i++) {
-            if ($.inArray(disableFilters[i][0],checkedArr) != -1) {
-                for (j=0;j<disableFilters[i][1].length;j++) {
-                    filter = disableFilters[i][1][j];
-                    if (filtersToChange[filter[0]] === undefined) filtersToChange[filter[0]] = [];
+            for (j=0;j<disableFilters[i][1].length;j++) {
+                filter = disableFilters[i][1][j];
+                if (filtersToChange[filter[0]] === undefined) filtersToChange[filter[0]] = [];
+                if ($.inArray(disableFilters[i][0],checkedArr) != -1) {
                     $.merge(filtersToChange[filter[0]],filter[1]);
-                    //filtersToChange[filter[0]] = filter[1];
                 }
             }
         }
         
-        for (i in filtersToChange) {
-            filtersToChange[i] = unique(filtersToChange[i]);
+        for (filterID in filtersToChange) {
+            filtersToChange[filterID] = unique(filtersToChange[filterID]);
+            $('#'+filterID+' option').each(function(i){
+                if ($.inArray($(this).val(), filtersToChange[filterID]) == -1 && checkedArr.length !== 0) {
+                    $(this).addClass($(el).attr('id')).attr('disabled','disabled');
+                } else {
+                    optClass = $(this).attr('class');
+                    if (optClass !== undefined) optClass = optClass.split(' ');
+                    else optClass = [$(el).attr('id')];
+                    if ($(this).hasClass($(el).attr('id')) && optClass.length == 1)
+                        $(this).removeClass($(el).attr('id')).removeAttr('disabled');
+                    else 
+                        $(this).removeClass($(el).attr('id'));
+                }
+            });
+            $('#'+filterID).multiselect('refresh');
         }
-        
-        alert(filtersToChange.group);
-        //alert(_Filter.urlVariable+': '+$($('#'+_Filter.urlVariable).multiselect('getChecked')[0]).attr('value'));
+        $('button.ui-multiselect').css('width','130px');
     };
     
     this.filter_change = function() {
