@@ -541,7 +541,7 @@ function Settings() {
                         return output;
                     },
                     'disableFilterOptionsList': function(Data) {
-                        var output = [], i, filteroptions = Data.mem.filters.takstype.basicData.TaskType;
+                        var output = [], i, filteroptions = Data.mem.filters.tasktype.basicData.TaskType;
                         
                         for (i=0;i<filteroptions.length;i++) {
                             output.push([
@@ -579,7 +579,7 @@ function Settings() {
                         return output;
                     },
                     'disableFilterOptionsList': function(Data) {
-                        var output = [], i, filteroptions = Data.mem.filters.takstype.basicData.Group;
+                        var output = [], i, filteroptions = Data.mem.filters.tasktype.basicData.Group;
                         
                         for (i=0;i<filteroptions.length;i++) {
                             output.push([
@@ -617,7 +617,7 @@ function Settings() {
                         return output;
                     },
                     'disableFilterOptionsList': function(Data) {
-                        var output = [], i, filteroptions = Data.mem.filters.takstype.basicData.Activity;
+                        var output = [], i, filteroptions = Data.mem.filters.tasktype.basicData.Activity;
                         
                         for (i=0;i<filteroptions.length;i++) {
                             output.push([
