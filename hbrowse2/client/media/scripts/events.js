@@ -288,8 +288,10 @@ function Events() {
         
         var i, j, filter, filterID, optClass, disableFilters, checked, checkedArr = [], filtersToChange = {}, _Settings, _Filter;
         
+        // Selecting a proper settings set
         _Settings = this.Settings[this.Data.table]; // Shortcut
         
+        // Selecting a proper filter from the settings set
         j = 0;
         for (i=0;i<_Settings.filters.length;i++) {
             if (_Settings.filters[i].urlVariable == $(el).attr('id')) {
@@ -298,15 +300,23 @@ function Events() {
                 break;
             }
         }
-        if (j == 0) return false;
+        if (j == 0) return false; // If filter not found, stop the method
         
+        // Take a proper constraints from the settings (see documentation)
         disableFilters = _Filter.options.disableFilterOptionsList(this.Data);
+        // Check which options are actually selected
         checked = $('#'+_Filter.urlVariable).multiselect('getChecked');
         
+        // Build an array with selected options
+        // (used later to determine which constraints arrays should be taken from the settings)
         for (i=0;i<checked.length;i++) {
             checkedArr.push($(checked[i]).attr('value'));
         }
         
+        // Go thru the settings constraints and pick the proper ones
+        // Function builds the filtersToChange object:
+        // filtersToChange = {'filter1_urlVariable':[<element1>,<element2>,...],...}
+        // this object is a list of filters fields that are allowed for a current filter selection
         for (i=0;i<disableFilters.length;i++) {
             for (j=0;j<disableFilters[i][1].length;j++) {
                 filter = disableFilters[i][1][j];
@@ -317,23 +327,39 @@ function Events() {
             }
         }
         
+        // Now that we have all the data we can proceed with filters constraining
+        // we will go thru each filtersToChange object elements disabling filters options
         for (filterID in filtersToChange) {
+            // first, remove duplicated entries for each filter const. array
             filtersToChange[filterID] = unique(filtersToChange[filterID]);
+            // Itarate through filter options and disable a proper ones
             $('#'+filterID+' option').each(function(i){
+                // if option value exists inside const. array and there are any checked items, disable the option 
                 if ($.inArray($(this).val(), filtersToChange[filterID]) == -1 && checkedArr.length !== 0) {
+                    // disable the option and add the class named the same as the current filter
                     $(this).addClass($(el).attr('id')).attr('disabled','disabled');
                 } else {
-                    optClass = $(this).attr('class');
-                    if (optClass !== undefined) optClass = optClass.split(' ');
-                    else optClass = [$(el).attr('id')];
+                    // enable an option only if it wasn't disabled by a different filter
+                    // the indication of this is class name. enable it only if option does not have
+                    // other classes rather than equal to current filter id
+                    optClass = $(this).attr('class'); // get the class string from the option
+                    // if class exists, split it to array
+                    if (optClass !== undefined || optClass == '') optClass = optClass.split(' ');
+                    else optClass = [$(el).attr('id')]; // if class is empty, add a default value (which is current filter id)
+                    
+                    // so, if the only class element is the current filter id
                     if ($(this).hasClass($(el).attr('id')) && optClass.length == 1)
+                        // enable the filter option and remove the current filter id class
                         $(this).removeClass($(el).attr('id')).removeAttr('disabled');
                     else 
+                        // else, only remove current filter id class
                         $(this).removeClass($(el).attr('id'));
                 }
             });
+            // refresh the multiselect control
             $('#'+filterID).multiselect('refresh');
         }
+        // setup multiselect width
         $('button.ui-multiselect').css('width','130px');
     };
     
