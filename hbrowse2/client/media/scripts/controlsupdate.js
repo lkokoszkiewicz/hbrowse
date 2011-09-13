@@ -228,7 +228,7 @@ function ControlsUpdate() {
     };
     
     this.drawFilters = function() {
-        var i, j, _Settings, optArr, mainSpan, filter, option, groupIndex, mulitselectconf = {};
+        var i, j, _Settings, optArr, mainSpan, filter, option, groupIndex, constFiltersList = [], mulitselectconf = {};
         var thisRef = this;
         
         // setting up a proper table settings
@@ -391,25 +391,40 @@ function ControlsUpdate() {
 			            changeYear: true
 		            });
                 }
-                else if (_Settings.filters[i].fieldType == 'multiselect') {
+                else if (_Settings.filters[i].fieldType == 'multiselect' || _Settings.filters[i].fieldType == 'select') {
                     mulitselectconf = {
                         selectedText: "# of # selected",
                         classes:'hb-multiselect'
                     };
-                
+                    
+                    // if field type is `select`, disable multiselect option
+                    if (_Settings.filters[i].fieldType == 'select') {
+                        $.extend(mulitselectconf, {
+                            selectedList: 1,
+                            multiple: false
+                        });
+                    }
+                    
+                    // if constrains function is defined, attach events
                     if (_Settings.filters[i].options.disableFilterOptionsList !== undefined) {
                         $.extend(mulitselectconf, {
                             click: function(event, ui) { thisRef.multiselect_change(event, ui, this) },
                             checkAll: function(event, ui) { thisRef.multiselect_change(event, ui, this) },
                             uncheckAll: function(event, ui) { thisRef.multiselect_change(event, ui, this) }
                         });
+                    
+                        constFiltersList.push('#'+_Settings.filters[i].urlVariable);
                     }
                     
                     $('#'+_Settings.filters[i].urlVariable).multiselect(mulitselectconf);
                     $('button.ui-multiselect').css('width','130px');
                 }
-                else if (_Settings.filters[i].fieldType == 'select') {
-                    $('#'+_Settings.filters[i].urlVariable).change(function(event, ui) { thisRef.multiselect_change(event, ui, this) });
+            }
+                
+            // run options disabling based on filters constraints
+            for (i=0;i<constFiltersList.length;i++) {
+                if ($(constFiltersList[i]).multiselect('getChecked').length > 0) {
+                    this.multiselect_change({}, {}, constFiltersList[i]);
                 }
             }
             
