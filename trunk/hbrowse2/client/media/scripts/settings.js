@@ -662,6 +662,7 @@ function Settings() {
                 'options':{}
             }
         ],
+        'chartGroups':['Group 1','Group 2'],
         'charts': [
             {
                 'name':'Status Overview',
