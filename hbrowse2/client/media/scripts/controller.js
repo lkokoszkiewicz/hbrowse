@@ -266,7 +266,7 @@ function Controller() {
         
         var gChartDraw = function(gData) {
             var query = gData.join('&');
-            thisRef.charts_load(query, domIdPrefix, cnt);
+            thisRef.googleCharts_load(query, domIdPrefix, cnt);
         };
         
         var hChartDraw = function(hData) {
@@ -299,7 +299,7 @@ function Controller() {
             }
             else if (chart.type == 'hchart') {
                 hData = translatedData;
-                hChartDraw(hData);
+                //hChartDraw(hData);
             }
             else if (chart.type == 'table') {
                 tData = translatedData;
@@ -325,9 +325,21 @@ function Controller() {
     this.executeCharts = function(_charts, domIdPrefix, tableTarget, hideTargetElement) {
         var thisRef = this;
         
+        // setting up a proper table settings
+        _Settings = this.Settings[this.Data.table]; // Shortcut
+        // if settings for a given table are undefined create an empty settings
+        // object to prevent en error
+        if (_Settings === undefined) _Settings = {};
+        
         try {
             $(tableTarget).empty();
-            this.charts_prepTable(_charts.length, tableTarget, domIdPrefix);
+            
+            if (_Settings.chartGroups !== undefined) {
+                this.charts_prepGroups(_charts.length, tableTarget, domIdPrefix, _Settings.chartGroups);
+            } else {
+                this.charts_prepTable(_charts.length, tableTarget, domIdPrefix);
+            }
+            
             for (var cnt=0;cnt<_charts.length;cnt++) {
                 this.drawChart(_charts, domIdPrefix, cnt);
             }

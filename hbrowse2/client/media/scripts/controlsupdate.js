@@ -121,6 +121,23 @@ function ControlsUpdate() {
         $('#breadcrumbs').html(output);
     };
     
+    // Prepares chart groups
+    this.charts_prepGroups = function(chtCnt, tableTarget, domIdPrefix, chartGroups) {
+        var accordionID;
+        
+        accordionID = tableTarget.replace('#','')+'_group';
+        $(tableTarget).append($('<div></div>').attr('id',accordionID).addClass('chartGroup'));
+        
+        // Draw groups divs
+        for (i=0;i<chartGroups.length;i++) {
+            $('#'+accordionID).append($('<h3></h3>').html(_Settings.filterGroups[i]));
+            $('#'+accordionID).append($('<div></div>').attr('id','chartGroupContent_'+i));
+            this.charts_prepTable(2, '#chartGroupContent_'+i, domIdPrefix+'_'+i+'_');
+        }
+        $('#'+accordionID).accordion();
+    };
+    
+    // Function that prepares 2 column charts table and table groups
     this.charts_prepTable = function(chtCnt, tableTarget, domIdPrefix) {
         if (chtCnt > 0) {
             var rowCnt = Math.ceil((chtCnt/2));
@@ -137,12 +154,12 @@ function ControlsUpdate() {
                 tr.append( $('<td></td>').addClass('chartTd').append( $('<span></span>').attr('id',domIdPrefix+cnt).css({'display':'inline-block'}) ) );cnt++;
                 table.append(tr);
             }
-            
             $(tableTarget).append(table);
         }
     };
     
-    this.charts_load = function(query, domIdPrefix, cnt) {
+    // Function drawing google charts
+    this.googleCharts_load = function(query, domIdPrefix, cnt) {
         $('#'+domIdPrefix+cnt).empty();
         $('#'+domIdPrefix+cnt).append(
             $('<img></img>').attr({
@@ -152,6 +169,7 @@ function ControlsUpdate() {
         );
     };
     
+    // Function used to draw a table in place of a chart
     this.chartsTable_load = function(tData, domIdPrefix, cnt) {
         var i, j, table, tHead, tHeadTr, tHeadTd, tBody, tBodyTr, tBodyTd;
     
