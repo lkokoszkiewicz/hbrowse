@@ -668,6 +668,7 @@ function Settings() {
                 'name':'Status Overview',
                 'type':'hchart', // (gchart|hchart)
                 'onDemand':false,
+                'groupIndex':0,
                 // translates data onto requires format:
                 // {"chd":"t:60,40","chl":"Hello|World"}
                 'translateData':function(dataMem) {
@@ -732,6 +733,7 @@ function Settings() {
                 'name':'Jobs Distributed by Site',
                 'type':'hchart', // (gchart|hchart)
                 'onDemand':false,
+                'groupIndex':0,
                 // translates data onto requires format:
                 // {"chd":"t:60,40","chl":"Hello|World"}
                 'translateData':function(dataMem) {
@@ -843,6 +845,7 @@ function Settings() {
                 'name':'Processed Events',
                 'type':'hchart', // (gchart|hchart)
                 'onDemand':true,
+                'groupIndex':1,
                 'dataURL': 'proceventscumulativeAlt',
                 'dataURL_params': function(Data) { return {'taskmonid':Data.tid}; },
                 // translates data onto requires format:
