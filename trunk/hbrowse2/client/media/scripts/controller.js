@@ -248,8 +248,8 @@ function Controller() {
             if (_Settings.filters !== undefined) thisRef.hideShowFilters('show');//$('#dataFilters').show();
             else thisRef.hideShowFilters('hide');//$('#dataFilters').hide();
             
-            thisRef.executeCharts(_Settings.charts, 'cht_', '#chartContent');
-            thisRef.executeCharts(_Settings.topTableCharts, 'topTblcht_', '#topTableCharts', true);
+            thisRef.executeCharts(_Settings.charts, 'cht_', '#chartContent', _Settings);
+            thisRef.executeCharts(_Settings.topTableCharts, 'topTblcht_', '#topTableCharts');
         };
         
         // Get the data from ajax call
@@ -258,26 +258,35 @@ function Controller() {
         this.Data.ajax_getData('mainsReq', _Settings.dataURL, _Settings.dataURL_params(this.Data), getData, function(){});
     };
     
-    this.drawChart = function(_charts, domIdPrefix, cnt, forceDraw) {
+    this.drawChart = function(_charts, domIdPrefix, destIndex, forceDraw) {
         if (forceDraw === undefined) forceDraw = false;
-        if (_charts[cnt].onDemand === undefined) _charts[cnt].onDemand = false;
         
-        var thisRef = this;
+        var cnt, thisRef = this;
+        
+        if ($.isArray(destIndex)) {
+            cnt = destIndex[0];
+            domId = domIdPrefix+destIndex[1]+'_'+destIndex[2];
+        } else {
+            cnt = destIndex;
+            domId = domIdPrefix+destIndex;
+        }
+        
+        if (_charts[cnt].onDemand === undefined) _charts[cnt].onDemand = false;
         
         var gChartDraw = function(gData) {
             var query = gData.join('&');
-            thisRef.googleCharts_load(query, domIdPrefix, cnt);
+            thisRef.googleCharts_load(query, domId);
         };
         
         var hChartDraw = function(hData) {
             if (hData.chart === undefined) hData.chart = {};
-            hData.chart.renderTo = domIdPrefix+cnt;
+            hData.chart.renderTo = domId;//domIdPrefix+cnt;
             hData.credits = false;
             new Highcharts.Chart(hData);
         };
         
         var tableDraw = function(tData) {
-            thisRef.chartsTable_load(tData, domIdPrefix, cnt);
+            thisRef.tableCharts_load(tData, domId);
         };
         
         var getData = function(data, chart) {
@@ -299,7 +308,7 @@ function Controller() {
             }
             else if (chart.type == 'hchart') {
                 hData = translatedData;
-                //hChartDraw(hData);
+                hChartDraw(hData);
             }
             else if (chart.type == 'table') {
                 tData = translatedData;
@@ -318,30 +327,42 @@ function Controller() {
             }
         }
         else {
-            this.drawChtRequestButton(_charts, domIdPrefix, cnt);
+            this.drawChtRequestButton(_charts, domIdPrefix, destIndex);
         }
     };
     
-    this.executeCharts = function(_charts, domIdPrefix, tableTarget, hideTargetElement) {
-        var thisRef = this;
-        
-        // setting up a proper table settings
-        _Settings = this.Settings[this.Data.table]; // Shortcut
-        // if settings for a given table are undefined create an empty settings
-        // object to prevent en error
+    this.executeCharts = function(_charts, domIdPrefix, tableTarget, _Settings) {
         if (_Settings === undefined) _Settings = {};
+        
+        var i, groupingArr = [], groupTableIndexes = [], destIndex;
+        var thisRef = this;
         
         try {
             $(tableTarget).empty();
             
             if (_Settings.chartGroups !== undefined) {
-                this.charts_prepGroups(_charts.length, tableTarget, domIdPrefix, _Settings.chartGroups);
+                // Charts grouping works only for summary charts (hidden inside the tab)
+                // Create mapping from natural filters indexing to group field pairs
+                
+                $.each(_Settings.chartGroups, function(i, group) {
+                    groupTableIndexes.push(0);
+                });
+                
+                $.each(_charts, function(i, chartObj) {
+                    if (chartObj.groupIndex === undefined) chartObj.groupIndex = 0;
+                    groupingArr.push([ i, chartObj.groupIndex, groupTableIndexes[ chartObj.groupIndex ] ]);
+                    groupTableIndexes[ chartObj.groupIndex ]++;
+                });
+                
+                this.charts_prepGroups(_charts.length, tableTarget, domIdPrefix, groupTableIndexes, _Settings.chartGroups);
             } else {
                 this.charts_prepTable(_charts.length, tableTarget, domIdPrefix);
             }
             
-            for (var cnt=0;cnt<_charts.length;cnt++) {
-                this.drawChart(_charts, domIdPrefix, cnt);
+            for (i=0;i<_charts.length;i++) {
+                if (groupingArr.length > 0) destIndex = groupingArr[i];
+                else destIndex = i;
+                this.drawChart(_charts, domIdPrefix, destIndex);
             }
         } catch(err) {
             if (_charts !== undefined && this.Settings.Application.debugMode) this.setupErrorDialog(err);
