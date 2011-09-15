@@ -24,7 +24,7 @@ function Controller() {
     
     this.appDisplayState = function() {
         var _Settings = this.Settings.Application; // Shortcut
-        if (this.Data.user || !_Settings.userSelection) {
+        if (this.Data.state('user') || !_Settings.userSelection) {
             // Show table
             return 'table';
         }
@@ -37,16 +37,16 @@ function Controller() {
     this.openActiveMenu = function() {
         var i, menuIdList = [1,2];
         // Open active menu
-        if (this.Data.activemenu !== 0) {
+        if (this.Data.state('activemenu') !== 0) {
             // Close other menus
             for (i=1;i<=menuIdList.length;i++) {
-                if (i != this.Data.activemenu && $('#dropDownMenu'+i).hasClass('selected')) {
+                if (i != this.Data.state('activemenu') && $('#dropDownMenu'+i).hasClass('selected')) {
                     $('#dropDownMenu'+i).trigger('click',[true]);
                 }
             }
             // Open Active
-            if (!$('#dropDownMenu'+this.Data.activemenu).hasClass('selected')) {
-                $('#dropDownMenu'+this.Data.activemenu).trigger('click',[true]);
+            if (!$('#dropDownMenu'+this.Data.state('activemenu')).hasClass('selected')) {
+                $('#dropDownMenu'+this.Data.state('activemenu')).trigger('click',[true]);
             }
         } else {
             $('.dropDown.selected').trigger('click',[true]);
@@ -55,8 +55,8 @@ function Controller() {
     
     this.resolveTable = function() {
         var defaults;
-        if (this.Data.table != '') {
-            return this.Data.table;
+        if (this.Data.state('table') != '') {
+            return this.Data.state('table');
         } else {
             defaults = this.Settings.Application.modelDefaults();
             return defaults.Mains;
@@ -71,7 +71,7 @@ function Controller() {
         if (this.appDisplayState() == 'table') {
             //show table
             this.openActiveMenu();
-            this.drawMainsTable(this.Settings[this.Data.table]);
+            this.drawMainsTable(this.Settings[this.Data.state('table')]);
             $('#content').show();
         }
         else if (this.appDisplayState() == 'users') {
@@ -79,7 +79,7 @@ function Controller() {
             this.breadcrumbs_update();
             $('#content').hide();
             this.hideShowFilters('hide');
-            this.Data.activemenu = 2;
+            this.Data.state('activemenu', 2);
             this.openActiveMenu();
         }
         try {
@@ -107,7 +107,7 @@ function Controller() {
             
             $('#usersToggleMenu').lkfw_searchableList({
                 listId: 'users',
-                items: thisRef.Data.mem.users,
+                items: thisRef.Data.state().mem.users,
                 srchFldLbl: _Settings.searchLabel
             });
             
@@ -119,7 +119,7 @@ function Controller() {
         //if (this.appDisplayState() == 'users') thisRef.hideShowFilters('hide');//$('#dataFilters').hide();
         
         // Draw searchable list
-        if (this.Data.mem.users) draw();
+        if (this.Data.state().mem.users) draw();
         
     };
     
@@ -136,7 +136,7 @@ function Controller() {
         //   data - object returned by ajax call
         var getData = function(data) {
             try {
-                thisRef.Data.mem.users = _Settings.translateData(data);
+                thisRef.Data.state().mem.users = _Settings.translateData(data);
             } catch(err) {
                 if (thisRef.Settings.Application.debugMode) thisRef.setupErrorDialog(err);
             }
@@ -145,7 +145,7 @@ function Controller() {
         };
         
         // Get the users list from ajax call
-        this.Data.ajax_getData('usersReq', _Settings.dataURL, _Settings.dataURL_params(this.Data), getData, function(){});
+        this.Data.ajax_getData('usersReq', _Settings.dataURL, _Settings.dataURL_params(this.Data.state()), getData, function(){});
     };
     
     // "drawDataTable" draws data table for subs (in ganga nomenclature)
@@ -172,16 +172,16 @@ function Controller() {
                 multipleER: _Settings.multipleER,
                 items: data,
                 tblLabels: _Settings.tblLabels,
-                rowsToExpand: thisRef.Data.or,
+                rowsToExpand: thisRef.Data.state('or'),
                 useScrollerPlugin: ( (_Settings.useScrollerPlugin !== undefined) ? _Settings.useScrollerPlugin : false ),
-                sorting: (thisRef.Data.sorting.length > 0 ? thisRef.Data.sorting : _Settings.sorting),
+                sorting: (thisRef.Data.state('sorting').length > 0 ? thisRef.Data.state('sorting') : _Settings.sorting),
                 fnERContent:function(dataID){ return thisRef.expand_click(dataID); },
                 fnERContentPostProcess:function(expandedID,inputObj){ return thisRef.expand_click_postprocess(expandedID,inputObj,true); },
                 fnContentChange: function(el) { thisRef.mainsTableContent_change(el); },
                 fnERClose: function(dataID) { thisRef.erClose_click(dataID); },
                 fnTableSorting: function(el) { thisRef.tableSorting_click(el,thisRef.mainsTable[0]); },
                 dataTable: {
-                    iDisplayLength: thisRef.Data.records,//_Settings.iDisplayLength,
+                    iDisplayLength: thisRef.Data.state('records'),//_Settings.iDisplayLength,
                     sPaginationType: "input",
                     bLengthChange: ( (_Settings.aLengthMenu !== undefined) ? true : false ),
                     aLengthMenu:( (_Settings.aLengthMenu !== undefined) ? _Settings.aLengthMenu : [10, 25, 50, 100] ),
@@ -203,8 +203,8 @@ function Controller() {
             var tSettings, tPages;
             
             // Save the data
-            thisRef.Data.mem.table = {
-                user: this.Data.user,
+            thisRef.Data.state().mem.table = {
+                user: thisRef.Data.state('user'),
                 timestamp: Math.floor(t.getTime()/1000),
                 data: userMains,
                 json: data
@@ -227,19 +227,19 @@ function Controller() {
             
 		    if ( $.bbq.getState('p') && ($.bbq.getState('p') <= tPages) ) {
                 $('#url-page').trigger('click');  // Load page number from URL
-                thisRef.Data.noreload = true;  // tell keyup event that page has been reloaded (history is not working without this)
+                thisRef.Data.state('noreload', true);  // tell keyup event that page has been reloaded (history is not working without this)
                 $('#dataTable_0_filter input').trigger('keyup');  // Recreate expand events for current page
-                thisRef.Data.noreload = false;  // Make sure that noreload is off after operation
+                thisRef.Data.state('noreload', false);  // Make sure that noreload is off after operation
             }
             else {
-                thisRef.Data.p = 1;
+                thisRef.Data.state('p', 1);
                 $('#dataTable_0_filter input').trigger('keyup');  // Recreate expand events for current page
-                thisRef.Data.noreload = true;
+                thisRef.Data.state('noreload', true);
                 thisRef.setupURL();
             }
             // Setting up current page - FINISH
             
-            $.each(thisRef.Data.or, function() {
+            $.each(thisRef.Data.state('or'), function() {
                 $('#tablePlus_'+this).parent().trigger('click');
             });
             
@@ -254,7 +254,7 @@ function Controller() {
         // Get the data from ajax call
         $('#loadingTable').delay(800).fadeIn(400); // Dim content area
         $('#breadcrumbs a').css('color','#888888').unbind();
-        this.Data.ajax_getData('mainsReq', _Settings.dataURL, _Settings.dataURL_params(this.Data), getData, function(){});
+        this.Data.ajax_getData('mainsReq', _Settings.dataURL, _Settings.dataURL_params(this.Data.state()), getData, function(){});
     };
     
     this.drawChart = function(_charts, domIdPrefix, destIndex, forceDraw) {
@@ -319,10 +319,10 @@ function Controller() {
             // Get the data from ajax call
             if (_charts[cnt].dataURL) {
                 if (_charts[cnt].dataURL_params === undefined) _charts[cnt].dataURL_params = function() { return {}; };
-                this.Data.ajax_getData_sync('chartData_'+cnt, _charts[cnt].dataURL, _charts[cnt].dataURL_params(this.Data), getData, function(){},_charts[cnt]);
+                this.Data.ajax_getData_sync('chartData_'+cnt, _charts[cnt].dataURL, _charts[cnt].dataURL_params(this.Data.state()), getData, function(){},_charts[cnt]);
             }
             else {
-                getData(this.Data.mem, _charts[cnt]);
+                getData(this.Data.state().mem, _charts[cnt]);
             }
         }
         else {
@@ -371,39 +371,39 @@ function Controller() {
         
         if (this.appDisplayState() == 'table') {
             //show table
-            this.Data.uparam = [];
+            this.Data.state('uparam', []);
             this.Table = [];
         }
         else if (this.appDisplayState() == 'users') {
             // Show users
-            this.Data.uparam = [];
-            this.Data.breadcrumbs = [];
+            this.Data.state('uparam', []);
+            this.Data.state('breadcrumbs', []);
             this.Table = [];
         }
             
         var updateHashwithFilters = function(urlHash, _Settings) {
             if (_Settings.filters !== undefined) {
                 for (var i=0;i<_Settings.filters.length;i++) {
-                    urlHash[_Settings.filters[i].urlVariable] = thisRef.Data.filters[_Settings.filters[i].urlVariable];
+                    urlHash[_Settings.filters[i].urlVariable] = thisRef.Data.state().filters[_Settings.filters[i].urlVariable];
                 }
             }
             return urlHash;
         };
         
         var urlHash = {
-            user:this.Data.user,
-            refresh:this.Data.refresh,
-            table:this.Data.table,
-            p:this.Data.p,
-            records:this.Data.records,
-            sorting:this.Data.sorting,
-            or:this.Data.or,
-            uparam:this.Data.uparam,
-            activemenu:this.Data.activemenu
+            user:this.Data.state('user'),
+            refresh:this.Data.state('refresh'),
+            table:this.Data.state('table'),
+            p:this.Data.state('p'),
+            records:this.Data.state('records'),
+            sorting:this.Data.state('sorting'),
+            or:this.Data.state('or'),
+            uparam:this.Data.state('uparam'),
+            activemenu:this.Data.state('activemenu')
         };
         
         if (this.appDisplayState() == 'table') {
-            urlHash = updateHashwithFilters(urlHash, this.Settings[this.Data.table]);
+            urlHash = updateHashwithFilters(urlHash, this.Settings[this.Data.state('table')]);
         }
         $.bbq.pushState(urlHash,2);
     };
@@ -449,12 +449,13 @@ function Controller() {
         // Bind the event onhashchange
         $(window).bind('hashchange', function(){
             thisRef.Data.quickSetup($.bbq.getState());
-            if (!thisRef.Data.noreload) thisRef.viewUpdater();
-            else thisRef.Data.noreload = false;
+            
+            if (!thisRef.Data.state('noreload')) thisRef.viewUpdater();
+            else thisRef.Data.state('noreload', false);
             
             // Running settings post processing (if avaliable)
             try {
-                _Settings.hashChangeEvent(thisRef.appDisplayState(thisRef.Data.mem));
+                _Settings.hashChangeEvent(thisRef.appDisplayState(thisRef.Data.state('mem')));
             } catch(err) { /* do nothing */ }
         });
         
@@ -462,7 +463,7 @@ function Controller() {
         
         // Running settings post processing (if avaliable)
         try {
-            _Settings.initEvent(thisRef.appDisplayState(),thisRef.Data.mem);
+            _Settings.initEvent(thisRef.appDisplayState(),thisRef.Data.state('mem'));
         } catch(err) { /* do nothing */ }
         
         // Set up refresh

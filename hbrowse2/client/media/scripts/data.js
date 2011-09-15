@@ -13,158 +13,116 @@
 /*global _Cache: false*/
 
 function Data(ajaxAnimation, _Settings) {
-    var i, settings, jsonp;
+
+// ============================================================================
+// Data object initialization - START
+// ============================================================================
+
+    var settings = _Settings.Application.modelDefaults();
     
-    settings = _Settings.Application.modelDefaults();
+    var jsonp = _Settings.Application.jsonp;
     
-    // Copy val instead create reference
-    this.copyVal = function(val) {
-        return val;
-    };
+    // Ajax xmlhttprequest object used to store table data requests handlers
+    var xmlhttprequest = null;
     
-    jsonp = _Settings.Application.jsonp;
     // general values
-    this.user = settings.user;
-    this.refresh = settings.refresh;
-    this.table = settings.table;
-    this.p = settings.p;
-    this.records = 25;
-    this.sorting = settings.sorting;
-    this.or = settings.or; // opened table rows
-    this.uparam = settings.uparam; // user defined params (for params that cannot be shared between use cases)
-    this.activemenu = 0;
-    
-    this.noreload = false;
-    
-    this.filters = {};
-    this.breadcrumbs = [];
+    var State = {
+        user: settings.user,
+        refresh: settings.refresh,
+        table: settings.table,
+        p: settings.p,
+        records: 25,
+        sorting: settings.sorting,
+        or: settings.or, // opened table rows
+        uparam: settings.uparam, // user defined params (for params that cannot be shared between use cases)
+        activemenu: 0,
         
-    // Data
-    this.mem = {
-        users: [],
-        table: {
-            user: '',
-            timestamp: 0,
-            data: [],
-            json:{}
-        },
-        filters:{}
+        noreload: false,
+        
+        filters: {},
+        breadcrumbs: [],
+        
+        // Data
+        mem: {
+            users: [],
+            table: {
+                user: '',
+                timestamp: 0,
+                data: [],
+                json:{}
+            },
+            filters:{}
+        }
     };
     
     // Setting up user defined filters
-    if (this.table != '') {
-        if (_Settings[this.table].filters !== undefined) {
-            for (i=0;i<_Settings[this.table].filters.length;i++) {
-                this.filters[_Settings[this.table].filters[i].urlVariable] = this.copyVal(_Settings[this.table].filters[i].value);
+    if (State.table != '') {
+        if (_Settings[State.table].filters !== undefined) {
+            for (var i=0;i<_Settings[State.table].filters.length;i++) {
+                State.filters[_Settings[State.table].filters[i].urlVariable] = copyVal(_Settings[State.table].filters[i].value);
             }
         }
     }
     
-    // Ajax xmlhttprequest object used to store table data requests handlers
-    this.xmlhttprequest = null;
+// ============================================================================
+// Data object initialization - FINISH
+// ============================================================================
+
+// ============================================================================
+// Private utility functions - START
+// ============================================================================
+
+// Copy variable --------------------------------------------------------------
     
-    this.selectTableSettings = function() {
-        var tSettings;
-        if (this.tid === '' || this.user === '') tSettings = _Settings.Mains;
-        else tSettings = _Settings.Subs;
+    /*
+        Function: copyVal
+        Copy val instead create reference
         
-        return tSettings;
-    };
-    
-    this.quickSetup = function(params, ts2iso) {
-        var i, filter;
-        var settings = _Settings.Application.modelDefaults();
-        var tSettings = this.selectTableSettings();
+        Parameters:
+            variable - any variable (int, string)
         
-        this.user = (params.user || settings.user);
-        this.refresh = (parseInt(params.refresh, 10) || settings.refresh);
-        this.table = (params.table || settings.table);
-        this.p = (parseInt(params.p, 10) || settings.p);
-        this.records = (parseInt(params.records, 10) || this.copyVal(tSettings.iDisplayLength));
-        this.or = (params.or || settings.or);
-        this.sorting = (params.sorting || []);
-        this.uparam = (params.uparam || settings.uparam);
-        this.activemenu = (parseInt(params.activemenu, 10) || 0);
+        Returns:
+            Any variable (int, string)
+    */
+    var copyVal = function(variable) {
+        return variable;
+    };
+
+// ----------------------------------------------------------------------------
+
+// Get table rows count -------------------------------------------------------
+    
+    /*
+        Function: getDisplayLength
+        Determine how many tabe rows should bw shown
         
-        // make this.or an array of ints
-        for (i=0;i<this.or.length;i++) {
-            this.or[i] = parseInt(this.or[i], 10);
+        Returns:
+            Number of rows for the table (int)
+    */
+    var getDisplayLength = function() {
+        if (State.table == '') {
+            return _Settings.Application.modelDefaults().initialTable;
+        } else {
+            return _Settings[State.table].iDisplayLength;
         }
+    };
+    
+// ----------------------------------------------------------------------------
+
+// Port string generation -----------------------------------------------------
+    
+    /*
+        Function: addPortNumber
+        Build a url port string
         
-        // Setting up user defined filters
-        if (this.table != '') {
-            if (_Settings[this.table].filters !== undefined) {
-                for (i=0;i<_Settings[this.table].filters.length;i++) {
-                    filter = _Settings[this.table].filters[i];
-                    //alert(_Settings[this.table].filters[i].urlVariable+': '+(params[_Settings[this.table].filters[i].urlVariable] || this.copyVal(_Settings[this.table].filters[i].value)));
-                    this.filters[filter.urlVariable] = ((params[filter.urlVariable] === undefined || params[filter.urlVariable] == 'undefined') ? this.copyVal(filter.value) : params[filter.urlVariable]);
-                }
-            }
-        }
-    };
-    
-    this.setOr = function(dataID) {
-        if ($.inArray(dataID, this.or) == (-1)) {
-            this.or.push(dataID);
-            return true;
-        }
-        else {
-            return false;
-        }
-    };
-    
-    // Dates handling - Start
-    this.iso2ts = function(date, mode) {
-        if (mode === undefined) mode = 1;
-        if (date === 0 || date == '0' || date === undefined) return 0;
-        else {
-            if (mode == 1) return $.datepicker.formatDate('@', $.datepicker.parseDate('yy-mm-dd',date));
-            else if (mode == 2) return parseInt($.datepicker.formatDate('@', $.datepicker.parseDate('yy-mm-dd',date)), 10) + 86399000;
-            else return 0;
-        }
-    };
-    
-    this.ts2iso = function(date, mode) {
-        if (mode === undefined) mode = 1;
-        if (date === 0 || date == '0' || date === undefined) return '';
-        else {
-            if (mode == 1) return $.datepicker.formatDate('yy-mm-dd', $.datepicker.parseDate('@',date));
-            else if (mode == 2) return $.datepicker.formatDate('yy-mm-dd', $.datepicker.parseDate('@',date)) + ' 00:00';
-            else if (mode == 3) return $.datepicker.formatDate('yy-mm-dd', $.datepicker.parseDate('@',date)) + ' 23:59';
-            else return '';
-        }
-    };
-    
-    this.changeFromTill = function(which, timestamp) {
-        var output = true;
-        if (timestamp === '') timestamp = 0;
-        else timestamp = parseInt(timestamp, 10);
+        Parameters:
+            url - url
+            port - port number
         
-        if (which == 'from') {
-            if (timestamp > this.till && timestamp !== 0) {
-                this.till = (timestamp + 86399000);
-            }
-            else if (timestamp === 0) {
-                timestamp = (this.till - 86399000);
-                output = false;
-            }
-            this.from = timestamp;
-        }
-        else if (which == 'till') {
-            if (((timestamp+86399000) < this.from || this.from === 0) && timestamp !== 0) {
-                this.from = timestamp;
-            }
-            else if (timestamp === 0) {
-                timestamp = this.till;
-                output = false;
-            }
-            this.till = (timestamp+86399000);
-        }
-        return output;
-    };
-    // Dates handling - Finish
-    
-    this.addPortNumber = function(url, port) {
+        Returns:
+            Url with port number (string)
+    */
+    var addPortNumber = function(url, port) {
         url = url.replace('//','^^');
         if (url.search('/') != -1) {
             url = url.replace('/',':'+port+'/');
@@ -175,7 +133,20 @@ function Data(ajaxAnimation, _Settings) {
         return url;
     };
     
-    this.requestErrorDialog = function(xhrName, textStatus, errorThrown) {
+// ----------------------------------------------------------------------------
+
+// Display error dialog -------------------------------------------------------
+    
+    /*
+        Function: requestErrorDialog
+        Display error dialog on ajax connection error
+        
+        Parameters:
+            xhrName - Request name
+            textStatus - Text status of the exception
+            errorThrown - Error string
+    */
+    var requestErrorDialog = function(xhrName, textStatus, errorThrown) {
         if (_Settings.Application.debugMode) {
             var html = '';
             html += 'Please check your settings file for any url misspells and your server.<br />----------<br />';
@@ -197,6 +168,78 @@ function Data(ajaxAnimation, _Settings) {
         }
         else {
             window.history.back();
+        }
+    };
+    
+// ----------------------------------------------------------------------------
+    
+// ============================================================================
+// Private utility functions - FINISH
+// ============================================================================
+
+// ============================================================================
+// Public data control and access functions - START
+// ============================================================================
+
+// Get/Set the state on the model ---------------------------------------------
+    
+    /*
+        Function: state
+        The gateway function for accessing model state (State variable).
+        Allows to get or set the modelt values, accessing saved variables and
+        objects
+        
+        Parameters:
+            key - (optional) Variable key
+            value - (optional) variable new value
+            
+        Returns:
+            Boolean 'true' when value of the variable was changed. If only key
+            is defined it will return variable value. If no parameters are
+            provided it will return _State_ object
+    */
+    this.state = function(key, value) {
+        if (value !== undefined) {
+            State[key] = value;
+            return true;
+        } else {
+            if (key !== undefined) {
+                return State[key];
+            } else {
+                return State;
+            }
+        }
+    };
+    
+// ----------------------------------------------------------------------------
+    
+    this.quickSetup = function(params, ts2iso) {
+        var i, filter;
+        var settings = _Settings.Application.modelDefaults();
+        
+        State.user = (params.user || settings.user);
+        State.refresh = (parseInt(params.refresh, 10) || settings.refresh);
+        State.table = (params.table || settings.table);
+        State.p = (parseInt(params.p, 10) || settings.p);
+        State.records = (parseInt(params.records, 10) || this.copyVal(getDisplayLength()));
+        State.or = (params.or || settings.or);
+        State.sorting = (params.sorting || []);
+        State.uparam = (params.uparam || settings.uparam);
+        State.activemenu = (parseInt(params.activemenu, 10) || 0);
+        
+        // make this.or an array of ints
+        for (i=0;i<State.or.length;i++) {
+            State.or[i] = parseInt(State.or[i], 10);
+        }
+        
+        // Setting up user defined filters
+        if (State.table != '') {
+            if (_Settings[State.table].filters !== undefined) {
+                for (i=0;i<_Settings[State.table].filters.length;i++) {
+                    filter = _Settings[State.table].filters[i];
+                    State.filters[filter.urlVariable] = ((params[filter.urlVariable] === undefined || params[filter.urlVariable] == 'undefined') ? copyVal(filter.value) : params[filter.urlVariable]);
+                }
+            }
         }
     };
     
@@ -227,7 +270,7 @@ function Data(ajaxAnimation, _Settings) {
                 
             }
 
-            url = this.addPortNumber(url, port);            
+            url = addPortNumber(url, port);            
         }
 
         
@@ -244,8 +287,8 @@ function Data(ajaxAnimation, _Settings) {
             fSuccess(data);
         } else if (url) {
             ajaxAnimation.addClass(xhrName).fadeIn(200);
-            if (this.xmlhttprequest) this.xmlhttprequest.abort();
-            this.xmlhttprequest = $.ajax({
+            if (xmlhttprequest) xmlhttprequest.abort();
+            xmlhttprequest = $.ajax({
                 type: "GET",
                 url: url,
                 data: params,
@@ -262,11 +305,11 @@ function Data(ajaxAnimation, _Settings) {
                     ajaxAnimation.removeClass(xhrName);
                     if (!ajaxAnimation.attr('class')) ajaxAnimation.fadeOut(400);
                     fFailure();
-                    thisRef.requestErrorDialog(xhrName, textStatus, errorThrown);
+                    requestErrorDialog(xhrName, textStatus, errorThrown);
                     //window.history.back();
                 }
             });
-            this.xmlhttprequest = null;
+            xmlhttprequest = null;
         }
     };
     
@@ -300,7 +343,7 @@ function Data(ajaxAnimation, _Settings) {
                 
             }
 
-            url = this.addPortNumber(url, port);            
+            url = addPortNumber(url, port);            
         }
         
         paramsString = '';
@@ -338,4 +381,9 @@ function Data(ajaxAnimation, _Settings) {
             });
         }
     };
+    
+// ============================================================================
+// Public data control and access functions - FINISH
+// ============================================================================
+    
 }

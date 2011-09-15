@@ -17,20 +17,20 @@ function Events() {
     this.userDropDown_Change = function(el) {
         $('.tablePlus').attr('src', 'media/images/table_plus.png');
         //this.Data.or = [];
-        this.Data.tid = '';
-        this.Data.sorting = [];
-        this.Data.user = $(el).val();
-        this.Data.noreload = false;
+        this.Data.state('tid', '');
+        this.Data.state('sorting', []);
+        this.Data.state('user', $(el).val());
+        this.Data.state('noreload', false);
         this.setupURL();
     };
 
     this.userListItem_Click = function(el) {
         var settings = this.Settings.Application.modelDefaults();
-    
-        this.Data.user = $(el).text();
-        this.Data.tid = '';
-        this.Data.table = settings.initialTable;
-        this.Data.noreload = false;
+        
+        this.Data.state('user', $(el).text());
+        this.Data.state('tid', '');
+        this.Data.state('table', settings.initialTable);
+        this.Data.state('noreload', false);
         this.setupURL();
     };
     
@@ -43,13 +43,13 @@ function Events() {
         menuID = $(el).attr('id').replace("dropDownMenu", "");
         
         // Close other opened menus
-        if (this.Data.activemenu !== 0 && this.Data.activemenu != menuID) {
-            $('#dropDownMenu'+this.Data.activemenu).trigger('click', [true]).removeClass('selected');
+        if (this.Data.state('activemenu') !== 0 && this.Data.state('activemenu') != menuID) {
+            $('#dropDownMenu'+this.Data.state('activemenu')).trigger('click', [true]).removeClass('selected');
         }
         
         if (!noActiveMenuReset) {
-            this.Data.activemenu = menuID;
-            this.Data.noreload = true;
+            this.Data.state('activemenu', menuID);
+            this.Data.state('noreload', true);
             this.setupURL();
         }
         
@@ -69,8 +69,8 @@ function Events() {
         menuID = $(el).attr('id').replace("dropDownMenu", "");
         
         if (!noActiveMenuReset) {
-            this.Data.activemenu = 0;
-            this.Data.noreload = true;
+            this.Data.state('activemenu', 0);
+            this.Data.state('noreload', true);
             this.setupURL();
         }
         
@@ -83,14 +83,12 @@ function Events() {
     
     this.refresh_Change = function(el) {
         var thisRef = this;
-        this.Data.refresh = parseInt($(el).val(), 10);
+        this.Data.state('refresh', parseInt($(el).val(), 10));
         
         try { clearInterval(this.intervalID); } finally {}
-        if (this.Data.refresh > 0) this.intervalID = setInterval( function() { thisRef.viewUpdater(); }, (this.Data.refresh*1000) );
-        //this.Data.noreload = true;
-        //$('.tablePlus').attr('src', 'media/images/table_plus.png');
-        //this.Data.or = [];
-        this.Data.noreload = false;
+        if (this.Data.state('refresh') > 0) this.intervalID = setInterval( function() { thisRef.viewUpdater(); }, (this.Data.state('refresh')*1000) );
+        
+        this.Data.state('noreload', false);
         this.setupURL();
     };
     
@@ -98,8 +96,8 @@ function Events() {
         var _Settings, rowDataSet, output;
         var thisRef = this;
         
-        _Settings = this.Settings[this.Data.table]; // Shortcut
-        rowDataSet = this.Data.mem.table.data[dataID];
+        _Settings = this.Settings[this.Data.state('table')]; // Shortcut
+        rowDataSet = this.Data.state().mem.table.data[dataID];
         
         var processData = function(jsonDataSet) {
             if (jsonDataSet === undefined) jsonDataSet = false;
@@ -118,10 +116,10 @@ function Events() {
             processData();
         }
         
-        if ($.inArray(dataID, this.Data.or) == -1) {
-            if (_Settings.multipleER) this.Data.or.push(dataID);
-            else this.Data.or = [dataID];
-            this.Data.noreload = true;
+        if ($.inArray(dataID, this.Data.state('or')) == -1) {
+            if (_Settings.multipleER) this.Data.state().or.push(dataID);
+            else this.Data.state('or', [dataID]);
+            this.Data.state('noreload', true);
             this.setupURL();
         }
         
@@ -147,27 +145,27 @@ function Events() {
     };
     
     this.erClose_click = function(dataID) {
-        if (this.Data.or.length > 1) {
-            var position = $.inArray(dataID, this.Data.or);
-            this.Data.or.splice(position,1);
+        if (this.Data.state('or').length > 1) {
+            var position = $.inArray(dataID, this.Data.state('or'));
+            this.Data.state('or').splice(position,1);
         }
         else {
-            this.Data.or = [];
+            this.Data.state('or', []);
         }
-        this.Data.noreload = true;
+        this.Data.state('noreload', true);
         this.setupURL();
     };
     
     this.mainsTableContent_change = function(el) {
         var records, _Settings = this.Settings.Mains; // Shortcut
         var thisRef = this;
-        if ($('#dataTable_0_paginate input').val() !== undefined) this.Data.p = $('#dataTable_0_paginate input').val();
-        if (this.Data.noreload === false) {
+        if ($('#dataTable_0_paginate input').val() !== undefined) this.Data.state('p', $('#dataTable_0_paginate input').val());
+        if (this.Data.state('noreload') === false) {
             $('.tablePlus').attr('src', 'media/images/table_plus.png');
-            this.Data.or = [];
+            this.Data.state('or', []);
         }
         records = parseInt($('#dataTable_0_length select').val(), 10);
-        if (!isNaN(records)) this.Data.records = records;
+        if (!isNaN(records)) this.Data.state('records', records);
         $('#dataTable_0 tbody a.drilldown').closest('td').unbind();
         $('#dataTable_0 tbody a.drilldown').closest('td').click(function(){ 
             var aPos = thisRef.mainsTable[0].fnGetPosition(this);
@@ -176,79 +174,77 @@ function Events() {
         
         // Running settings post processing (if avaliable)
         try {
-            _Settings.tableActivityEvent(el, thisRef.Data.mem);
+            _Settings.tableActivityEvent(el, thisRef.Data.state('mem'));
         } catch(err) { /* do nothing */ }
         
-        this.Data.noreload = true;
+        this.Data.state('noreload', true);
         this.setupURL();
     };
     
     this.drillDown_click = function(el, rowIndex) {
         var i, _Settings, dParams = false;
-        _Settings = this.Settings[this.Data.table]; // Shortcut
+        _Settings = this.Settings[this.Data.state('table')]; // Shortcut
         
         // Save breadcrumbs
-        this.Data.breadcrumbs.push({
+        this.Data.state().breadcrumbs.push({
             'table':_Settings.tableName,
             'url':$.param.fragment()
         });
         
         // setup model
-        if ($.isFunction(_Settings.drillDownHandler)) dParams = _Settings.drillDownHandler(this.Data, el, rowIndex);
+        if ($.isFunction(_Settings.drillDownHandler)) dParams = _Settings.drillDownHandler(this.Data.state(), el, rowIndex);
         if (dParams) {
-            if (dParams.uparam !== undefined) this.Data.uparam = dParams.uparam;
-            if (dParams.table !== undefined) this.Data.table = dParams.table;
+            if (dParams.uparam !== undefined) this.Data.state('uparam', dParams.uparam);
+            if (dParams.table !== undefined) this.Data.state('table', dParams.table);
             if (dParams.filters !== undefined) {
                 for (i in dParams.filters) {
                     if (dParams.filters.hasOwnProperty(i)) {
-                        this.Data.filters[i] = dParams.filters[i];
+                        this.Data.state().filters[i] = dParams.filters[i];
                     }
                 }
             }
         } else alert('setupUserParams settings function was replaced by drillDownHandler function, see documentation and latest settings.js_example for detailes!');
-        this.Data.or = [];
-        this.Data.sorting = [];
-        this.Data.p = 1;
-        this.Data.noreload = false;
+        this.Data.state('or', []);
+        this.Data.state('sorting', []);
+        this.Data.state('p', 1);
+        this.Data.state('noreload', false);
         this.setupURL();
     };
     
     this.subsTableContent_change = function(el) {
         var _Settings = this.Settings.Subs; // Shortcut
         var thisRef = this;
-        if ($('#dataTable_0_paginate input').val() !== undefined) this.Data.p = $('#dataTable_0_paginate input').val();
+        if ($('#dataTable_0_paginate input').val() !== undefined) this.Data.state('p', $('#dataTable_0_paginate input').val());
         
-        this.Data.records = parseInt($('#dataTable_0_length select').val(), 10);
+        this.Data.state('records', parseInt($('#dataTable_0_length select').val(), 10));
         
         // Running settings post processing (if avaliable)
         try {
-            _Settings.tableActivityEvent(el, thisRef.Data.mem);
+            _Settings.tableActivityEvent(el, thisRef.Data.state('mem'));
         } catch(err) { /* do nothing */ }
         
-        this.Data.noreload = true;
+        this.Data.state('noreload', true);
         this.setupURL();
     };
     
     this.tableSorting_click = function(el, dataTable) {
         var tSettings = dataTable.fnSettings();
-        //alert(tSettings.aaSorting[0][1]);
-        this.Data.sorting = Array(tSettings.aaSorting[0][0],tSettings.aaSorting[0][1]);
-        //this.Data.noreload = true;
-        //this.setupURL();
+        
+        this.Data.state('sorting', [ tSettings.aaSorting[0][0], tSettings.aaSorting[0][1] ]);
     };
     
     this.filtersSubmit_click = function(el) {
         var i, _Settings;
     
-        _Settings = this.Settings[this.Data.table]; // Shortcut
+        _Settings = this.Settings[this.Data.state('table')]; // Shortcut
         
         for (i=0;i<_Settings.filters.length;i++) {
-            this.Data.filters[_Settings.filters[i].urlVariable] = ($('.filterItems #'+_Settings.filters[i].urlVariable).val() || '');
+            this.Data.state().filters[_Settings.filters[i].urlVariable] = ($('.filterItems #'+_Settings.filters[i].urlVariable).val() || '');
             this.filtersSubmit_OnOff(i);
         }
-        this.Data.or = [];
-        this.Data.sorting = [];
-        this.Data.p = 1;
+        this.Data.state('or', []);
+        this.Data.state('sorting', []);
+        this.Data.state('p', 1);
         this.setupURL();
         
         this.filter_change();
@@ -257,11 +253,11 @@ function Events() {
     this.filtersSubmit_OnOff = function(i) {
         var _Settings;
         
-        _Settings = this.Settings[this.Data.table]; // Shortcut
+        _Settings = this.Settings[this.Data.state('table')]; // Shortcut
         
-        if (_Settings.filters[i].options.On !== undefined && this.Data.filters[_Settings.filters[i].urlVariable] !== '') {
+        if (_Settings.filters[i].options.On !== undefined && this.Data.state().filters[_Settings.filters[i].urlVariable] !== '') {
             _Settings.filters[i].options.On(this.Data);
-        } else if (_Settings.filters[i].options.Off !== undefined && this.Data.filters[_Settings.filters[i].urlVariable] === '') {
+        } else if (_Settings.filters[i].options.Off !== undefined && this.Data.state().filters[_Settings.filters[i].urlVariable] === '') {
             _Settings.filters[i].options.Off(this.Data);
         }
     };
@@ -290,7 +286,7 @@ function Events() {
         var i, j, filter, filterID, optClass, disableFilters, checked, checkedArr = [], filtersToChange = {}, _Settings, _Filter;
         
         // Selecting a proper settings set
-        _Settings = this.Settings[this.Data.table]; // Shortcut
+        _Settings = this.Settings[this.Data.state('table')]; // Shortcut
         
         // Selecting a proper filter from the settings set
         j = 0;
@@ -304,7 +300,7 @@ function Events() {
         if (j == 0) return false; // If filter not found, stop the method
         
         // Take a proper constraints from the settings (see documentation)
-        disableFilters = _Filter.options.disableFilterOptionsList(this.Data);
+        disableFilters = _Filter.options.disableFilterOptionsList(this.Data.state());
         // Check which options are actually selected
         checked = $('#'+_Filter.urlVariable).multiselect('getChecked');
         
@@ -372,17 +368,17 @@ function Events() {
         div = $('<div></div>').append($('<h3></h3>').html('Filters Summary').css('margin','0px 0px 3px 0px'));
         
         // Load proper Settings
-        _Settings = this.Settings[this.Data.table]; // Shortcut
+        _Settings = this.Settings[this.Data.state('table')]; // Shortcut
         
         // loop through the filters array
         for (i=0; i<_Settings.filters.length;i++) {
-            if (this.Data.filters[_Settings.filters[i].urlVariable] !== '') {
+            if (this.Data.state().filters[_Settings.filters[i].urlVariable] !== '') {
                 if (_Settings.filters[i].fieldType == 'select') {
                     try {
                         if (_Settings.filters[i].urlVariable === undefined) selectElements = _Settings.filters[i].options.translateData();
-                        else selectElements = _Settings.filters[i].options.translateData(this.Data.mem.filters[_Settings.filters[i].urlVariable]);
+                        else selectElements = _Settings.filters[i].options.translateData(this.Data.state().mem.filters[_Settings.filters[i].urlVariable]);
                         for (j=0;j<selectElements.length;j++) {
-                            if (selectElements[j][0] == this.Data.filters[_Settings.filters[i].urlVariable]) {
+                            if (selectElements[j][0] == this.Data.state().filters[_Settings.filters[i].urlVariable]) {
                                 div.append('<span style="font-weight:bold">'+_Settings.filters[i].label+'</span>: '+selectElements[j][1]+'<br />');
                             }
                         }
@@ -390,11 +386,11 @@ function Events() {
                 } else if (_Settings.filters[i].fieldType == 'multiselect') {
                     try {
                         if (_Settings.filters[i].urlVariable === undefined) selectElements = _Settings.filters[i].options.translateData();
-                        else selectElements = _Settings.filters[i].options.translateData(this.Data.mem.filters[_Settings.filters[i].urlVariable]);
+                        else selectElements = _Settings.filters[i].options.translateData(this.Data.state().mem.filters[_Settings.filters[i].urlVariable]);
                         
                         fElementsArr = [];
                         for (j=0;j<selectElements.length;j++) {
-                            elIndex = $.inArray(selectElements[j][0], this.Data.filters[_Settings.filters[i].urlVariable]);
+                            elIndex = $.inArray(selectElements[j][0], this.Data.state().filters[_Settings.filters[i].urlVariable]);
                             if (elIndex != -1) {
                                 fElementsArr.push(selectElements[j][1]);
                             }
@@ -402,7 +398,7 @@ function Events() {
                         div.append('<span style="font-weight:bold">'+_Settings.filters[i].label+'</span>: '+fElementsArr.join(', ')+'<br />');
                     } catch(err2) { /*do nothing*/ }
                 } else {
-                    div.append('<span style="font-weight:bold">'+_Settings.filters[i].label+'</span>: '+this.Data.filters[_Settings.filters[i].urlVariable]+'<br />');
+                    div.append('<span style="font-weight:bold">'+_Settings.filters[i].label+'</span>: '+this.Data.state().filters[_Settings.filters[i].urlVariable]+'<br />');
                 }
             }
         }
