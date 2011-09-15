@@ -1,4 +1,4 @@
-// This file is part of the jTaskMonitoring software
+// This file is part of the hBrowse software
 // Copyright (c) CERN 2010
 //
 // Author: Lukasz Kokoszkiewicz [lukasz@kokoszkiewicz.com , lukasz.kokoszkiewicz@cern.ch]
@@ -7,6 +7,7 @@
 // 18.05.2010 Created
 // 17.01.2011 First production release (v1.0.0)
 // 31.03.2011 Major v1.2.0 release (many changes to settings and core of the application)
+// 19.09.2011 version 2.0.0 release
 //
 
 /*JSHINT*/

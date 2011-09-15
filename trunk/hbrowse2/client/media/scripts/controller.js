@@ -1,4 +1,4 @@
-// This file is part of the jTaskMonitoring software
+// This file is part of the hBrowse software
 // Copyright (c) CERN 2010
 //
 // Author: Lukasz Kokoszkiewicz [lukasz@kokoszkiewicz.com , lukasz.kokoszkiewicz@cern.ch]
@@ -7,6 +7,7 @@
 // 18.05.2010 Created
 // 17.01.2011 First production release (v1.0.0)
 // 31.03.2011 Major v1.2.0 release (many changes to settings and core of the application)
+// 19.09.2011 version 2.0.0 release
 //
 
 /*JSHINT*/
@@ -82,7 +83,7 @@ function Controller() {
             this.openActiveMenu();
         }
         try {
-            this.userRefresh_update();
+            this.pageRefresh_update();
             this.noreload = true;
             this.setupURL();
         } catch(err) {
@@ -140,9 +141,7 @@ function Controller() {
                 if (thisRef.Settings.Application.debugMode) thisRef.setupErrorDialog(err);
             }
             
-            thisRef.generateUserDropdownOptions();
-            
-            /*if (!(this.Data.user || $.bbq.getState('user'))) */thisRef.drawUsers();
+            thisRef.drawUsers();
         };
         
         // Get the users list from ajax call
@@ -341,9 +340,6 @@ function Controller() {
             $(tableTarget).empty();
             
             if (_Settings.chartGroups !== undefined) {
-                // Charts grouping works only for summary charts (hidden inside the tab)
-                // Create mapping from natural filters indexing to group field pairs
-                
                 $.each(_Settings.chartGroups, function(i, group) {
                     groupTableIndexes.push(0);
                 });
@@ -354,7 +350,7 @@ function Controller() {
                     groupTableIndexes[ chartObj.groupIndex ]++;
                 });
                 
-                this.charts_prepGroups(_charts.length, tableTarget, domIdPrefix, groupTableIndexes, _Settings.chartGroups);
+                this.charts_prepGroups(tableTarget, domIdPrefix, groupTableIndexes, _Settings.chartGroups);
             } else {
                 this.charts_prepTable(_charts.length, tableTarget, domIdPrefix);
             }
