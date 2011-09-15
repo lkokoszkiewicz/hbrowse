@@ -81,8 +81,8 @@ function Settings() {
         'dataURL_params': function(Data, rowDataSet) {
             obj = {
                 'usergridname':Data.user,
-                'from':Data.ts2iso(Data.from,2),
-                'to':Data.ts2iso(Data.till,3),
+                //'from':Data.ts2iso(Data.from,2),
+                //'to':Data.ts2iso(Data.till,3),
                 'timerange':Data.timeRange,
                 'typeofrequest':'A'
             };

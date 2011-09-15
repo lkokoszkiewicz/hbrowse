@@ -7,6 +7,7 @@
 // 18.05.2010 Created
 // 17.01.2011 First production release (v1.0.0)
 // 31.03.2011 Major v1.2.0 release (many changes to settings and core of the application)
+// 15.09.2011 Code comments was formated to use NaturalDocs
 // 19.09.2011 version 2.0.0 release
 //
 
@@ -61,7 +62,7 @@ function ControlsUpdate() {
         var thisRef = this;
         $('#refresh option').each( function(i){
             $(this).removeAttr('selected');
-            if ($(this).val() == thisRef.Data.refresh) $(this).attr('selected','selected');
+            if ($(this).val() == thisRef.Data.state('refresh')) $(this).attr('selected','selected');
         });
     };
     
@@ -85,24 +86,25 @@ function ControlsUpdate() {
         sDefaults = _Settings.modelDefaults();
         
         // id=breadcrumbs
-        if (this.Data.user || !_Settings.userSelection) {
+        if (this.Data.state('user') || !_Settings.userSelection) {
             output = '&nbsp;';
             // show table
-            if (_Settings.userSelection) output += '[ <span class="highlight">' + this.Data.user + '</span> ] &raquo; ';
+            if (_Settings.userSelection) output += '[ <span class="highlight">' + this.Data.state('user') + '</span> ] &raquo; ';
             
-            bcLength = this.Data.breadcrumbs.length;
+            bcLength = this.Data.state('breadcrumbs').length;
             
             for (i=0;i<bcLength;i++) {
-                if (this.Data.breadcrumbs[i].table != this.Settings[this.Data.table].tableName) {
-                    output += addBC(this.Data.breadcrumbs[i].url, this.Data.breadcrumbs[i].table);
+                if (this.Data.state().breadcrumbs[i].table != this.Settings[this.Data.state('table')].tableName) {
+                    output += addBC(this.Data.state().breadcrumbs[i].url, this.Data.state().breadcrumbs[i].table);
                 } else {
-                    this.Data.breadcrumbs.splice(i,(bcLength-i));
+                    this.Data.state().breadcrumbs.splice(i,(bcLength-i));
                     break;
                 }
             }
             
-            if (bcLength == 0 && sDefaults.initialTable != this.Data.table && sDefaults.initialTable != '') {
-                url = 'user='+this.Data.user+'&refresh='+this.Data.refresh+'&table='+sDefaults.initialTable+'&p=1&records='+this.Data.records+'&activemenu=0';
+            if (bcLength == 0 && sDefaults.initialTable != this.Data.state('table') && sDefaults.initialTable != '') {
+                url = 'user='+this.Data.state('user')+'&refresh='+this.Data.state('refresh')+'&table='+sDefaults.initialTable
+                    +'&p=1&records='+this.Data.state('records')+'&activemenu=0';
                 
                 // Check if initial table have any filters defined
                 // Load initial table setting
@@ -121,7 +123,7 @@ function ControlsUpdate() {
                 // user=testuser5&refresh=0&table=Mains&p=1&records=25&activemenu=0
             }
             
-            output += this.Settings[this.Data.table].tableName;
+            output += this.Settings[this.Data.state('table')].tableName;
         }
         else {
             // show users
@@ -384,12 +386,12 @@ function ControlsUpdate() {
     */
     this.hideShowFilters = function(action) {
         if (action == 'show') {
-            if ($( $('#dropDownMenu1').attr('href') ).css('display') != 'block' && this.Data.activemenu == 1) {
+            if ($( $('#dropDownMenu1').attr('href') ).css('display') != 'block' && this.Data.state('activemenu') == 1) {
                 $('#dropDownMenu1').trigger('click',[true]);
             }
             $('#dropDownMenu1,#dataFiltersLabel').parent('li').show();
         } else if (action == 'hide') {
-            if ($( $('#dropDownMenu1').attr('href') ).css('display') == 'block' && this.Data.activemenu == 1) {
+            if ($( $('#dropDownMenu1').attr('href') ).css('display') == 'block' && this.Data.state('activemenu') == 1) {
                 $('#dropDownMenu1').trigger('click',[true]);
             }
             $('#dropDownMenu1,#dataFiltersLabel').parent('li').hide();
@@ -409,14 +411,14 @@ function ControlsUpdate() {
         var thisRef = this;
         
         // setting up a proper table settings
-        _Settings = this.Settings[this.Data.table]; // Shortcut
+        _Settings = this.Settings[this.Data.state('table')]; // Shortcut
         // if settings for a given table are undefined create an empty settings
         // object to prevent en error in the next command
         if (_Settings === undefined) _Settings = {};
         
         // if filters for a given table exists, draw controlls
-        if (_Settings.filters !== undefined && this.Filter != this.Data.table) {
-            this.Filter = this.Data.table;
+        if (_Settings.filters !== undefined && this.Filter != this.Data.state('table')) {
+            this.Filter = this.Data.state('table');
             // defining empty functions to use as defaults for ajax functions
             var emptyFunc = function() {/*do nothing*/};
             var returnEmptyObjFunc = function() { return {}; };
@@ -424,7 +426,7 @@ function ControlsUpdate() {
             // setup incoming ajax data
             var handleAjaxData = function(data){
                 try {
-                    thisRef.Data.mem.filters[_Settings.filters[i].urlVariable] = data;
+                    thisRef.Data.state().mem.filters[_Settings.filters[i].urlVariable] = data;
                     optArr = _Settings.filters[i].options.translateData(data);
                 } catch(err1) {
                     if (thisRef.Settings.Application.debugMode) thisRef.setupErrorDialog(err1);
@@ -459,7 +461,7 @@ function ControlsUpdate() {
                     filter = $('<input></input>').attr({
                         'type':'text',
                         'id':_Settings.filters[i].urlVariable,
-                        'value':this.Data.filters[_Settings.filters[i].urlVariable]
+                        'value':this.Data.state().filters[_Settings.filters[i].urlVariable]
                     });
                     
                     if (_Settings.filters[i].fieldType == 'hidden') {
@@ -485,7 +487,7 @@ function ControlsUpdate() {
                         // check if, by any chance, options wasn't downloaded earlier
                         // to do this we check if a proper ajax response was reqistered inside Data.mem object
                         // if not, script will download a proper data
-                        if (this.Data.mem.filters[_Settings.filters[i].urlVariable] === undefined) {
+                        if (this.Data.state().mem.filters[_Settings.filters[i].urlVariable] === undefined) {
                             // check if options.dataURL_params is defined
                             // if no, use previously defined function returning empty object
                             if (_Settings.filters[i].options.dataURL_params === undefined) 
@@ -494,13 +496,13 @@ function ControlsUpdate() {
                             // query for the options, previously defnied handleAjaxData
                             // function will be used to store and preper the data 
                             this.Data.ajax_getData_sync('filter', _Settings.filters[i].options.dataURL, 
-                                _Settings.filters[i].options.dataURL_params(this.Data), handleAjaxData, emptyFunc);
+                                _Settings.filters[i].options.dataURL_params(this.Data.state()), handleAjaxData, emptyFunc);
                         }
                         // if data already resides in memory, simply use them to redraw the filter control
                         else {
                             try {
                                 optArr = _Settings.filters[i].options
-                                    .translateData(this.Data.mem.filters[_Settings.filters[i].urlVariable]);
+                                    .translateData(this.Data.state().mem.filters[_Settings.filters[i].urlVariable]);
                             } catch(err2) {
                                 if (thisRef.Settings.Application.debugMode) thisRef.setupErrorDialog(err2);
                             }
@@ -528,13 +530,13 @@ function ControlsUpdate() {
                         
                         // check which fields should be selected
                         if (_Settings.filters[i].fieldType == 'multiselect') {
-                            if (optArr[j][0] == thisRef.Data.filters[_Settings.filters[i].urlVariable] 
-                                || $.inArray(optArr[j][0], thisRef.Data.filters[_Settings.filters[i].urlVariable]) != -1) {
+                            if (optArr[j][0] == thisRef.Data.state().filters[_Settings.filters[i].urlVariable] 
+                                || $.inArray(optArr[j][0], thisRef.Data.state().filters[_Settings.filters[i].urlVariable]) != -1) {
                                 
                                 option.attr('selected','selected');
                             }
                         } else {
-                            if (optArr[j][0] == this.Data.filters[_Settings.filters[i].urlVariable]) {
+                            if (optArr[j][0] == this.Data.state().filters[_Settings.filters[i].urlVariable]) {
                                 option.attr('selected','selected');
                             }
                         }
@@ -636,14 +638,14 @@ function ControlsUpdate() {
         
         var addSelectOption = function(j) {
             $(this).removeAttr('selected');
-            if ($(this).val() == thisRef.Data.filters[_Settings.filters[i].urlVariable]) $(this).attr('selected','selected');
+            if ($(this).val() == thisRef.Data.state().filters[_Settings.filters[i].urlVariable]) $(this).attr('selected','selected');
         };
         
         var addMultiSelectOption = function(j) {
             try {
                 $(this).removeAttr('selected');
-                if ($(this).val() == thisRef.Data.filters[_Settings.filters[i].urlVariable] 
-                    || $.inArray($(this).val(), thisRef.Data.filters[_Settings.filters[i].urlVariable]) != -1) {
+                if ($(this).val() == thisRef.Data.state().filters[_Settings.filters[i].urlVariable] 
+                    || $.inArray($(this).val(), thisRef.Data.state().filters[_Settings.filters[i].urlVariable]) != -1) {
                     
                     $(this).attr('selected','selected');
                 }
@@ -651,13 +653,13 @@ function ControlsUpdate() {
         };
         
         if (this.appDisplayState() != 'users') {
-            _Settings = this.Settings[this.Data.table]; // Shortcut
+            _Settings = this.Settings[this.Data.state('table')]; // Shortcut
             
             if (_Settings.filters !== undefined) {
                 for (i=0;i<_Settings.filters.length;i++) {
                     if (_Settings.filters[i].fieldType == 'text' || _Settings.filters[i].fieldType == 'date') {
                         $('.filterItems #'+_Settings.filters[i].urlVariable)
-                            .attr('value', this.Data.filters[_Settings.filters[i].urlVariable]);
+                            .attr('value', this.Data.state().filters[_Settings.filters[i].urlVariable]);
                     } 
                     else if (_Settings.filters[i].fieldType == 'select') {
                         $('.filterItems #'+_Settings.filters[i].urlVariable+' option').each( addSelectOption );
