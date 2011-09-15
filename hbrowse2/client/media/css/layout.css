@@ -46,6 +46,7 @@ a { cursor:pointer; color:#3383BB; }
 #breadcrumbs { background-color:#ffffff; padding-top:7px; }
 #breadcrumbs a { color:#3383BB; font-weight:bold; }
 #breadcrumbs a:hover { color:#5992bb; }
+#breadcrumbs .highlight { font-weight:bold; }
 
 /*LOGO*/
 #logo { position:absolute; top:0px; right:2px; width:170px; height:30px; background-color:#ffffff; background-image:url(../images/logo.png); background-repeat:no-repeat; background-position:0px 0px; }

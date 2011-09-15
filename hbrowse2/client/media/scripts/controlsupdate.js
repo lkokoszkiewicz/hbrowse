@@ -1,4 +1,4 @@
-// This file is part of the jTaskMonitoring software
+// This file is part of the hBrowse software
 // Copyright (c) CERN 2010
 //
 // Author: Lukasz Kokoszkiewicz [lukasz@kokoszkiewicz.com , lukasz.kokoszkiewicz@cern.ch]
@@ -7,9 +7,28 @@
 // 18.05.2010 Created
 // 17.01.2011 First production release (v1.0.0)
 // 31.03.2011 Major v1.2.0 release (many changes to settings and core of the application)
+// 19.09.2011 version 2.0.0 release
 //
 
+/*
+   Class: ControlsUpdate
+   This class is responsible for any UI manipulation
+*/
 function ControlsUpdate() {
+
+// ============================================================================
+// General UI manipulation - FINISH
+// ============================================================================
+
+// Error dialog setup ---------------------------------------------------------
+    
+    /*
+        Function: setupErrorDialog
+        Builds an error message content to display when exception occurs
+        
+        Parameters:
+            err - Exception error object
+    */
     this.setupErrorDialog = function(err) {
         var ul = $('<ul></ul>');
         var st = err.stack.split("\n");
@@ -30,32 +49,15 @@ function ControlsUpdate() {
         $('#dialog-message').dialog('open');
     };
 
-    this.userDropdown_update = function() {
-        var thisRef = this;
-        $('#userSelect_dropdown option').each( function(i){
-            $(this).removeAttr('selected');
-            if ($(this).val() == thisRef.Data.user) $(this).attr('selected','selected');
-        });
-    };
+// ----------------------------------------------------------------------------
+
+// Update page refresh select field -------------------------------------------
     
-    // Generate users options
-    this.generateUserDropdownOptions = function() {
-        var i, newOption;
-        var thisRef = this;
-        
-        newOption = $('<option></option>').attr('value','').html('');
-        $('#userSelect_dropdown').empty();
-        $('#userSelect_dropdown').append(newOption);
-        for (i=0;i<thisRef.Data.mem.users.length;i++) {
-            newOption = $('<option></option>').attr('value',this.Data.mem.users[i]).html(this.Data.mem.users[i]);
-            $('#userSelect_dropdown').append(newOption);
-        }
-        
-        $('#userSelect_dropdown').unbind('change').change( function() { thisRef.userDropDown_Change(this); });
-        this.userDropdown_update();
-    };
-    
-    this.userRefresh_update = function() {
+    /*
+        Function: pageRefresh_update
+        Updates page refresh dropdown list with a proper option selection
+    */
+    this.pageRefresh_update = function() {
         var thisRef = this;
         $('#refresh option').each( function(i){
             $(this).removeAttr('selected');
@@ -63,6 +65,14 @@ function ControlsUpdate() {
         });
     };
     
+// ----------------------------------------------------------------------------
+
+// Breadcrumbs update ---------------------------------------------------------
+    
+    /*
+        Function: breadcrumbs_update
+        Builds a proper breadcrumbs html output and publishes it to the site
+    */
     this.breadcrumbs_update = function() {
         var i, _Settings, sDefaults, iniTableSettings, filtersUrl = [], output, bcLength, url;
         var thisRef = this;
@@ -78,7 +88,7 @@ function ControlsUpdate() {
         if (this.Data.user || !_Settings.userSelection) {
             output = '&nbsp;';
             // show table
-            if (_Settings.userSelection) output += '[ <span class="bold">' + this.Data.user + '</span> ] &raquo; ';
+            if (_Settings.userSelection) output += '[ <span class="highlight">' + this.Data.user + '</span> ] &raquo; ';
             
             bcLength = this.Data.breadcrumbs.length;
             
@@ -121,8 +131,35 @@ function ControlsUpdate() {
         $('#breadcrumbs').html(output);
     };
     
-    // Prepares chart groups
-    this.charts_prepGroups = function(chtCnt, tableTarget, domIdPrefix, groupTableIndexes, chartGroups) {
+// ----------------------------------------------------------------------------
+    
+// ============================================================================
+// General UI manipulation - FINISH
+// ============================================================================
+    
+// ============================================================================
+// Charts drawing and updates - START
+// ============================================================================
+
+// Prepare grouping DIVs ------------------------------------------------------
+
+    /*
+        Function: charts_prepGroups
+        Draws a proper dom object structure to create charts grouping with
+        jQuery UI accordion widget
+        
+        Parameters:
+            tableTarget - Drawing target area ID (eg: #chartContent)
+            domIdPrefix - Individual chart span id prefix (eg: cht_)
+            groupTableIndexes - Array, holds information on how many charts
+                                will reside in the group
+            chartGroups - Chart groups array taken from settings
+                          'chartGroups' option
+        
+        See Also:
+            <charts_prepTable>
+    */
+    this.charts_prepGroups = function(tableTarget, domIdPrefix, groupTableIndexes, chartGroups) {
         var accordionID;
         
         accordionID = tableTarget.replace('#','')+'_group';
@@ -140,7 +177,22 @@ function ControlsUpdate() {
 		});
     };
     
-    // Function that prepares 2 column charts table and table groups
+// ----------------------------------------------------------------------------
+
+// Prepares charts holding table ----------------------------------------------
+    
+    /*
+        Function: charts_prepTable
+        Function that prepares 2 column charts table
+        
+        Parameters:
+            chtCnt - Indication of how many charts are to display
+            tableTarget - Drawing target area ID (eg: #chartContent)
+            domIdPrefix - Individual chart span id prefix (eg: cht_)
+        
+        See Also:
+            <charts_prepGroups>
+    */
     this.charts_prepTable = function(chtCnt, tableTarget, domIdPrefix) {
         if (chtCnt > 0) {
             var rowCnt = Math.ceil((chtCnt/2));
@@ -153,15 +205,32 @@ function ControlsUpdate() {
             var cnt = 0;
             for (var i=0;i<rowCnt;i++) {
                 var tr = $('<tr></tr>');
-                tr.append( $('<td></td>').addClass('chartTd').append( $('<span></span>').attr('id',domIdPrefix+cnt).css({'display':'inline-block'}) ) );cnt++;
-                tr.append( $('<td></td>').addClass('chartTd').append( $('<span></span>').attr('id',domIdPrefix+cnt).css({'display':'inline-block'}) ) );cnt++;
+                tr.append( $('<td></td>').addClass('chartTd').append( $('<span></span>')
+                    .attr('id',domIdPrefix+cnt).css({'display':'inline-block'}) ) );cnt++;
+                tr.append( $('<td></td>').addClass('chartTd').append( $('<span></span>')
+                    .attr('id',domIdPrefix+cnt).css({'display':'inline-block'}) ) );cnt++;
                 table.append(tr);
             }
             $(tableTarget).append(table);
         }
     };
     
-    // Function drawing google charts
+// ----------------------------------------------------------------------------
+
+// Draw google charts ---------------------------------------------------------
+    
+    /*
+        Function: googleCharts_load
+        Function drawing google charts
+        
+        Parameters:
+            query - Url query string formated for google charts
+                    (see: http://code.google.com/apis/chart/)
+            domId - DOM target element ( where to draw )
+        
+        See Also:
+            <tableCharts_load>
+    */
     this.googleCharts_load = function(query, domId) {
         $('#'+domId).empty();
         $('#'+domId).append(
@@ -171,8 +240,22 @@ function ControlsUpdate() {
             })
         );
     };
+
+// ----------------------------------------------------------------------------
+
+// Draw table chart -----------------------------------------------------------
     
-    // Function used to draw a table in place of a chart
+    /*
+        Function: tableCharts_load
+        Function used to draw a table in place of a chart
+        
+        Parameters:
+            tData - Properly formated object with the table data
+            domId - DOM target element ( where to draw )
+        
+        See Also:
+            <googleCharts_load>
+    */
     this.tableCharts_load = function(tData, domId) {
         var i, j, table, tHead, tHeadTr, tHeadTd, tBody, tBodyTr, tBodyTd;
     
@@ -207,11 +290,36 @@ function ControlsUpdate() {
         $('#'+domId).append(table);
     };
     
-    this.drawChtMessageFrame = function(content) {
+// ----------------------------------------------------------------------------
+
+// Draw chart message frame ---------------------------------------------------
+    
+    /*
+        Function: drawChtMessageFrame
+        Draw chart message frame when we have 'onDemand chart' or there is no
+        data to display a chart
+    */
+    this.drawChtMessageFrame = function() {
         var frame = $('<div></div>').addClass('chartMessageFrame');
         return frame;
     };
     
+// ----------------------------------------------------------------------------
+
+// Draw chart request button --------------------------------------------------
+    
+    /*
+        Function: drawChtRequestButton
+        Draw chart request button, used when chart has the 'onDemand' option
+        activated
+        
+        Parameters:
+            _charts - Settings charts array shortcut
+            domIdPrefix - Individual chart span id prefix (eg: cht_)
+            destIndex - String or array (in case of chart grouping) defining
+                        (in connection with domIdPrefix) where chart should
+                        be drawn
+    */
     this.drawChtRequestButton = function(_charts, domIdPrefix, destIndex) {
         var thisRef = this;
         
@@ -234,6 +342,19 @@ function ControlsUpdate() {
         $('#'+domId).append(chtMessageFrame);
     };
     
+// ----------------------------------------------------------------------------
+
+// Draw no data chart message -------------------------------------------------    
+    
+    /*
+        Function: drawNoDataMessage
+        Draws no data chart message when there is no data to display the chart
+        
+        Parameters:
+            _charts - Settings charts array shortcut
+            domIdPrefix - Individual chart span id prefix (eg: cht_)
+            cnt - Chart index
+    */
     this.drawNoDataMessage = function(_charts, domIdPrefix, cnt) {
         var chtMessageFrame = this.drawChtMessageFrame();
         
@@ -242,6 +363,25 @@ function ControlsUpdate() {
         $('#'+domIdPrefix+cnt).append(chtMessageFrame);
     };
     
+// ----------------------------------------------------------------------------
+    
+// ============================================================================
+// Charts drawing and updates - FINISH
+// ============================================================================
+
+// ============================================================================
+// Filters drawing and updates - START
+// ============================================================================
+
+// Hide/Show filters ----------------------------------------------------------
+    
+    /*
+        Function: hideShowFilters
+        Shows or hides filters and filters toggle button
+        
+        Parameters:
+            action - string (show|hide)
+    */
     this.hideShowFilters = function(action) {
         if (action == 'show') {
             if ($( $('#dropDownMenu1').attr('href') ).css('display') != 'block' && this.Data.activemenu == 1) {
@@ -255,7 +395,15 @@ function ControlsUpdate() {
             $('#dropDownMenu1,#dataFiltersLabel').parent('li').hide();
         }
     };
+
+// ----------------------------------------------------------------------------
+
+// Draw filters ---------------------------------------------------------------
     
+    /*
+        Function: drawFilters
+        Draws filters based of settings information
+    */
     this.drawFilters = function() {
         var i, j, _Settings, optArr, mainSpan, filter, option, groupIndex, constFiltersList = [], mulitselectconf = {};
         var thisRef = this;
@@ -301,10 +449,13 @@ function ControlsUpdate() {
             // table filters loop
             for (i=0;i<_Settings.filters.length;i++) {
                 // create span to draw a filter html control
-                mainSpan = $('<span></span>').attr('id','filter_'+_Settings.filters[i].urlVariable).addClass('filterItems').html(_Settings.filters[i].label+'<br />');
+                mainSpan = $('<span></span>').attr('id','filter_'+_Settings.filters[i].urlVariable)
+                    .addClass('filterItems').html(_Settings.filters[i].label+'<br />');
                 
                 // draw text, date or datetime filter, if hidden, input field will not display
-                if (_Settings.filters[i].fieldType == 'text' || _Settings.filters[i].fieldType == 'hidden' || _Settings.filters[i].fieldType == 'date' || _Settings.filters[i].fieldType == 'datetime') {
+                if (_Settings.filters[i].fieldType == 'text' || _Settings.filters[i].fieldType == 'hidden' 
+                    || _Settings.filters[i].fieldType == 'date' || _Settings.filters[i].fieldType == 'datetime') {
+                    
                     filter = $('<input></input>').attr({
                         'type':'text',
                         'id':_Settings.filters[i].urlVariable,
@@ -337,16 +488,19 @@ function ControlsUpdate() {
                         if (this.Data.mem.filters[_Settings.filters[i].urlVariable] === undefined) {
                             // check if options.dataURL_params is defined
                             // if no, use previously defined function returning empty object
-                            if (_Settings.filters[i].options.dataURL_params === undefined) _Settings.filters[i].options.dataURL_params = returnEmptyObjFunc;
+                            if (_Settings.filters[i].options.dataURL_params === undefined) 
+                                _Settings.filters[i].options.dataURL_params = returnEmptyObjFunc;
                             
                             // query for the options, previously defnied handleAjaxData
                             // function will be used to store and preper the data 
-                            this.Data.ajax_getData_sync('filter', _Settings.filters[i].options.dataURL, _Settings.filters[i].options.dataURL_params(this.Data), handleAjaxData, emptyFunc);
+                            this.Data.ajax_getData_sync('filter', _Settings.filters[i].options.dataURL, 
+                                _Settings.filters[i].options.dataURL_params(this.Data), handleAjaxData, emptyFunc);
                         }
                         // if data already resides in memory, simply use them to redraw the filter control
                         else {
                             try {
-                                optArr = _Settings.filters[i].options.translateData(this.Data.mem.filters[_Settings.filters[i].urlVariable]);
+                                optArr = _Settings.filters[i].options
+                                    .translateData(this.Data.mem.filters[_Settings.filters[i].urlVariable]);
                             } catch(err2) {
                                 if (thisRef.Settings.Application.debugMode) thisRef.setupErrorDialog(err2);
                             }
@@ -366,7 +520,6 @@ function ControlsUpdate() {
                     
                     // if options array (optArr) is still empty, terminate a function
                     if (optArr.length === 0) return false;
-                    //if (optArr === false) return false;
                     
                     // if there is more than one option element, draw
                     if (optArr.length > 0) for (j=0;j<optArr.length;j++) {
@@ -375,9 +528,15 @@ function ControlsUpdate() {
                         
                         // check which fields should be selected
                         if (_Settings.filters[i].fieldType == 'multiselect') {
-                            if (optArr[j][0] == thisRef.Data.filters[_Settings.filters[i].urlVariable] || $.inArray(optArr[j][0], thisRef.Data.filters[_Settings.filters[i].urlVariable]) != -1) option.attr('selected','selected');
+                            if (optArr[j][0] == thisRef.Data.filters[_Settings.filters[i].urlVariable] 
+                                || $.inArray(optArr[j][0], thisRef.Data.filters[_Settings.filters[i].urlVariable]) != -1) {
+                                
+                                option.attr('selected','selected');
+                            }
                         } else {
-                            if (optArr[j][0] == this.Data.filters[_Settings.filters[i].urlVariable]) option.attr('selected','selected');
+                            if (optArr[j][0] == this.Data.filters[_Settings.filters[i].urlVariable]) {
+                                option.attr('selected','selected');
+                            }
                         }
                         filter.append(option);
                     }
@@ -457,12 +616,20 @@ function ControlsUpdate() {
                 }
             }
             
-            this.hideShowFilters('show');//$('#dataFilters').show();
+            this.hideShowFilters('show');
             
             this.filter_change();
         }
     };
     
+// ----------------------------------------------------------------------------
+
+// Update filters state -------------------------------------------------------
+    
+    /*
+        Function: filtersUpdate
+        Updates filters controls based on current model state
+    */
     this.filtersUpdate = function() {
         var i, _Settings;
         var thisRef = this;
@@ -475,7 +642,11 @@ function ControlsUpdate() {
         var addMultiSelectOption = function(j) {
             try {
                 $(this).removeAttr('selected');
-                if ($(this).val() == thisRef.Data.filters[_Settings.filters[i].urlVariable] || $.inArray($(this).val(), thisRef.Data.filters[_Settings.filters[i].urlVariable]) != -1) $(this).attr('selected','selected');
+                if ($(this).val() == thisRef.Data.filters[_Settings.filters[i].urlVariable] 
+                    || $.inArray($(this).val(), thisRef.Data.filters[_Settings.filters[i].urlVariable]) != -1) {
+                    
+                    $(this).attr('selected','selected');
+                }
             } catch(err) {/*do nothing*/}
         };
         
@@ -485,7 +656,8 @@ function ControlsUpdate() {
             if (_Settings.filters !== undefined) {
                 for (i=0;i<_Settings.filters.length;i++) {
                     if (_Settings.filters[i].fieldType == 'text' || _Settings.filters[i].fieldType == 'date') {
-                        $('.filterItems #'+_Settings.filters[i].urlVariable).attr('value', this.Data.filters[_Settings.filters[i].urlVariable]);
+                        $('.filterItems #'+_Settings.filters[i].urlVariable)
+                            .attr('value', this.Data.filters[_Settings.filters[i].urlVariable]);
                     } 
                     else if (_Settings.filters[i].fieldType == 'select') {
                         $('.filterItems #'+_Settings.filters[i].urlVariable+' option').each( addSelectOption );
@@ -501,4 +673,11 @@ function ControlsUpdate() {
             }
         }
     };
+    
+// ----------------------------------------------------------------------------
+    
+// ============================================================================
+// Filters drawing and updates - FINISH
+// ============================================================================
+
 }
