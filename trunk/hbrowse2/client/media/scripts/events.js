@@ -362,6 +362,15 @@ function Events() {
 // Filters events - START
 // ============================================================================
     
+// Filters submit ----------------------------------------------------------------------------
+
+    /*
+        Function: filtersSubmit_click
+        Filters submit handler
+        
+        Parameters:
+            el - clicked element
+    */
     this.filtersSubmit_click = function(el) {
         var i, _Settings;
     
@@ -379,6 +388,18 @@ function Events() {
         this.filter_change();
     };
     
+// ----------------------------------------------------------------------------
+
+// Filters On/Off function handling -------------------------------------------
+    
+    /*
+        Function: filtersSubmit_OnOff
+        This function runs a post processing function of filters submit click
+        See the cahrts section of framework documentation
+        
+        Parameters:
+            i - Filter index
+    */
     this.filtersSubmit_OnOff = function(i) {
         var _Settings;
         
@@ -391,14 +412,26 @@ function Events() {
         }
     };
     
-    // function to handle multiselect change events
-    this.multiselect_change = function(event, ui, el) {
-        // Notes:
-        // to access event type do: event.type
-        // use disabled="disabled" to disable options rather then display:none
-        // use $.multiselect('getChecked'); to get selected options
-        // after turning off the items call $.multiselect('refresh'); (call also $('button.ui-multiselect').css('width','130px');)
+// ----------------------------------------------------------------------------
+
+// Multiselect filters change -------------------------------------------------
+    
+    /*
+        Function: multiselect_change
+        Executed when used changes multiselect filters. It is run only
+        when chart.options.disableFilterOptionsList function is defined
+        inside settings filter definitions
         
+        Parameters:
+            event - the original event object
+            ui - ui.inputs: an array of the checkboxes (DOM elements)
+                 inside the optgroup
+                 ui.label: the text of the optgroup
+                 ui.checked: whether or not the checkboxes were
+                 checked or unchecked in the toggle (boolean)
+            el - clicked or cahnges element
+    */
+    this.multiselect_change = function(event, ui, el) {
         // return array with unique elements
         var unique = function(arrayName) {
             var newArray=new Array();
@@ -489,6 +522,15 @@ function Events() {
         $('button.ui-multiselect').css('width','130px');
     };
     
+// ----------------------------------------------------------------------------
+
+// Filters change event -------------------------------------------------------
+    
+    /*
+        Function: filter_change
+        Executed when filters submit button is clicked and every time filters need refreshing.
+        Mainly selects a proper options of the filters of type 'select'
+    */
     this.filter_change = function() {
         var i, j, div, _Settings, selectElements, elIndex, fElementsArr = [];
         var thisRef = this;
@@ -549,6 +591,8 @@ function Events() {
             }
         });
     };
+    
+// ----------------------------------------------------------------------------
     
 // ============================================================================
 // Filters events - FINISH

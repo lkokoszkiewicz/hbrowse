@@ -14,13 +14,25 @@
 /*global Settings: false, Data: false, Highcharts: false, Events: false*/
 
 function Controller() {
+
+// ============================================================================
+// Object globals initialization - START
+// ============================================================================
+
     // Data class initialization
     this.Settings = new Settings();
     this.Data = new Data($('#ajaxAnimation'), this.Settings);
     
-    this.Table = []; //{'mains':[],'subs':[]};
+    this.Table = [];
     this.Filter = '';
-    //this.subsTable = [];
+    
+// ============================================================================
+// Object globals initialization - FINISH
+// ============================================================================
+
+// ============================================================================
+// UI driving functions - START
+// ============================================================================
     
     this.appDisplayState = function() {
         var _Settings = this.Settings.Application; // Shortcut
@@ -91,6 +103,14 @@ function Controller() {
         }
     };
     
+// ============================================================================
+// UI driving functions - FINISH
+// ============================================================================
+
+// ============================================================================
+// Users selection controls - START
+// ============================================================================
+    
     // "drawUsers" draws users selection page
     this.drawUsers = function() {
         var thisRef = this;
@@ -147,6 +167,14 @@ function Controller() {
         // Get the users list from ajax call
         this.Data.ajax_getData('usersReq', _Settings.dataURL, _Settings.dataURL_params(this.Data.state()), getData, function(){});
     };
+    
+// ============================================================================
+// Users selection controls - FINISH
+// ============================================================================
+
+// ============================================================================
+// Datatable controls - START
+// ============================================================================
     
     // "drawDataTable" draws data table for subs (in ganga nomenclature)
     // or mains (in CMS nomenclature)
@@ -257,6 +285,26 @@ function Controller() {
         this.Data.ajax_getData('mainsReq', _Settings.dataURL, _Settings.dataURL_params(this.Data.state()), getData, function(){});
     };
     
+// ============================================================================
+// Datatable controls - FINISH
+// ============================================================================
+
+// ============================================================================
+// Charts - START
+// ============================================================================
+    
+    /*
+        Function: drawChart
+        Handles drawing a single chart depenting on chart object from settings
+        
+        Parameters:
+            _charts - Current table charts object (from settings)
+            domIdPrefix - ID prefix for individual chart wrapping span
+            destIndex - Into or Array, depending on charts beeing groupped or not
+                        Used to create individual chart wrapping span ID
+            forceDraw - If true, chart will be displayed even if set to onDemand
+                        Used when clicking 'load Chart' button
+    */
     this.drawChart = function(_charts, domIdPrefix, destIndex, forceDraw) {
         if (forceDraw === undefined) forceDraw = false;
         
@@ -330,6 +378,16 @@ function Controller() {
         }
     };
     
+    /*
+        Function: executeCharts
+        Function that controlls charts drawing
+        
+        Parameters:
+            _charts - Current table charts object (from settings)
+            domIdPrefix - ID prefix for individual chart wrapping span
+            tableTarget - target DOM object to which charts should be rendered
+            _Settings - Current table Settings object shortcut
+    */
     this.executeCharts = function(_charts, domIdPrefix, tableTarget, _Settings) {
         if (_Settings === undefined) _Settings = {};
         
@@ -365,7 +423,18 @@ function Controller() {
         }
     };
     
-    // "setupURL" builds url fragmant for bookmarking
+// ============================================================================
+// Charts - FINISH
+// ============================================================================
+
+// ============================================================================
+// URL - START
+// ============================================================================
+    
+    /*
+        Function setuURL
+        Sets up url hash fragment variables to comply with model state
+    */
     this.setupURL = function() {
         var thisRef = this;
         
@@ -408,7 +477,19 @@ function Controller() {
         $.bbq.pushState(urlHash,2);
     };
     
-    // "Init" initializes the monitoring system
+// ============================================================================
+// Charts - FINISH
+// ============================================================================
+    
+// ============================================================================
+// Controller initialization - START
+// ============================================================================
+    
+    /*
+        Function: Init
+        Initialization function for the entire hBrowse system and Controller
+        object in particular
+    */
     this.Init = function() {
         var _Settings = this.Settings.Application; // Shortcut
         var thisRef = this;
@@ -469,6 +550,11 @@ function Controller() {
         // Set up refresh
         this.refresh_Change('#refresh');
     };
+    
+// ============================================================================
+// Controller initialization - FINISH
+// ============================================================================
+
 }
 
 // Inherits from Events()
