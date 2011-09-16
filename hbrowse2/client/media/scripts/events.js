@@ -14,16 +14,20 @@
 /*global ControlsUpdate: false*/
 
 function Events() {
-    this.userDropDown_Change = function(el) {
-        $('.tablePlus').attr('src', 'media/images/table_plus.png');
-        //this.Data.or = [];
-        this.Data.state('tid', '');
-        this.Data.state('sorting', []);
-        this.Data.state('user', $(el).val());
-        this.Data.state('noreload', false);
-        this.setupURL();
-    };
 
+// ============================================================================
+// General UI events - START
+// ============================================================================
+
+// Users list item click -------------------------------------------------------
+
+    /*
+        Function: userListItem_Click
+        Event handler for users list click event
+        
+        Parameters:
+            el - Clicked element
+    */
     this.userListItem_Click = function(el) {
         var settings = this.Settings.Application.modelDefaults();
         
@@ -34,6 +38,18 @@ function Events() {
         this.setupURL();
     };
     
+// ----------------------------------------------------------------------------
+
+// Open menu click ------------------------------------------------------------
+    
+    /*
+        Function: openMenu_Click
+        Event handler for users list click event
+        
+        Parameters:
+            el - Clicked element
+            noActiveMenuReset - Boolean
+    */
     this.openMenu_Click = function(el, noActiveMenuReset) {
         if (noActiveMenuReset === undefined) noActiveMenuReset = false;
         
@@ -60,6 +76,18 @@ function Events() {
         $(el).addClass('selected');
     };
     
+// ----------------------------------------------------------------------------
+
+// Close menu click -----------------------------------------------------------
+    
+    /*
+        Function: closeMenu_Click
+        Event handler for users list click event
+        
+        Parameters:
+            el - Clicked element
+            noActiveMenuReset - Boolean
+    */
     this.closeMenu_Click = function(el, noActiveMenuReset) {
         if (noActiveMenuReset === undefined) noActiveMenuReset = false;
         
@@ -81,17 +109,53 @@ function Events() {
         $(el).removeClass('selected');
     };
     
+// ---------------------------------------------------------------------------
+
+// Refresh change ------------------------------------------------------------
+    
+    /*
+        Function: refresh_Change
+        Event handler for page automatis data refresh change
+        
+        Parameters:
+            el - Clicked element
+    */
     this.refresh_Change = function(el) {
         var thisRef = this;
         this.Data.state('refresh', parseInt($(el).val(), 10));
         
         try { clearInterval(this.intervalID); } finally {}
-        if (this.Data.state('refresh') > 0) this.intervalID = setInterval( function() { thisRef.viewUpdater(); }, (this.Data.state('refresh')*1000) );
+        if (this.Data.state('refresh') > 0) {
+            this.intervalID = setInterval( function() { thisRef.viewUpdater(); }, (this.Data.state('refresh')*1000) );
+        }
         
         this.Data.state('noreload', false);
         this.setupURL();
     };
     
+// ----------------------------------------------------------------------------
+    
+// ============================================================================
+// General UI events - FINISH
+// ============================================================================
+
+// ============================================================================
+// Expanded row events - START
+// ============================================================================
+
+// Expand row click -----------------------------------------------------------
+    
+    /*
+        Function: expand_click
+        Executed when small plus icon (at the left of the data table) is clicked
+        
+        Parameters:
+            dataID - Table data Row index
+            
+        Returns:
+            Array of data needed for expanded row content rendering
+            (See ducumentation: http://code.google.com/p/hbrowse/wiki/QuickTutorial2#expandData_/object/)
+    */
     this.expand_click = function(dataID) {
         var _Settings, rowDataSet, output;
         var thisRef = this;
@@ -126,6 +190,21 @@ function Events() {
         return output;
     };
     
+// ----------------------------------------------------------------------------
+
+// Expand Row -----------------------------------------------------------------
+    
+    /*
+        Function: expand_click_postprocess
+        Postprocess of the expand row clicking (run after rendering)
+        Draws charts and adding the drilldown handler to expanded row data table
+        
+        Parameters:
+            expandedID - Expanded row index
+            inputObj - input object
+                       (See ducumentation: http://code.google.com/p/hbrowse/wiki/QuickTutorial2#expandData_/object/)
+            isMain - boolean, is the table main table
+    */
     this.expand_click_postprocess = function(expandedID, inputObj, isMain) {
         if (isMain === undefined) isMain = false;
         var thisRef = this;
@@ -144,6 +223,17 @@ function Events() {
         thisRef.executeCharts(_charts, 'expCht_'+expandedID+'_', '#expand_'+expandedID+' #chartExpandSlot_'+expandedID);
     };
     
+// ----------------------------------------------------------------------------
+
+// Expanded row close ---------------------------------------------------------
+    
+    /*
+        Function: erClose_click
+        Expanded row close click handler
+        
+        Parameters:
+            dataID - Table data Row index
+    */
     this.erClose_click = function(dataID) {
         if (this.Data.state('or').length > 1) {
             var position = $.inArray(dataID, this.Data.state('or'));
@@ -156,6 +246,26 @@ function Events() {
         this.setupURL();
     };
     
+// ----------------------------------------------------------------------------
+    
+// ============================================================================
+// Expanded row events - FINISH
+// ============================================================================
+
+// ============================================================================
+// General data table events - START
+// ============================================================================
+
+// Data table content change --------------------------------------------------
+    
+    /*
+        Function: mainsTableContent_change
+        Executed when data table content changes due to sorting 
+        or client side filtering
+        
+        Parameters:
+            el - clicked element
+    */
     this.mainsTableContent_change = function(el) {
         var records, _Settings = this.Settings.Mains; // Shortcut
         var thisRef = this;
@@ -181,6 +291,19 @@ function Events() {
         this.setupURL();
     };
     
+// ----------------------------------------------------------------------------
+
+// Drilldown click ------------------------------------------------------------
+    
+    /*
+        Function: drillDown_click
+        Table drilldown handler function, executed when used 
+        decides to see another table
+        
+        Parameters:
+            el - clicked element
+            rowIndex - Data table row index
+    */
     this.drillDown_click = function(el, rowIndex) {
         var i, _Settings, dParams = false;
         _Settings = this.Settings[this.Data.state('table')]; // Shortcut
@@ -211,27 +334,33 @@ function Events() {
         this.setupURL();
     };
     
-    this.subsTableContent_change = function(el) {
-        var _Settings = this.Settings.Subs; // Shortcut
-        var thisRef = this;
-        if ($('#dataTable_0_paginate input').val() !== undefined) this.Data.state('p', $('#dataTable_0_paginate input').val());
-        
-        this.Data.state('records', parseInt($('#dataTable_0_length select').val(), 10));
-        
-        // Running settings post processing (if avaliable)
-        try {
-            _Settings.tableActivityEvent(el, thisRef.Data.state('mem'));
-        } catch(err) { /* do nothing */ }
-        
-        this.Data.state('noreload', true);
-        this.setupURL();
-    };
+// ----------------------------------------------------------------------------
+
+// Sorting columns click ------------------------------------------------------
     
+    /*
+        Function: tableSorting_click
+        Executed when sortable column header is clicked
+        
+        Parameters:
+            el - Clicked element
+            dataTable - Handler to the data table UI object
+    */
     this.tableSorting_click = function(el, dataTable) {
         var tSettings = dataTable.fnSettings();
         
         this.Data.state('sorting', [ tSettings.aaSorting[0][0], tSettings.aaSorting[0][1] ]);
     };
+    
+// ----------------------------------------------------------------------------
+    
+// ============================================================================
+// General data table events - FINISH
+// ============================================================================
+
+// ============================================================================
+// Filters events - START
+// ============================================================================
     
     this.filtersSubmit_click = function(el) {
         var i, _Settings;
@@ -421,10 +550,23 @@ function Events() {
         });
     };
     
+// ============================================================================
+// Filters events - FINISH
+// ============================================================================
+
+// ============================================================================
+// Charts events - START
+// ============================================================================
+    
     this.drawChtRequestButton_click = function(el, _charts, domIdPrefix, cnt) {
         $(el).attr({'value':'Loading...','disabled':'disabled'});
         this.drawChart(_charts, domIdPrefix, cnt, true);
     };
+    
+// ============================================================================
+// Filters events - FINISH
+// ============================================================================
+
 }
 
 // Inherits from ControlsUpdate()
