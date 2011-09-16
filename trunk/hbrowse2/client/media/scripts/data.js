@@ -12,6 +12,10 @@
 /*JSHINT*/
 /*global _Cache: false*/
 
+/*
+   Class: Data
+   This class is responsible for storing data and providing it to a system
+*/
 function Data(ajaxAnimation, _Settings) {
 
 // ============================================================================
@@ -42,7 +46,7 @@ function Data(ajaxAnimation, _Settings) {
         filters: {},
         breadcrumbs: [],
         
-        // Data
+        // Stored Data
         mem: {
             users: [],
             table: {
@@ -212,8 +216,17 @@ function Data(ajaxAnimation, _Settings) {
     };
     
 // ----------------------------------------------------------------------------
-    
-    this.quickSetup = function(params, ts2iso) {
+
+// Setup State values ---------------------------------------------------------
+
+    /*
+        Function: quickSetup
+        Setups model state values based on url variable values
+        
+        Parameters:
+            params - params object storing all of the url hash parameters
+    */
+    this.quickSetup = function(params) {
         var i, filter;
         var settings = _Settings.Application.modelDefaults();
         
@@ -237,13 +250,28 @@ function Data(ajaxAnimation, _Settings) {
             if (_Settings[State.table].filters !== undefined) {
                 for (i=0;i<_Settings[State.table].filters.length;i++) {
                     filter = _Settings[State.table].filters[i];
-                    State.filters[filter.urlVariable] = ((params[filter.urlVariable] === undefined || params[filter.urlVariable] == 'undefined') ? copyVal(filter.value) : params[filter.urlVariable]);
+                    State.filters[filter.urlVariable] = ((params[filter.urlVariable] === undefined 
+                        || params[filter.urlVariable] == 'undefined') ? copyVal(filter.value) : params[filter.urlVariable]);
                 }
             }
         }
     };
     
-    // Get job subs from server
+// ----------------------------------------------------------------------------
+
+// Get ajax data --------------------------------------------------------------
+    
+    /*
+        Function: ajax_getData
+        Get ajax data for data tables
+        
+        Parameters:
+            xhrName - Custom name of the request
+            url - base url for the request (without hash or query parameters)
+            params - request url params
+            fSuccess - function to run on success
+            fFailure - function to run on failure
+    */
     this.ajax_getData = function(xhrName, url, params, fSuccess, fFailure) {
         var i, currentUrl, portIndex, port, isNumber, index, urlChar, paramsString, key, data;
         var thisRef = this;
@@ -292,9 +320,7 @@ function Data(ajaxAnimation, _Settings) {
                 type: "GET",
                 url: url,
                 data: params,
-                dataType: (jsonp ? "jsonp" : "json"),/*
-                jsonp: (jsonp ? "jsonp_callback" : false),
-                jsonpCallback: 'callbackName',*/
+                dataType: (jsonp ? "jsonp" : "json"),
                 success: function(data, textStatus, jqXHR) {
                     _Cache.add(key, data);
                     fSuccess(data);
@@ -313,7 +339,22 @@ function Data(ajaxAnimation, _Settings) {
         }
     };
     
-    // Get job subs from server
+// ----------------------------------------------------------------------------
+    
+// Get ajax data --------------------------------------------------------------
+    
+    /*
+        Function: ajax_getData
+        Get ajax data for charts or filters (async)
+        
+        Parameters:
+            xhrName - Custom name of the request
+            url - Base url for the request (without hash or query parameters)
+            params - Request url params
+            fSuccess - Function to run on success
+            fFailure - Function to run on failure
+            obj - Additional object to use with fSuccess of fFailure functions
+    */
     this.ajax_getData_sync = function(xhrName, url, params, fSuccess, fFailure, obj) {
         var i, currentUrl, portIndex, port, isNumber, index, urlChar, paramsString, key, data;
         if ( obj === undefined ) {
@@ -366,7 +407,6 @@ function Data(ajaxAnimation, _Settings) {
                 timeout: 15000,
                 data: params,
                 dataType: (jsonp ? "jsonp" : "json"),
-                //jsonp: "jsonp_callback",
                 success: function(data, textStatus, jqXHR) {
                     _Cache.add(key, data);
                     fSuccess(data, obj);
@@ -381,6 +421,8 @@ function Data(ajaxAnimation, _Settings) {
             });
         }
     };
+
+// ----------------------------------------------------------------------------
     
 // ============================================================================
 // Public data control and access functions - FINISH
