@@ -38,11 +38,9 @@ Name of subs content (example: 'Jobs')
 ===modelDefaults /function/===
 Here You can set up model (data.js) default values, in most cases doesn't need to be changed. Function has to return the following values in a form of a dictionary:
    * user - */string/* default user name (default: '')
-   * from - */int/* timestamp (default: 0)
-   * till - */int/* timestamp (default: 0)
-   * timeRange - */string/* (default: 'lastDay')
    * refresh - */int/* seconds (default: 0)
-   * tid - */string/* eg. Job id in Gange nomenclature (default: '')
+   * table - */string/* - default table object (default: '')
+   * initialTable - */string/* - Table that is a root of a tables tree
    * p - */int/* page number (default: 0)
    * sorting - */array/* (default: `[]`)
    * or - */array/* opened table rows (default: `[]`)
@@ -66,7 +64,9 @@ Translates ajax response onto searchable list plugin data format
 Input: json responce
 Output: `[user1, user2, ...]`
 
-==Mains==
+==Table Classes==
+Here you can define your monitoring system tables that will display the data. Table class should start with the Capita letter.
+
 ===dataURL /string/===
 Mains URL for ajax request
 ===dataURL_params /function/===
