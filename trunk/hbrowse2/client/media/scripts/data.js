@@ -63,7 +63,7 @@ function Data(ajaxAnimation, _Settings) {
     if (State.table != '') {
         if (_Settings[State.table].filters !== undefined) {
             for (var i=0;i<_Settings[State.table].filters.length;i++) {
-                State.filters[_Settings[State.table].filters[i].urlVariable] = copyVal(_Settings[State.table].filters[i].value);
+                State.filters[_Settings[State.table].filters[i].urlVariable] = hbrowseAPI.copyVal(_Settings[State.table].filters[i].value);
             }
         }
     }
@@ -75,24 +75,6 @@ function Data(ajaxAnimation, _Settings) {
 // ============================================================================
 // Private utility functions - START
 // ============================================================================
-
-// Copy variable --------------------------------------------------------------
-    
-    /*
-        Function: copyVal
-        Copy val instead create reference
-        
-        Parameters:
-            variable - any variable (int, string)
-        
-        Returns:
-            Any variable (int, string)
-    */
-    var copyVal = function(variable) {
-        return variable;
-    };
-
-// ----------------------------------------------------------------------------
 
 // Get table rows count -------------------------------------------------------
     
@@ -234,7 +216,7 @@ function Data(ajaxAnimation, _Settings) {
         State.refresh = (parseInt(params.refresh, 10) || settings.refresh);
         State.table = (params.table || settings.table);
         State.p = (parseInt(params.p, 10) || settings.p);
-        State.records = (parseInt(params.records, 10) || this.copyVal(getDisplayLength()));
+        State.records = (parseInt(params.records, 10) || hbrowseAPI.copyVal(getDisplayLength()));
         State.or = (params.or || settings.or);
         State.sorting = (params.sorting || []);
         State.uparam = (params.uparam || settings.uparam);
