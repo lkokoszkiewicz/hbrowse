@@ -72,5 +72,24 @@ var hbrowseAPI = {
             newArray[newArray.length] = arrayName[i];
         }
         return newArray;
+    },
+
+// Copy variable --------------------------------------------------------------
+    
+    /*
+        Function: copyVal
+        Copy val instead create reference
+        
+        Parameters:
+            variable - any variable (int, string)
+        
+        Returns:
+            Any variable (int, string)
+    */
+    copyVal: function(variable) {
+        return variable;
     }
+
+// ----------------------------------------------------------------------------
+
 };
