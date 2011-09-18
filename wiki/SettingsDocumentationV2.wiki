@@ -65,7 +65,7 @@ Input: json responce
 Output: `[user1, user2, ...]`
 
 ==Table Classes==
-Here you can define your monitoring system tables that will display the data. Table class should start with the Capita letter.
+Here you can define your monitoring system tables that will display the data. Table class should start with the Capita letter. Here you have the possible settings:
 
 ===dataURL /string/===
 Mains URL for ajax request
@@ -187,15 +187,16 @@ Complex headers option is an experimental one for now, and it's difficult for us
 ===aoColumns /array/===
 (optional) columns options, see http://www.datatables.net/usage/columns
 ===getDataArray /function/===
-function: extracting array of data (for dataTable) form Ajax response
+function: extracting array of table data (for dataTable) form Ajax response
 Example:
    * Ajax response: `{'user_taskstable':[{col_val1, col_val2, ...}, ...]}`
    * Required function: `function(data) { return data.user_taskstable; }`
 ===translateData /function/===
 function, translates ajax response onto dataTables plugin data format, here you can setup you table content and a links to the subcontent, to do this just add an html "a" tag with class "drilldown" to the cell.
+Input: Array of data selected in `getDataArray` function
 Output: `[[col_val1, col_val2, ...], ...]`
 ===drillDownHandler /function/===
-_*Replaced setupUserParams*_. It is executed every time someone clicks a table cell with a.drilldown html tag in it. Main purpose of the function is to indicate tid and (optionary) uparam parameters from the Data object (uparam allows to setup additional parameters to tid that would define a sub table ajax request). This allows to properly display subs table.
+It is executed every time someone clicks a table cell with a.drilldown html tag in it. Main purpose of the function is to indicate tid and (optionary) uparam parameters from the Data object (uparam allows to setup additional parameters to tid that would define a sub table ajax request). This allows to properly display subs table.
 Input:
    * Data - application Data object
    * el - clicked jQuery element
@@ -209,11 +210,18 @@ Output:
 }}}
 ===tableActivityEvent /function/===
 Optional function that allows user to handle table change event (on changing sorting or page). It takes only one parameter which is clicked element. Function will also run on table init, in this case element will be empty.
+===filterGroups /array/===
+(optional) Array of filters group names. This option allows filters to be grouped in a separate blocks if filterGroups is defined `groupIndex` option has to be added to filter objects to determine to which group of filters it should be attached.
+Example:
+{{{
+'filterGroups':['Group 1','Group 2'],
+}}}
 ===filters /array/===
 It's an array of objects, each object represents different filter and all of the filters values are stored in a Controller.Data.filters object and you can use them (eg in dataURL_params functions) by doing Data.filters.{filter_urlVariable}. The filter object consists of the following elements:
    * label - */string/* filter label /displayed above the input field/ (default: '')
    * urlVariable - */string/* lower cased, no spaces, no special characters /used in url and inside Controller.Data object/ (default: 'filter')
    * fieldType - */string/* accept 3 kinds of input types ('text' | 'select' | 'multiselect' | 'date') (default: 'text')
+   * groupIndex - */int/* - (optional) Determines to which group filter should be attached
    * value - */string/* Initial value for the filter (default: '')
    * options - */obejct/* there are several options that you can setup depending on _fieldType_ and needs, here is the example:
 {{{
@@ -247,6 +255,8 @@ $('#from,#till,#timeRange').attr('disabled',false);
 }
 }
 }}}
+===chartGroups /array/===
+(optional) Array of chart group names. This option allows charts (only for charts under `charts` option) to be grouped in a separate blocks if chartGroups is defined `groupIndex` option has to be added to charts objects to determine to which group of charts it should be attached
 ===charts /array/===
 (optional) allow to insert charts into charts tab
 ===topTableCharts /array/===
