@@ -233,7 +233,7 @@ function Data(ajaxAnimation, _Settings) {
                 for (i=0;i<_Settings[State.table].filters.length;i++) {
                     filter = _Settings[State.table].filters[i];
                     State.filters[filter.urlVariable] = ((params[filter.urlVariable] === undefined 
-                        || params[filter.urlVariable] == 'undefined') ? copyVal(filter.value) : params[filter.urlVariable]);
+                        || params[filter.urlVariable] == 'undefined') ? hbrowseAPI.copyVal(filter.value) : params[filter.urlVariable]);
                 }
             }
         }
