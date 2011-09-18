@@ -13,6 +13,10 @@
 /*JSHINT*/
 /*global Settings: false, Data: false, Highcharts: false, Events: false*/
 
+/*
+   Class: Controller
+   This class is responsible for the page logic
+*/
 function Controller() {
 
 // ============================================================================

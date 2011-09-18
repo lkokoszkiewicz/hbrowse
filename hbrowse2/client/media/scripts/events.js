@@ -13,6 +13,10 @@
 /*JSHINT*/
 /*global ControlsUpdate: false*/
 
+/*
+   Class: Events
+   This class is responsible for handling all page events
+*/
 function Events() {
 
 // ============================================================================
@@ -432,19 +436,6 @@ function Events() {
             el - clicked or cahnges element
     */
     this.multiselect_change = function(event, ui, el) {
-        // return array with unique elements
-        var unique = function(arrayName) {
-            var newArray=new Array();
-            label:for(var i=0; i<arrayName.length;i++ ) {  
-                for(var j=0; j<newArray.length;j++ ) {
-                    if(newArray[j]==arrayName[i]) 
-                        continue label;
-                }
-                newArray[newArray.length] = arrayName[i];
-            }
-            return newArray;
-        }
-        
         var i, j, filter, filterID, optClass, disableFilters, checked, checkedArr = [], filtersToChange = {}, _Settings, _Filter;
         
         // Selecting a proper settings set
@@ -490,7 +481,7 @@ function Events() {
         // we will go thru each filtersToChange object elements disabling filters options
         for (filterID in filtersToChange) {
             // first, remove duplicated entries for each filter const. array
-            filtersToChange[filterID] = unique(filtersToChange[filterID]);
+            filtersToChange[filterID] = hbrowseAPI.uniqueArr(filtersToChange[filterID]);
             // Itarate through filter options and disable a proper ones
             $('#'+filterID+' option').each(function(i){
                 // if option value exists inside const. array and there are any checked items, disable the option 

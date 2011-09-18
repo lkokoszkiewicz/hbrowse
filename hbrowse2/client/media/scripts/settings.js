@@ -10,6 +10,8 @@
 function Settings() {
     // Application specific settings - START
     this.Application = {
+        'debugMode': true, // Display debug messages on errors inside dataTranslate functions? (true|false)
+        
         'userSelection': true, // Display user selection page? (true|false)
         'dataRefresh': true, // Display refresh dropdown field? (true|false)
         'timeRangeSelection': true, // Display time range dropdown field? (true|false)
@@ -21,7 +23,6 @@ function Settings() {
         'usersListLbl': 'Users', // Label of user list search field, example: 'Users List'
         'mainsLbl': 'Tasks', // Name of mains content, example: 'Tasks'
         'subsLbL': 'Jobs', // Name of subs content, example: 'Jobs'
-        'debugMode': true, // Display debug messages on errors inside dataTranslate functions? (true|false)
         'modelDefaults': function() { // Here You can set up model (data.js) default values
             return {
                 'user': '',
@@ -81,8 +82,8 @@ function Settings() {
         'dataURL_params': function(Data, rowDataSet) {
             obj = {
                 'usergridname':Data.user,
-                //'from':Data.ts2iso(Data.from,2),
-                //'to':Data.ts2iso(Data.till,3),
+                'from':hbrowseAPI.ts2iso(Data.from,2),
+                'to':hbrowseAPI.ts2iso(Data.till,3),
                 'timerange':Data.timeRange,
                 'typeofrequest':'A'
             };
@@ -158,7 +159,7 @@ function Settings() {
             {"sClass":"numericTD", "fnRender":function(oObj){return '<a class="drilldown noUnknClick">'+oObj.aData[7]+'</a>';},"bUseRendered": false},
             {"sWidth":"130px","bSortable":false}
         ],
-        // Function: extracting array of data form Ajax response
+        // Function: extracting array of table data form Ajax response
         // Example:
         // - Ajax response: {'user_taskstable':[{col_val1, col_val2, ...}, ...]}
         // - Required function: function(data) { return data.user_taskstable; }
@@ -166,6 +167,7 @@ function Settings() {
             return data.user_taskstable;
         },
         // Function, translates ajax response onto dataTables plugin data format
+        // Input: Array of data selected in `getDataArray` function
         // Output: [[col_val1, col_val2, ...], ...]
         'translateData': function(dataJSON) {
             var tasksArr = Array();
@@ -517,6 +519,9 @@ function Settings() {
             });
             //alert('it works! (subs)');
         },*/
+        // (optional) filterGroups option allows filters to be grouped in a separate blocks
+        // if filterGroups is defined `groupIndex` option has to be added to charts objects
+        // to determine to which group filters should be attached
         'filterGroups':['Group 1','Group 2'],
         'filters':[
             {
@@ -662,6 +667,10 @@ function Settings() {
                 'options':{}
             }
         ],
+        // (optional) chartGroups option allows charts (only for charts under `charts` option) 
+        // to be grouped in a separate blocks
+        // if filterGroups is defined `groupIndex` option has to be added to charts objects
+        // to determine to which group filters should be attached
         'chartGroups':['Group 1','Group 2'],
         'charts': [
             {

@@ -58,6 +58,19 @@ var hbrowseAPI = {
             State.till = (timestamp+86399000);
         }
         return output;
-    }
+    },
     // Dates handling - Finish
+    
+    // return array with unique elements
+    uniqueArr: function(arrayName) {
+        var newArray=new Array();
+        label:for(var i=0; i<arrayName.length;i++ ) {  
+            for(var j=0; j<newArray.length;j++ ) {
+                if(newArray[j]==arrayName[i]) 
+                    continue label;
+            }
+            newArray[newArray.length] = arrayName[i];
+        }
+        return newArray;
+    }
 };
