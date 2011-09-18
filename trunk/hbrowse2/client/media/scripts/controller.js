@@ -33,7 +33,20 @@ function Controller() {
 // ============================================================================
 // UI driving functions - START
 // ============================================================================
-    
+
+// Display application state --------------------------------------------------
+
+    /*
+        Function: appDisplayState
+        Determines application state. Tells if application is in used 
+        selection dialog or displaying a data table
+        
+        Returns:
+            String, 'users' or 'table'
+            
+        See Also:
+            <viewUpdater>
+    */
     this.appDisplayState = function() {
         var _Settings = this.Settings.Application; // Shortcut
         if (this.Data.state('user') || !_Settings.userSelection) {
@@ -46,6 +59,14 @@ function Controller() {
         }
     };
     
+// ----------------------------------------------------------------------------
+
+// Open active menu -----------------------------------------------------------
+    
+    /*
+        Function: openActiveMenu
+        Opens active menu (based on URL)
+    */
     this.openActiveMenu = function() {
         var i, menuIdList = [1,2];
         // Open active menu
@@ -65,6 +86,17 @@ function Controller() {
         }
     };
     
+// ----------------------------------------------------------------------------
+
+// Current table --------------------------------------------------------------
+    
+    /*
+        Function: resolveTable
+        Determines what table is currently in use
+        
+        Returns:
+            Table object name (string)
+    */
     this.resolveTable = function() {
         var defaults;
         if (this.Data.state('table') != '') {
@@ -75,15 +107,21 @@ function Controller() {
         }
     };
     
-    // "viewUpdater" function updates all page controls
-    // and decides what to display based on available data
+// ----------------------------------------------------------------------------
+
+// Update view ----------------------------------------------------------------
+    
+    /*
+        Function: viewUpdater
+        Updates all page controls and decides what to display based on available data
+    */
     this.viewUpdater = function() {
         var _Settings = this.Settings.Application; // Shortcut
         
         if (this.appDisplayState() == 'table') {
             //show table
             this.openActiveMenu();
-            this.drawMainsTable(this.Settings[this.Data.state('table')]);
+            this.drawTable(this.Settings[this.Data.state('table')]);
             $('#content').show();
         }
         else if (this.appDisplayState() == 'users') {
@@ -102,6 +140,8 @@ function Controller() {
             if (_Settings.debugMode) this.setupErrorDialog(err);
         }
     };
+
+// ----------------------------------------------------------------------------
     
 // ============================================================================
 // UI driving functions - FINISH
@@ -110,8 +150,16 @@ function Controller() {
 // ============================================================================
 // Users selection controls - START
 // ============================================================================
-    
-    // "drawUsers" draws users selection page
+
+// Draw users -----------------------------------------------------------------
+
+    /*
+        Function: drawUsers
+        Draws users selection control
+        
+        See Also:
+            <getUsers>
+    */
     this.drawUsers = function() {
         var thisRef = this;
         var _Settings = this.Settings.Users; // Shortcut
@@ -125,6 +173,7 @@ function Controller() {
             $('#topTableCharts').empty();
             // Charts tab chandling - finish
             
+            // Uses lkfw_searchableList plugin (see scripts/components/) to draw user selection field
             $('#usersToggleMenu').lkfw_searchableList({
                 listId: 'users',
                 items: thisRef.Data.state().mem.users,
@@ -132,18 +181,24 @@ function Controller() {
             });
             
             $('#users_0 li').unbind('click').click( function() { thisRef.userListItem_Click(this); });
-            //thisRef.breadcrumbs_update();
         };
-        
-        // Hide filters panel
-        //if (this.appDisplayState() == 'users') thisRef.hideShowFilters('hide');//$('#dataFilters').hide();
         
         // Draw searchable list
         if (this.Data.state().mem.users) draw();
         
     };
     
-    // "getUsers" retrieves users list and builds user drop-down selection field
+// ----------------------------------------------------------------------------
+
+// Get users list -------------------------------------------------------------
+    
+    /*
+        Function: getUsers
+        Gets users list from ajax request and executes the draw function for the users list
+        
+        See Also:
+            <drawUsers>
+    */
     this.getUsers = function() {
         var thisRef = this;
         var _Settings = this.Settings.Users; // Shortcut
@@ -168,6 +223,8 @@ function Controller() {
         this.Data.ajax_getData('usersReq', _Settings.dataURL, _Settings.dataURL_params(this.Data.state()), getData, function(){});
     };
     
+// ----------------------------------------------------------------------------
+    
 // ============================================================================
 // Users selection controls - FINISH
 // ============================================================================
@@ -176,9 +233,19 @@ function Controller() {
 // Datatable controls - START
 // ============================================================================
     
-    // "drawDataTable" draws data table for subs (in ganga nomenclature)
-    // or mains (in CMS nomenclature)
-    this.drawMainsTable = function(_Settings) {
+// Draw data tabel----------------------------------------------------------------------------
+
+    /*
+        Function: drawTable
+        Draws a datatable, sets up events for it
+        
+        Parameters:
+            _Settings - shortcut to table settings
+            
+        See Also:
+            <viewUpdater>
+    */
+    this.drawTable = function(_Settings) {
         var thisRef = this;
         //var _Settings = this.Settings.Mains; // Shortcut
         
@@ -194,7 +261,7 @@ function Controller() {
             // Charts tab handling - finish
             
             thisRef.mainsTable = $('#tableContent').lkfw_dataTable({
-                dTable: thisRef.Table,//s[_Settings.tableID],
+                dTable: thisRef.Table,
                 tableId: 'mains',
                 expandableRows: _Settings.expandableRows,
                 multipleER: _Settings.multipleER,
@@ -230,7 +297,7 @@ function Controller() {
             var t = new Date();
             var tSettings, tPages;
             
-            // Save the data
+            // Save the data into model
             thisRef.Data.state().mem.table = {
                 user: thisRef.Data.state('user'),
                 timestamp: Math.floor(t.getTime()/1000),
@@ -285,6 +352,8 @@ function Controller() {
         this.Data.ajax_getData('mainsReq', _Settings.dataURL, _Settings.dataURL_params(this.Data.state()), getData, function(){});
     };
     
+// ----------------------------------------------------------------------------
+    
 // ============================================================================
 // Datatable controls - FINISH
 // ============================================================================
@@ -292,6 +361,8 @@ function Controller() {
 // ============================================================================
 // Charts - START
 // ============================================================================
+    
+// Draw chart -----------------------------------------------------------------
     
     /*
         Function: drawChart
@@ -304,6 +375,9 @@ function Controller() {
                         Used to create individual chart wrapping span ID
             forceDraw - If true, chart will be displayed even if set to onDemand
                         Used when clicking 'load Chart' button
+        
+        See Also:
+            <executeCharts>
     */
     this.drawChart = function(_charts, domIdPrefix, destIndex, forceDraw) {
         if (forceDraw === undefined) forceDraw = false;
@@ -378,6 +452,10 @@ function Controller() {
         }
     };
     
+// ----------------------------------------------------------------------------
+
+// Execute charts -------------------------------------------------------------
+    
     /*
         Function: executeCharts
         Function that controlls charts drawing
@@ -387,6 +465,9 @@ function Controller() {
             domIdPrefix - ID prefix for individual chart wrapping span
             tableTarget - target DOM object to which charts should be rendered
             _Settings - Current table Settings object shortcut
+            
+        See Also:
+            <drawChart>
     */
     this.executeCharts = function(_charts, domIdPrefix, tableTarget, _Settings) {
         if (_Settings === undefined) _Settings = {};
@@ -423,6 +504,8 @@ function Controller() {
         }
     };
     
+// ----------------------------------------------------------------------------
+    
 // ============================================================================
 // Charts - FINISH
 // ============================================================================
@@ -430,6 +513,8 @@ function Controller() {
 // ============================================================================
 // URL - START
 // ============================================================================
+    
+// Setup URL ------------------------------------------------------------------
     
     /*
         Function setuURL
@@ -477,6 +562,8 @@ function Controller() {
         $.bbq.pushState(urlHash,2);
     };
     
+// ----------------------------------------------------------------------------
+    
 // ============================================================================
 // Charts - FINISH
 // ============================================================================
@@ -484,6 +571,8 @@ function Controller() {
 // ============================================================================
 // Controller initialization - START
 // ============================================================================
+
+// Initialize the application -------------------------------------------------
     
     /*
         Function: Init
@@ -550,6 +639,8 @@ function Controller() {
         // Set up refresh
         this.refresh_Change('#refresh');
     };
+    
+// ----------------------------------------------------------------------------
     
 // ============================================================================
 // Controller initialization - FINISH
