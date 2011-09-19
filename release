@@ -5,6 +5,9 @@ nano wiki/ChangeLog.wiki
 echo "var curRel = ['$1','$2','$3'];" > tags/curver.js
 svn ci -m ""
 svn export trunk/hbrowse$1/client ../hbrowse_exports/hbrowse-$1-$2-$3/.
+java -jar yuicompressor-2.4.6.jar -o '.js$:.js' ../hbrowse_exports/hbrowse.test-$1-$2-$3/media/scripts/*.js
+java -jar yuicompressor-2.4.6.jar -o '.js$:.js' ../hbrowse_exports/hbrowse.test-$1-$2-$3/media/scripts/components/*.js
+java -jar yuicompressor-2.4.6.jar -o '.css$:.css' ../hbrowse_exports/hbrowse.test-$1-$2-$3/media/css/*.css
 mkdir ../hbrowse_exports/hbrowse-common-$1-$2-$3
 cp -R ../hbrowse_exports/hbrowse-$1-$2-$3/media/* ../hbrowse_exports/hbrowse-common-$1-$2-$3/.
 #rm -rf ../hbrowse_exports/hbrowse-common-$1-$2-$3/css
