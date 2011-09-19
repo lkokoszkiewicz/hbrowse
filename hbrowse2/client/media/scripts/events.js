@@ -578,7 +578,7 @@ function Events() {
             'clickable':true,
             'posShift':[-5,-1],
             'css':{
-                'width':'215px'
+                'width':'100%'
             }
         });
     };

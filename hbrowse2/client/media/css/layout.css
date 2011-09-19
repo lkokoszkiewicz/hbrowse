@@ -53,8 +53,7 @@ a { cursor:pointer; color:#3383BB; }
 
 /*REFRESH*/
 #refreshSelect { position:absolute; top:6px; right:185px; color:#ffffff; }
-#refreshSelect select { width:170px; }
-#refresh { width:145px; }
+#refreshSelect select { width:145px; }
 #refreshImg { vertical-align:middle; cursor:pointer; margin-bottom:2px; }
 #refreshImg:hover { background-color:#666666; }
 
