@@ -38,7 +38,10 @@ $LAB
 .script('media/scripts/components/lkfw.tooltip.js')
 
 // Load Settings
-.script('media/scripts/settings.js').wait(function(){
+.script('settings.js')
+
+// Initialize hbrowse application
+.wait(function(){
     $(document).ready( function() {
         var _cache_max_entries = 10;
         var _cache_lifetime = 60;
