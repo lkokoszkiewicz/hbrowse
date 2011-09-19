@@ -1,7 +1,7 @@
-body { font-family: arial, sans-serif; font-size:8pt; margin:0px; background-color:#666666/*#ADD1EB*/ }
+body { font-family: arial, sans-serif; font-size:8pt; margin:0; background-color:#666666/*#ADD1EB*/ }
 
 /*input fields styling*/
-input,select { border:1px gray solid; background-color:#ffffff; font-size:9pt; margin:0px; }
+input,select { border:1px gray solid; background-color:#ffffff; font-size:9pt; margin:0; }
 input[type=button] { cursor:pointer; }
 input[type=button]:hover { background-color:#dbeaf4; }
 
@@ -17,11 +17,11 @@ a { cursor:pointer; color:#3383BB; }
 /*HEADER - generic header styles*/
 #header { position:relative; }
 #header a { color:#ffffff; text-decoration:none; }
-#header #topBeltMenu a.topBeltMenu:hover { background-color:#2C4558; }
+#topBeltMenu a.topBeltMenu:hover { background-color:#2C4558; }
 
 /*TOPBELT - black belt on top of the page*/
-#topBelt { width:100%; height:30px; background-color:#333333; margin-bottom:0px; border-bottom:3px #3383BB solid; }
-#topBeltMenu { float:left; width:100%; padding:0px; margin:0px; list-style-type:none; font-size:10pt; }
+#topBelt { width:100%; height:30px; background-color:#333333; margin-bottom:0; border-bottom:3px #3383BB solid; }
+#topBeltMenu { float:left; width:100%; padding:0px; margin:0; list-style-type:none; font-size:10pt; }
 #topBeltMenu a.topBeltMenu {float:left;width:50px;text-decoration:none;color:white;height:30px; line-height:30px; text-align:center; }
 #topBeltMenu .selected { background-image:url(../images/filtersArrow.png);background-position:center bottom;background-repeat:no-repeat; }
 
@@ -54,9 +54,9 @@ a { cursor:pointer; color:#3383BB; }
 /*REFRESH*/
 #refreshSelect { position:absolute; top:6px; right:185px; color:#ffffff; }
 #refreshSelect select { width:170px; }
-#refreshSelect #refresh { width:145px; }
-#refreshSelect #refreshImg { vertical-align:middle; cursor:pointer; margin-bottom:2px; }
-#refreshSelect #refreshImg:hover { background-color:#666666; }
+#refresh { width:145px; }
+#refreshImg { vertical-align:middle; cursor:pointer; margin-bottom:2px; }
+#refreshImg:hover { background-color:#666666; }
 
 /*LOADING INDICATOR*/
 #loadingAnimation { position:absolute; right:420px; top:3px; }
