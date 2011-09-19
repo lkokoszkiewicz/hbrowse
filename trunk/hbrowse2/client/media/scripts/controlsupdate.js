@@ -514,7 +514,7 @@ function ControlsUpdate() {
                     // so a developer would be able to use any data alredy stored there
                     else {
                         try {
-                            optArr = _Settings.filters[i].options.translateData(this.Data);
+                            optArr = _Settings.filters[i].options.translateData(this.Data.state());
                         } catch(err3) {
                             if (thisRef.Settings.Application.debugMode) thisRef.setupErrorDialog(err3);
                         }
