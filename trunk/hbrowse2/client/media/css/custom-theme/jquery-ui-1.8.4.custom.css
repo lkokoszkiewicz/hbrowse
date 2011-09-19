@@ -58,7 +58,7 @@
 ----------------------------------*/
 .ui-widget { font-size: 1.1em; }
 .ui-widget .ui-widget { font-size: 1em; }
-.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button { font-family: \\\\\\\\\\\\\\\'Lucida Grande\\\\\\\\\\\\\\\',Verdana,Arial,Helvetica,sans-serif; font-size: 1em; }
+.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button { font-family: 'Lucida Grande',Verdana,Arial,Helvetica,sans-serif; font-size: 1em; }
 .ui-widget-content { background-color: #ffffff /*url(images/ui-bg_flat_75_ffffff_40x100.png) 50% 50% repeat-x*/; color: #222222; }
 #ui-datepicker-div .ui-widget-content { background-color:#7fa4bf; }
 .ui-widget-content a { color: #222222; }
