@@ -271,7 +271,7 @@ function Events() {
             el - clicked element
     */
     this.mainsTableContent_change = function(el) {
-        var records, _Settings = this.Settings.Mains; // Shortcut
+        var records, _Settings = this.Settings[this.Data.state('table')]; // Shortcut
         var thisRef = this;
         if ($('#dataTable_0_paginate input').val() !== undefined) this.Data.state('p', $('#dataTable_0_paginate input').val());
         if (this.Data.state('noreload') === false) {
