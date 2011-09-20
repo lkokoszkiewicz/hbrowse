@@ -212,9 +212,9 @@ function Settings() {
             
             return {'table':'Subs',filters:{'status':status,'tid':tid}};
         },
-        /*'tableActivityEvent': function(el) {
-            //alert('it works! (mains)');
-        },*/
+        'tableActivityEvent': function(el) {
+            alert('it works! (mains)');
+        },
         'charts': [
             {
                 'name':'Status Overview',

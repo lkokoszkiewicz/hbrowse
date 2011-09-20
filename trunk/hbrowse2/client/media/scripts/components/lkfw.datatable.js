@@ -51,10 +51,10 @@
                         for (j=0;j<_config.items.length;j++) {
                             sum = (sum + parseInt(_config.items[j][index], 10));
                         }
-                        colHeader = $('<th></th>').text(sum);
+                        colHeader = $('<th></th>').html(sum);
                         if (contentArr[i][4] !== undefined) colHeader.css(contentArr[i][4]);
                     } else {
-                        colHeader = $('<th></th>').text(contentArr[i][0]);
+                        colHeader = $('<th></th>').html(contentArr[i][0]);
                         if (contentArr[i][4] !== undefined) colHeader.css(contentArr[i][4]);
                     }
                     if (contentArr[i][1] > 0) colHeader.attr('rowspan',contentArr[i][1]);
@@ -96,7 +96,7 @@
                 if (_isSimpleHeaders()) {
                     colHeaders = $('<tr></tr>');
                     for (i=0; i<_config.tblLabels.length; i++) {
-                        colHeader = $('<th></th>').text(_config.tblLabels[i]);
+                        colHeader = $('<th></th>').html(_config.tblLabels[i]);
                         if (!_config.expandableRows || i!==0) colHeader.addClass('tblSort');
                         colHeaders.append(colHeader);
                     }
