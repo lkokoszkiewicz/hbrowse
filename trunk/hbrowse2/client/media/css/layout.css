@@ -6,6 +6,7 @@ input[type=button] { cursor:pointer; width:60px; }
 input[type=button]:hover { background-color:#dbeaf4; }
 input[type=checkbox] { width:15px; height:15px; margin:0; padding:0; }
 #dataTable_0_length select { width:auto; }
+.chartMessageFrame input { width:auto; }
 
 /*links default styling*/
 a { cursor:pointer; color:#3383BB; }
