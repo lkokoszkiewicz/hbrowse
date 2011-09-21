@@ -1,9 +1,11 @@
 body { font-family: arial, sans-serif; font-size:8pt; margin:0; background-color:#666666/*#ADD1EB*/ }
 
 /*input fields styling*/
-input,select { border:1px gray solid; background-color:#ffffff; font-size:9pt; margin:0; }
-input[type=button] { cursor:pointer; }
+input,select { border:1px gray solid; background-color:#ffffff; font-size:8pt; margin:0; width:130px; }
+input[type=button] { cursor:pointer; width:60px; }
 input[type=button]:hover { background-color:#dbeaf4; }
+input[type=checkbox] { width:15px; height:15px; margin:0; padding:0; }
+#dataTable_0_length select { width:auto; }
 
 /*links default styling*/
 a { cursor:pointer; color:#3383BB; }
@@ -90,7 +92,7 @@ a { cursor:pointer; color:#3383BB; }
 .paginate_page, .paginate_of { font-size:9pt; }
 
 /*MULTISELECT*/
-.ui-multiselect.hb-multiselect { background-color:#ffffff; background-image:url(); font-size:8pt; height:20px;border:1px gray solid; font-size:9pt; padding:0px;padding-left:3px; height:19px; }
+.ui-multiselect.hb-multiselect { background-color:#ffffff; background-image:url(); font-size:8pt; border:1px gray solid; padding:0px;padding-left:2px; height:18px; }
 
 /*DATE FILTERS*/
 #ui-datepicker-div { /*background:#fdf5e6;*/ border:1px #3383BB solid; border-bottom-width:3px; }
