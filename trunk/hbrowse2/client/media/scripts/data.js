@@ -294,10 +294,17 @@ function Data(ajaxAnimation, _Settings) {
         
         data = _Cache.get(key);
         if (data) {
+            if (xmlhttprequest != null) {
+                xmlhttprequest.abort();
+                //xmlhttprequest = null;
+            }
             fSuccess(data);
         } else if (url) {
+            if (xmlhttprequest != null) {
+                xmlhttprequest.abort();
+                //xmlhttprequest = null;
+            }
             ajaxAnimation.addClass(xhrName).fadeIn(200);
-            if (xmlhttprequest) xmlhttprequest.abort();
             xmlhttprequest = $.ajax({
                 type: "GET",
                 url: url,
@@ -308,16 +315,17 @@ function Data(ajaxAnimation, _Settings) {
                     fSuccess(data);
                     ajaxAnimation.removeClass(xhrName);
                     if (!ajaxAnimation.attr('class')) ajaxAnimation.fadeOut(400);
+                    xmlhttprequest = null;
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     ajaxAnimation.removeClass(xhrName);
                     if (!ajaxAnimation.attr('class')) ajaxAnimation.fadeOut(400);
                     fFailure();
-                    requestErrorDialog(xhrName, textStatus, errorThrown);
+                    if (textStatus != 'abort') requestErrorDialog(xhrName, textStatus, errorThrown);
                     //window.history.back();
+                    xmlhttprequest = null;
                 }
             });
-            xmlhttprequest = null;
         }
     };
     
@@ -410,4 +418,4 @@ function Data(ajaxAnimation, _Settings) {
 // Public data control and access functions - FINISH
 // ============================================================================
     
-}
+} 
