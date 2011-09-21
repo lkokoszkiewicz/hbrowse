@@ -247,10 +247,10 @@ return output;
 // On and Off optional functions are executed when filters submit is clicked
 // On is executed when field has value other then empty string ("")
 // Otherwise Off is executed
-'On':function(Data) {  // Data is a Controller.Data object
+'On':function(Data) {  // Data is a Controller.Data.state object
 $('#from,#till,#timeRange').attr('disabled',true);
 },
-'Off':function(Data) {  // Data is a Controller.Data object
+'Off':function(Data) {  // Data is a Controller.Data.state object
 $('#from,#till,#timeRange').attr('disabled',false);
 },
 /* This function allows to disable othe filters options when selecting certain option.
@@ -264,7 +264,7 @@ Output:
   ], ...
 ]
 */ 
-'disableFilterOptionsList':function(Data) { // Data is a Controller.Data object
+'disableFilterOptionsList':function(Data) { // Data is a Controller.Data.state object
     var output = [], i, filteroptions = Data.mem.filters.typeofproc.basicData;
 
     for (i=0;i<filteroptions.length;i++) {
