@@ -204,8 +204,8 @@ Input:
 Output: 
 {{{
 {
- 'uparam':[<parameters_list>],
- 'tid':`<id_for_the_subtable>`
+ 'table':'<tableObjectName>',
+ 'filters':{ '<filterUrlVariable>':'<filterValue>', ... }
 }
 }}}
 ===tableActivityEvent /function/===
@@ -252,6 +252,32 @@ $('#from,#till,#timeRange').attr('disabled',true);
 },
 'Off':function(Data) {  // Data is a Controller.Data object
 $('#from,#till,#timeRange').attr('disabled',false);
+},
+/* This function allows to disable othe filters options when selecting certain option.
+Output:
+[
+  [
+    <filterOptionValue>,
+    [
+      [ <otherFilterUrlVariable>, [<OptionWhichShouldStayActive>, ... ] ], ...
+    ], ...
+  ], ...
+]
+*/ 
+'disableFilterOptionsList':function(Data) { // Data is a Controller.Data object
+    var output = [], i, filteroptions = Data.mem.filters.typeofproc.basicData;
+
+    for (i=0;i<filteroptions.length;i++) {
+        output.push([
+            filteroptions[i].TASKTYPE,
+            [
+                ['workinggroup',filteroptions[i].GroupName.split(',')],
+                ['activity',filteroptions[i].AtlasGenActivity.split(',')]
+            ]
+        ]);
+    }
+
+    return output;
 }
 }
 }}}
