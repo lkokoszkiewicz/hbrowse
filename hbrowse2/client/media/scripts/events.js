@@ -179,7 +179,7 @@ function Events() {
         
         if (_Settings.expandData.dataURL) {
             if (_Settings.expandData.dataURL_params === undefined) _Settings.expandData.dataURL_params = function() { return {}; };
-            this.Data.ajax_getData_sync('expand', _Settings.expandData.dataURL, _Settings.expandData.dataURL_params(this.Data, rowDataSet), processData, function(){});
+            this.Data.ajax_getData_sync('expand', _Settings.expandData.dataURL, _Settings.expandData.dataURL_params(this.Data.state(), rowDataSet), processData, function(){});
         } else {
             processData();
         }
