@@ -231,16 +231,21 @@
             var _expandClick = function(dTable) {
                 var trID, inputObj, isNotCurrent;
                 
+                var drawER = function(thisRef, trID, parentClass, inputObj) {
+                    $(thisRef).parent().after(_buildExpandedRow(trID, parentClass, inputObj));
+                    _config.fnERContentPostProcess(trID[0], inputObj);
+                };
+                
                 $('.rExpand').unbind();
                 $('.rExpand').click(function(){
                     trID = dTable.fnGetPosition( this );
                     if (_config.multipleER) {
                         if ($('#expand_'+trID[0]).length === 0) {
                             $('#tablePlus_'+trID[0]).attr('src', _tableMinus);
-                            // Create row
-                            inputObj = _config.fnERContent(trID[0]);
-                            $(this).parent().after(_buildExpandedRow(trID, $(this).parent().attr('class'), inputObj));
-                            _config.fnERContentPostProcess(trID[0], inputObj);
+                            _config.fnERContent(trID, this, drawER);
+                            //inputObj = _config.fnERContent(trID[0]);
+                            //$(this).parent().after(_buildExpandedRow(trID, $(this).parent().attr('class'), inputObj));
+                            //_config.fnERContentPostProcess(trID[0], inputObj);
                         }
                         else {
                             _config.fnERClose(trID[0]);
@@ -257,9 +262,10 @@
                         // Open current
                         if (isNotCurrent) {
                             $(this).children('.tablePlus').attr('src', _tableMinus);
-                            inputObj = _config.fnERContent(trID[0]);
-                            $(this).parent().after(_buildExpandedRow(trID, $(this).parent().attr('class'), inputObj));
-                            _config.fnERContentPostProcess(trID[0], inputObj);
+                            _config.fnERContent(trID, this, drawER);
+                            //inputObj = _config.fnERContent(trID[0]);
+                            //$(this).parent().after(_buildExpandedRow(trID, $(this).parent().attr('class'), inputObj));
+                            //_config.fnERContentPostProcess(trID[0], inputObj);
                         }
                         else {
                             _config.fnERClose(trID[0]);

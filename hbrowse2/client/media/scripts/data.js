@@ -27,7 +27,7 @@ function Data(ajaxAnimation, _Settings) {
     var jsonp = _Settings.Application.jsonp;
     
     // Ajax xmlhttprequest object used to store table data requests handlers
-    var xmlhttprequest = null;
+    var xmlhttprequest = {};
     
     // general values
     var State = {
@@ -294,14 +294,14 @@ function Data(ajaxAnimation, _Settings) {
         
         data = _Cache.get(key);
         if (data) {
-            if (xmlhttprequest != null) {
-                xmlhttprequest.abort();
+            if (xmlhttprequest[xhrName] != undefined) {
+                xmlhttprequest[xhrName].abort();
                 //xmlhttprequest = null;
             }
             fSuccess(data);
         } else if (url) {
-            if (xmlhttprequest != null) {
-                xmlhttprequest.abort();
+            if (xmlhttprequest[xhrName] != undefined) {
+                xmlhttprequest[xhrName].abort();
                 //xmlhttprequest = null;
             }
             ajaxAnimation.addClass(xhrName).fadeIn(200);
@@ -315,7 +315,7 @@ function Data(ajaxAnimation, _Settings) {
                     fSuccess(data);
                     ajaxAnimation.removeClass(xhrName);
                     if (!ajaxAnimation.attr('class')) ajaxAnimation.fadeOut(400);
-                    xmlhttprequest = null;
+                    delete xmlhttprequest[xhrName];
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     ajaxAnimation.removeClass(xhrName);
@@ -323,7 +323,7 @@ function Data(ajaxAnimation, _Settings) {
                     fFailure();
                     if (textStatus != 'abort') requestErrorDialog(xhrName, textStatus, errorThrown);
                     //window.history.back();
-                    xmlhttprequest = null;
+                    delete xmlhttprequest[xhrName];
                 }
             });
         }
@@ -345,7 +345,7 @@ function Data(ajaxAnimation, _Settings) {
             fFailure - Function to run on failure
             obj - Additional object to use with fSuccess of fFailure functions
     */
-    this.ajax_getData_sync = function(xhrName, url, params, fSuccess, fFailure, obj) {
+    this.ajax_getData_alt = function(xhrName, url, params, fSuccess, fFailure, obj) {
         var i, currentUrl, portIndex, port, isNumber, index, urlChar, paramsString, key, data;
         if ( obj === undefined ) {
             obj = '';
@@ -393,7 +393,7 @@ function Data(ajaxAnimation, _Settings) {
             $.ajax({
                 type: "GET",
                 url: url,
-                async: false,
+                async: true,
                 timeout: 15000,
                 data: params,
                 dataType: (jsonp ? "jsonp" : "json"),

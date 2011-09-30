@@ -160,18 +160,21 @@ function Events() {
             Array of data needed for expanded row content rendering
             (See ducumentation: http://code.google.com/p/hbrowse/wiki/QuickTutorial2#expandData_/object/)
     */
-    this.expand_click = function(dataID) {
-        var _Settings, rowDataSet, output;
+    this.expand_click = function(trID, thatRef, drawERfunction) {
+        var _Settings, rowDataSet, dataID = trID[0];
         var thisRef = this;
         
         _Settings = this.Settings[this.Data.state('table')]; // Shortcut
         rowDataSet = this.Data.state().mem.table.data[dataID];
         
         var processData = function(jsonDataSet) {
+            var output = [];
+            
             if (jsonDataSet === undefined) jsonDataSet = false;
             
             try {
                 output = _Settings.expandData.dataFunction(rowDataSet, jsonDataSet);
+                drawERfunction(thatRef, trID, $(thatRef).parent().attr('class'), output);
             } catch(err) {
                 if (thisRef.Settings.Application.debugMode) thisRef.setupErrorDialog(err);
             }
@@ -179,7 +182,7 @@ function Events() {
         
         if (_Settings.expandData.dataURL) {
             if (_Settings.expandData.dataURL_params === undefined) _Settings.expandData.dataURL_params = function() { return {}; };
-            this.Data.ajax_getData_sync('expand', _Settings.expandData.dataURL, _Settings.expandData.dataURL_params(this.Data.state(), rowDataSet), processData, function(){});
+            this.Data.ajax_getData_alt('expand', _Settings.expandData.dataURL, _Settings.expandData.dataURL_params(this.Data.state(), rowDataSet), processData, function(){});
         } else {
             processData();
         }
@@ -190,8 +193,6 @@ function Events() {
             this.Data.state('noreload', true);
             this.setupURL();
         }
-        
-        return output;
     };
     
 // ----------------------------------------------------------------------------
