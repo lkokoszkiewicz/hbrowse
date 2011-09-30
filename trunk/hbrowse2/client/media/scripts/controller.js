@@ -274,7 +274,7 @@ function Controller() {
                 rowsToExpand: thisRef.Data.state('or'),
                 useScrollerPlugin: ( (_Settings.useScrollerPlugin !== undefined) ? _Settings.useScrollerPlugin : false ),
                 sorting: (thisRef.Data.state('sorting').length > 0 ? thisRef.Data.state('sorting') : _Settings.sorting),
-                fnERContent:function(dataID){ return thisRef.expand_click(dataID); },
+                fnERContent:function(trID, thatRef, drawERfunction){ return thisRef.expand_click(trID, thatRef, drawERfunction); },
                 fnERContentPostProcess:function(expandedID,inputObj){ return thisRef.expand_click_postprocess(expandedID,inputObj,true); },
                 fnContentChange: function(el) { thisRef.mainsTableContent_change(el); },
                 fnERClose: function(dataID) { thisRef.erClose_click(dataID); },
@@ -445,7 +445,7 @@ function Controller() {
             // Get the data from ajax call
             if (_charts[cnt].dataURL) {
                 if (_charts[cnt].dataURL_params === undefined) _charts[cnt].dataURL_params = function() { return {}; };
-                this.Data.ajax_getData_sync('chartData_'+cnt, _charts[cnt].dataURL, _charts[cnt].dataURL_params(this.Data.state()), getData, function(){},_charts[cnt]);
+                this.Data.ajax_getData_alt('chartData_'+cnt, _charts[cnt].dataURL, _charts[cnt].dataURL_params(this.Data.state()), getData, function(){},_charts[cnt]);
             }
             else {
                 getData(this.Data.state().mem, _charts[cnt]);

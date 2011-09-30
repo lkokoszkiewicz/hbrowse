@@ -423,11 +423,36 @@ function ControlsUpdate() {
             var emptyFunc = function() {/*do nothing*/};
             var returnEmptyObjFunc = function() { return {}; };
             
+            // draw Array options
+            var drawFilterOptions = function(optArr, filter) {
+                if (optArr.length > 0) for (j=0;j<optArr.length;j++) {
+                    // create option html element
+                    var option = $('<option></option>').attr('value',optArr[j][0]).text(optArr[j][1]);
+                    
+                    // check which fields should be selected
+                    if (_Settings.filters[i].fieldType == 'multiselect') {
+                        if (optArr[j][0] == thisRef.Data.state().filters[_Settings.filters[i].urlVariable] 
+                            || $.inArray(optArr[j][0], thisRef.Data.state().filters[_Settings.filters[i].urlVariable]) != -1) {
+                            
+                            option.attr('selected','selected');
+                        }
+                    } else {
+                        if (optArr[j][0] == thisRef.Data.state().filters[_Settings.filters[i].urlVariable]) {
+                            option.attr('selected','selected');
+                        }
+                    }
+                    filter.append(option);
+                }
+            };
+            
             // setup incoming ajax data
-            var handleAjaxData = function(data){
+            var handleAjaxData = function(data, i){
                 try {
                     thisRef.Data.state().mem.filters[_Settings.filters[i].urlVariable] = data;
                     optArr = _Settings.filters[i].options.translateData(data);
+                    drawFilterOptions(optArr, $('#'+_Settings.filters[i].urlVariable));
+                    $('#'+_Settings.filters[i].urlVariable).multiselect('refresh');
+                    $('button.ui-multiselect').css('width','130px');
                 } catch(err1) {
                     if (thisRef.Settings.Application.debugMode) thisRef.setupErrorDialog(err1);
                 }
@@ -452,7 +477,7 @@ function ControlsUpdate() {
             for (i=0;i<_Settings.filters.length;i++) {
                 // create span to draw a filter html control
                 mainSpan = $('<span></span>').attr('id','filter_'+_Settings.filters[i].urlVariable)
-                    .addClass('filterItems').html(_Settings.filters[i].label+'<br />');
+                    .addClass('filterItems').html('<span class="filterLabel">'+_Settings.filters[i].label+'</span><br />');
                 
                 // draw text, date or datetime filter, if hidden, input field will not display
                 if (_Settings.filters[i].fieldType == 'text' || _Settings.filters[i].fieldType == 'hidden' 
@@ -495,8 +520,9 @@ function ControlsUpdate() {
                             
                             // query for the options, previously defnied handleAjaxData
                             // function will be used to store and preper the data 
-                            this.Data.ajax_getData_sync('filter', _Settings.filters[i].options.dataURL, 
-                                _Settings.filters[i].options.dataURL_params(this.Data.state()), handleAjaxData, emptyFunc);
+                            this.Data.ajax_getData_alt('filter', _Settings.filters[i].options.dataURL, 
+                                _Settings.filters[i].options.dataURL_params(this.Data.state()), 
+                                handleAjaxData, emptyFunc, i);
                         }
                         // if data already resides in memory, simply use them to redraw the filter control
                         else {
@@ -520,28 +546,8 @@ function ControlsUpdate() {
                         }
                     }
                     
-                    // if options array (optArr) is still empty, terminate a function
-                    if (optArr.length === 0) return false;
+                    drawFilterOptions(optArr, filter);
                     
-                    // if there is more than one option element, draw
-                    if (optArr.length > 0) for (j=0;j<optArr.length;j++) {
-                        // create option html element
-                        option = $('<option></option>').attr('value',optArr[j][0]).text(optArr[j][1]);
-                        
-                        // check which fields should be selected
-                        if (_Settings.filters[i].fieldType == 'multiselect') {
-                            if (optArr[j][0] == thisRef.Data.state().filters[_Settings.filters[i].urlVariable] 
-                                || $.inArray(optArr[j][0], thisRef.Data.state().filters[_Settings.filters[i].urlVariable]) != -1) {
-                                
-                                option.attr('selected','selected');
-                            }
-                        } else {
-                            if (optArr[j][0] == this.Data.state().filters[_Settings.filters[i].urlVariable]) {
-                                option.attr('selected','selected');
-                            }
-                        }
-                        filter.append(option);
-                    }
                     mainSpan.append(filter);
                 }
                 
