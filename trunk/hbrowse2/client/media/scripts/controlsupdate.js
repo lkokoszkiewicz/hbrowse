@@ -456,10 +456,7 @@ function ControlsUpdate() {
                 } catch(err1) {
                     if (thisRef.Settings.Application.debugMode) thisRef.setupErrorDialog(err1);
                 }
-            };
-            
-            // define options array: [['optionValue1','optionLabel1'],['optionValue2','optionLabel2']]
-            optArr = []; 
+            }; 
             
             // Clear space for filters
             $('#dataFiltersInputs').empty();
@@ -475,6 +472,9 @@ function ControlsUpdate() {
             
             // table filters loop
             for (i=0;i<_Settings.filters.length;i++) {
+                // define options array: [['optionValue1','optionLabel1'],['optionValue2','optionLabel2']]
+                optArr = [];
+                
                 // create span to draw a filter html control
                 mainSpan = $('<span></span>').attr('id','filter_'+_Settings.filters[i].urlVariable)
                     .addClass('filterItems').html('<span class="filterLabel">'+_Settings.filters[i].label+'</span><br />');
