@@ -576,6 +576,30 @@ function Controller() {
 // Controller initialization - START
 // ============================================================================
 
+// Load the data on application start -----------------------------------------
+
+    this.onLoadRequest = function() {
+        var _Settings = this.Settings.Application; // Shortcut
+        var thisRef = this;
+        
+        var dataHandler = function(jsonData) {
+            thisRef.Data.state().mem.onload = jsonData;
+            try {
+                _Settings.initEvent(thisRef.appDisplayState(),thisRef.Data.state('mem'));
+            } catch(err) { /* do nothing */ }
+        };
+        
+        if (_Settings.onLoadRequestURL !== undefined) {
+            this.Data.ajax_getData_alt('onLoadRequest', _Settings.onLoadRequestURL, {}, dataHandler, $.noop, obj);
+        } else {
+            try {
+                _Settings.initEvent(thisRef.appDisplayState(),thisRef.Data.state('mem'));
+            } catch(err) { /* do nothing */ }
+        }
+    };
+    
+// ----------------------------------------------------------------------------
+
 // Initialize the application -------------------------------------------------
     
     /*
@@ -636,9 +660,7 @@ function Controller() {
         this.viewUpdater();
         
         // Running settings post processing (if avaliable)
-        try {
-            _Settings.initEvent(thisRef.appDisplayState(),thisRef.Data.state('mem'));
-        } catch(err) { /* do nothing */ }
+        this.onLoadRequest();
         
         // Set up refresh
         this.refresh_Change('#refresh');

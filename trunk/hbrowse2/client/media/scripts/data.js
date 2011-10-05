@@ -55,7 +55,8 @@ function Data(ajaxAnimation, _Settings) {
                 data: [],
                 json:{}
             },
-            filters:{}
+            filters:{},
+            onload:{}
         }
     };
     

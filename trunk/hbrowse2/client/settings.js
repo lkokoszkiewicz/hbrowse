@@ -34,13 +34,14 @@ function Settings() {
                 'or': [], // opened table rows
                 'uparam': [] // user defined params (for params that cannot be shared between use cases)
             }
-        },
+        }//,
+        //'onLoadRequestURL':'http://localhost/hbrowse2/gangataskmonitoring',
         // Optional init function alows to run some additional action on application initialization, it takes one parameter which is the state of the view (subs|mains|users)
         // Keep in mind the this is only the state of the url, not the state of the app, because of asyncronous ajax requests
         // the state of the view might be (temporarly) different then state of the url hash
-        /*'initEvent':function(appState){
-            alert(';)');
-        }*/
+        //'initEvent':function(appState){
+        //    alert(';)');
+        //}
         // Optional hash change function alows to react on hash changes, it takes one parameter which is the state of the view (subs|mains|users)
         // Keep in mind the this is only the state of the url, not the state of the app, because of asyncronous ajax requests
         // the state of the view might be (temporarly) different then state of the url hash
