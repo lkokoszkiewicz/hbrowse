@@ -578,6 +578,12 @@ function Controller() {
 
 // Load the data on application start -----------------------------------------
 
+    /*
+        Function: onLoadRequest
+        Runs the initEvent user defined function with or without downloading 
+        ajax init data. The query is made only if Settings.onLoadRequestURL
+        parameter is setup
+    */
     this.onLoadRequest = function() {
         var _Settings = this.Settings.Application; // Shortcut
         var thisRef = this;
