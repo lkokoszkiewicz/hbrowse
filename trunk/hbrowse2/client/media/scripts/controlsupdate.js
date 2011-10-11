@@ -669,8 +669,12 @@ function ControlsUpdate() {
                     } 
                     else if (_Settings.filters[i].fieldType == 'select') {
                         $('.filterItems #'+_Settings.filters[i].urlVariable+' option').each( addSelectOption );
+                        $('#'+_Settings.filters[i].urlVariable).multiselect('refresh');
+                        $('button.ui-multiselect').css('width','130px');
                     } else if (_Settings.filters[i].fieldType == 'multiselect') {
                         $('.filterItems #'+_Settings.filters[i].urlVariable+' option').each( addMultiSelectOption );
+                        $('#'+_Settings.filters[i].urlVariable).multiselect('refresh');
+                        $('button.ui-multiselect').css('width','130px');
                     }
                     
                     this.filtersSubmit_OnOff(i);
