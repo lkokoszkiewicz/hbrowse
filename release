@@ -1,17 +1,18 @@
 #!/bin/bash
-#svn update
+svn update
 svn cp trunk/hbrowse$1/. tags/hbrowse-$1-$2-$3
 nano wiki/ChangeLog.wiki
 echo "var curRel = ['$1','$2','$3'];" > tags/curver.js
 svn ci -m ""
-svn export trunk/hbrowse$1/client ../hbrowse_exports/hbrowse-$1-$2-$3/.
-java -jar yuicompressor-2.4.6.jar -o '.js$:.js' ../hbrowse_exports/hbrowse-$1-$2-$3/media/scripts/*.js
-java -jar yuicompressor-2.4.6.jar -o '.js$:.js' ../hbrowse_exports/hbrowse-$1-$2-$3/media/scripts/components/*.js
+svn export tags/hbrowse-$1-$2-$3/client hbrowse_exports/hbrowse-$1-$2-$3/.
+java -jar yuicompressor-2.4.6.jar -o '.js$:.js' hbrowse_exports/hbrowse-$1-$2-$3/media/scripts/*.js
+java -jar yuicompressor-2.4.6.jar -o '.js$:.js' hbrowse_exports/hbrowse-$1-$2-$3/media/scripts/components/*.js
 #java -jar yuicompressor-2.4.6.jar -o '.css$:.css' ../hbrowse_exports/hbrowse-$1-$2-$3/media/css/*.css
-mkdir ../hbrowse_exports/hbrowse-common-$1-$2-$3
-cp -R ../hbrowse_exports/hbrowse-$1-$2-$3/media/* ../hbrowse_exports/hbrowse-common-$1-$2-$3/.
-cd ../hbrowse_exports/
+mkdir hbrowse_exports/hbrowse-common-$1-$2-$3
+cp -R hbrowse_exports/hbrowse-$1-$2-$3/media/* hbrowse_exports/hbrowse-common-$1-$2-$3/.
+cd hbrowse_exports/
 tar -pczf hbrowse-$1-$2-$3.tar.gz hbrowse-$1-$2-$3
 tar -pczf hbrowse-common-$1-$2-$3.tar.gz hbrowse-common-$1-$2-$3
-./googlecode_upload.py -s "Only the essential libraries (v$1.$2.$3)" -p hbrowse -u $4 -w $5 -l Featured ../hbrowse_exports/hbrowse-common-$1-$2-$3.tar.gz
-./googlecode_upload.py -s "hBrowse framework v$1.$2.$3" -p hbrowse -u $4 -w $5 -l Featured ../hbrowse_exports/hbrowse-$1-$2-$3.tar.gz
+cd ../
+./googlecode_upload.py -s "Only the essential libraries (v$1.$2.$3)" -p hbrowse -u $4 -w $5 -l Featured hbrowse_exports/hbrowse-common-$1-$2-$3.tar.gz
+./googlecode_upload.py -s "hBrowse framework v$1.$2.$3" -p hbrowse -u $4 -w $5 -l Featured hbrowse_exports/hbrowse-$1-$2-$3.tar.gz
