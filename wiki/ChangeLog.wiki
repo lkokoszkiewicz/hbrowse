@@ -1,5 +1,12 @@
 #labels Featured
 =Change Log=
+==v2.0.0==
+  * Improved UI
+  * There is no data depth level limitation
+  * Filters grouping
+  * Charts tab charts grouping
+  * Everything is loaded asynchronously
+  * Added select filters co-dependencies (it is possible to disable some filter options when selecting a certain option from another filter)
 ==v1.6.2==
   * Fixed bug where system checks all of the multiple select items at once
   * Update highcharts library
