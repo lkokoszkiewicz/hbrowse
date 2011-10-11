@@ -13,34 +13,35 @@ Basically when we want to change the content of the page we will first modify th
 All the application data are stored inside Data model which is defined in data.js file. Settings lets you access the data model in various places so it's important to understand it's structure. Data stored inside data model are split onto 2 parts, operating data and cached data. Operating data are used to display proper informations on the screen and they consists informations like user name, time periods, interface settings etc. Cached data are used in various situations like charts drawing or additional requests etc. Here is the structure with default data:
 {{{
 var Data = {
-    user: '',
-    from: 0,
-    till: 0,
-    timeRange: 'lastDay',
-    refresh: 0,
-    tid: '',
-    p: 1,
-    sorting: [],
-    or: [],
-    uparam: [],
-
-    noreload: false,
-
-    mem: {
-        users: Array(),
-        mains: {
-            user: '',
-            timestamp: 0,
-            data: Array()
-        },
-        subs: {
-            user: '',
-            tid: '',
-            timestamp: 0,
-            data: Array()
-        },
-        filters: {}
-    }
+    var State = {
+        user: settings.user,
+        refresh: settings.refresh,
+        table: settings.table,
+        p: settings.p,
+        records: 25,
+        sorting: settings.sorting,
+        or: settings.or, // opened table rows
+        uparam: settings.uparam, // user defined params (for params that cannot be shared between use cases)
+        activemenu: 0,
+        
+        noreload: false,
+        
+        filters: {},
+        breadcrumbs: [],
+        
+        // Stored Data
+        mem: {
+            users: [],
+            table: {
+                user: '',
+                timestamp: 0,
+                data: [],
+                json:{}
+            },
+            filters:{},
+            onload:{}
+        }
+    };
 }
 }}}
 =Brief modules overview=
