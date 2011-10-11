@@ -13,3 +13,5 @@ cp -R ../hbrowse_exports/hbrowse-$1-$2-$3/media/* ../hbrowse_exports/hbrowse-com
 cd ../hbrowse_exports/
 tar -pczf hbrowse-$1-$2-$3.tar.gz hbrowse-$1-$2-$3
 tar -pczf hbrowse-common-$1-$2-$3.tar.gz hbrowse-common-$1-$2-$3
+./googlecode_upload.py -s "Only the essential libraries (v$1.$2.$3)" -p hbrowse -u $4 -w $5 -l Featured ../hbrowse_exports/hbrowse-common-$1-$2-$3.tar.gz
+./googlecode_upload.py -s "hBrowse framework v$1.$2.$3" -p hbrowse -u $4 -w $5 -l Featured ../hbrowse_exports/hbrowse-$1-$2-$3.tar.gz
