@@ -35,7 +35,7 @@ Label of user list search field (example: 'Users List')
 Name of mains content (example: 'Tasks')
 ===subsLbL /string/===
 Name of subs content (example: 'Jobs')
-===modelDefaults /function/===
+===modelDefaults /function()/===
 Here You can set up model (data.js) default values, in most cases doesn't need to be changed. Function has to return the following values in a form of a dictionary:
    * user - */string/* default user name (default: '')
    * refresh - */int/* seconds (default: 0)
@@ -47,21 +47,27 @@ Here You can set up model (data.js) default values, in most cases doesn't need t
    * uparam - */array/* user defined params (for params that cannot be shared between use cases) (default: `[]`)
 ===onLoadRequestURL /string/===
 You can define an on load ajax request that will provide the application with any kind of default (startup) data loaded from the provided url.
-===hashChangeEvent /function/===
-Optional hash change function alows to react on hast changes, it takes one parameter which is the state of the view (subs|mains|users). Keep in mind that this is only the state of the url, not the state of the application, because of asynchronous ajax requests the state of the view might be (temporally) different then state of the url hash.
-===initEvent /function/===
-Optional init function alows to run some additional action on application initialization, it takes one parameter which is the state of the view (subs|mains|users). Keep in mind the this is only the state of the url, not the state of the app, because of asyncronous ajax requests the state of the view might be (temporarly) different then state of the url hash
+===hashChangeEvent /function(state, dataMem)/===
+Input:
+   * state - State of the view (subs|mains|users). Keep in mind that this is only the state of the url, not the state of the application, because of asynchronous ajax requests the state of the view might be (temporally) different then state of the url hash.
+   * dataMem - Data.state.mem object
+Optional hash change function alows to react on hast changes.
+===initEvent /function(state, dataMem)/===
+Input:
+   * state - State of the view (subs|mains|users). Keep in mind that this is only the state of the url, not the state of the application, because of asynchronous ajax requests the state of the view might be (temporally) different then state of the url hash.
+   * dataMem - Data.state.mem object
+Optional init function alows to run some additional action on application initialization.
 
 ==Users==
 ===dataURL /string/===
 Users list URL for ajax request
-===dataURL_params /function/===
+===dataURL_params /function(dataState)/===
 (optional) Ajax request parameters
-Input: controller.Data object
+Input: Data.state object
 Output: `{'<parameter_name>':<parameter_value>,...} (default: {})`
 ===searchLabel /string/===
 Label of the search field
-===translateData /function/===
+===translateData /function(responseData)/===
 Translates ajax response onto searchable list plugin data format
 Input: json responce
 Output: `[user1, user2, ...]`
@@ -71,9 +77,9 @@ Here you can define your monitoring system tables that will display the data. Ta
 
 ===dataURL /string/===
 Mains URL for ajax request
-===dataURL_params /function/===
+===dataURL_params /function(dataState)/===
 (optional) Ajax request parameters
-Input: controller.Data object
+Input: Data.state object
 Output: `{'<parameter_name>':<parameter_value>,...} (default: {})`
 ===expandableRows /bool/===
 If TRUE, rows will expand after clicking '+'
@@ -188,20 +194,20 @@ So, the label array was extended a little. After header label, row and col span 
 Complex headers option is an experimental one for now, and it's difficult for us to predict all possible behaviors of the script but we encourage you to try it out and waiting for a feedback.
 ===aoColumns /array/===
 (optional) columns options, see http://www.datatables.net/usage/columns
-===getDataArray /function/===
+===getDataArray /function(responseData)/===
 function: extracting array of table data (for dataTable) form Ajax response
 Example:
    * Ajax response: `{'user_taskstable':[{col_val1, col_val2, ...}, ...]}`
    * Required function: `function(data) { return data.user_taskstable; }`
-===translateData /function/===
+===translateData /function(getArrayDataOutput)/===
 function, translates ajax response onto dataTables plugin data format, here you can setup you table content and a links to the subcontent, to do this just add an html "a" tag with class "drilldown" to the cell.
-Input: Array of data selected in `getDataArray` function
+Input: Array of data selected in `getDataArray` function. The output of getArrayData function.
 Output: `[[col_val1, col_val2, ...], ...]`
-===drillDownHandler /function/===
+===drillDownHandler /function(dataState, element, rowIndex)/===
 It is executed every time someone clicks a table cell with a.drilldown html tag in it. Main purpose of the function is to indicate tid and (optionary) uparam parameters from the Data object (uparam allows to setup additional parameters to tid that would define a sub table ajax request). This allows to properly display subs table.
 Input:
-   * Data - application Data object
-   * el - clicked jQuery element
+   * dataState - application Data.state object
+   * element - clicked jQuery element
    * rowIndex - index of the clicked row
 Output: 
 {{{
@@ -210,8 +216,11 @@ Output:
  'filters':{ '<filterUrlVariable>':'<filterValue>', ... }
 }
 }}}
-===tableActivityEvent /function/===
-Optional function that allows user to handle table change event (on changing sorting or page). It takes only one parameter which is clicked element. Function will also run on table init, in this case element will be empty.
+===tableActivityEvent /function(element, dataMem)/===
+Input:
+   * element - Clicked element
+   * dataMem - Data.state.mem object
+Optional function that allows user to handle table change event (on changing sorting or page). Function will also run on table init, in this case element will be empty.
 ===filterGroups /array/===
 (optional) Array of filters group names. This option allows filters to be grouped in a separate blocks if filterGroups is defined `groupIndex` option has to be added to filter objects to determine to which group of filters it should be attached.
 Example:
