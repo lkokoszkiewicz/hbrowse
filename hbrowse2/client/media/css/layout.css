@@ -15,7 +15,7 @@ a { cursor:pointer; color:#3383BB; }
 
 /***********************/
 /*Header styles - START*/
-#container { position:inherit; }
+#container { position:inherit; display:none; }
 
 /*HEADER - generic header styles*/
 #header { position:relative; }
@@ -32,6 +32,7 @@ a { cursor:pointer; color:#3383BB; }
 #filtersToggleMenu { position:relative; background-color:#F4E3C3; border-bottom:1px #F6BC37 solid; display:none; padding:2px; }
 #filtersArrow { position:absolute; top:-12px; left:34px; }
 #dataFiltersLabel { float:left;width:22px;text-decoration:none;color:white;height:30px; line-height:30px; text-align:center; }
+#dataFiltersLabel img { vertical-align:middle; margin:0px 0px 3px; width:13px; height:13px }
 #dataFilters {  }
 #submitFiltersDiv { margin-top:3px; background-color:#fdf5e6; width:100%; }
 #dataFiltersInputs {  }
@@ -125,6 +126,16 @@ a { cursor:pointer; color:#3383BB; }
 #footer a { color:#dddddd; text-decoration:none; font-weight:bold; }
 /*Footer styles - FINISH*/
 /************************/
+
+/*********************/
+/*Loading bar - START*/
+#systemLoading { width:100%; }
+#sLoadLabel { color:white; text-align:center; margin-top:100px; }
+#sLoadParentBar { background-color:black; border:1px #ddd solid; width:200px; margin-left:auto; margin-right:auto; }
+#sLoadBar { background-color:red; width:0% }
+/*Loading bar - FINISH*/
+/**********************/
+
 
 
 

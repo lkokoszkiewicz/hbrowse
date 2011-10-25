@@ -343,8 +343,8 @@ function Controller() {
             });
             
             // Hide filters panel
-            if (_Settings.filters !== undefined) thisRef.hideShowFilters('show');//$('#dataFilters').show();
-            else thisRef.hideShowFilters('hide');//$('#dataFilters').hide();
+            //if (_Settings.filters !== undefined) thisRef.hideShowFilters('show');//$('#dataFilters').show();
+            //else thisRef.hideShowFilters('hide');//$('#dataFilters').hide();
             
             thisRef.executeCharts(_Settings.charts, 'cht_', '#chartContent', _Settings);
             thisRef.executeCharts(_Settings.topTableCharts, 'topTblcht_', '#topTableCharts');

@@ -196,8 +196,15 @@ function ControlsUpdate() {
             <charts_prepGroups>
     */
     this.charts_prepTable = function(chtCnt, tableTarget, domIdPrefix) {
+        var _Settings, colCount = 2;
+        
+        // setting up a proper table settings
+        _Settings = this.Settings[this.Data.state('table')]; // Shortcut
+        
+        if (_Settings.chartTblColCount !== undefined) colCount = _Settings.chartTblColCount;
+        
         if (chtCnt > 0) {
-            var rowCnt = Math.ceil((chtCnt/2));
+            var rowCnt = Math.ceil((chtCnt/colCount));
             var table = $('<table></table>').attr({
                 'class':'chartTbl',
                 'cellpadding':'0',
@@ -207,10 +214,12 @@ function ControlsUpdate() {
             var cnt = 0;
             for (var i=0;i<rowCnt;i++) {
                 var tr = $('<tr></tr>');
-                tr.append( $('<td></td>').addClass('chartTd').append( $('<span></span>')
-                    .attr('id',domIdPrefix+cnt).css({'display':'inline-block'}) ) );cnt++;
-                tr.append( $('<td></td>').addClass('chartTd').append( $('<span></span>')
-                    .attr('id',domIdPrefix+cnt).css({'display':'inline-block'}) ) );cnt++;
+                for (var j=0;j<colCount;j++) {
+                    tr.append( $('<td></td>').addClass('chartTd').append( $('<span></span>')
+                        .attr('id',domIdPrefix+cnt).css({'display':'inline-block'}) ) );cnt++;
+                }
+                //tr.append( $('<td></td>').addClass('chartTd').append( $('<span></span>')
+                //    .attr('id',domIdPrefix+cnt).css({'display':'inline-block'}) ) );cnt++;
                 table.append(tr);
             }
             $(tableTarget).append(table);
@@ -407,7 +416,8 @@ function ControlsUpdate() {
         Draws filters based of settings information
     */
     this.drawFilters = function() {
-        var i, j, _Settings, optArr, mainSpan, filter, option, groupIndex, constFiltersList = [], mulitselectconf = {};
+        var i, j, _Settings, optArr, mainSpan, filter, option, groupIndex, 
+            show = false; constFiltersList = [], mulitselectconf = {};
         var thisRef = this;
         
         // setting up a proper table settings
@@ -432,7 +442,8 @@ function ControlsUpdate() {
                     // check which fields should be selected
                     if (_Settings.filters[i].fieldType == 'multiselect') {
                         if (optArr[j][0] == thisRef.Data.state().filters[_Settings.filters[i].urlVariable] 
-                            || $.inArray(optArr[j][0], thisRef.Data.state().filters[_Settings.filters[i].urlVariable]) != -1) {
+                            || $.inArray(optArr[j][0], 
+                                thisRef.Data.state().filters[_Settings.filters[i].urlVariable]) != -1) {
                             
                             option.attr('selected','selected');
                         }
@@ -474,6 +485,10 @@ function ControlsUpdate() {
             for (i=0;i<_Settings.filters.length;i++) {
                 // define options array: [['optionValue1','optionLabel1'],['optionValue2','optionLabel2']]
                 optArr = [];
+                
+                // Decide whether to show filters button or not
+                // hide filters button if all avaliable filters are of type hidden
+                if (_Settings.filters[i].fieldType != 'hidden') show = true;
                 
                 // create span to draw a filter html control
                 mainSpan = $('<span></span>').attr('id','filter_'+_Settings.filters[i].urlVariable)
@@ -624,7 +639,8 @@ function ControlsUpdate() {
                 }
             }
             
-            this.hideShowFilters('show');
+            if (show) this.hideShowFilters('show');
+            else this.hideShowFilters('hide');
             
             this.filter_change();
         }
@@ -639,7 +655,7 @@ function ControlsUpdate() {
         Updates filters controls based on current model state
     */
     this.filtersUpdate = function() {
-        var i, _Settings;
+        var i, _Settings, show = false;
         var thisRef = this;
         
         var addSelectOption = function(j) {
@@ -663,6 +679,10 @@ function ControlsUpdate() {
             
             if (_Settings.filters !== undefined) {
                 for (i=0;i<_Settings.filters.length;i++) {
+                    // Decide whether to show filters button or not
+                    // hide filters button if all avaliable filters are of type hidden
+                    if (_Settings.filters[i].fieldType != 'hidden') show = true;
+                
                     if (_Settings.filters[i].fieldType == 'text' || _Settings.filters[i].fieldType == 'date') {
                         $('.filterItems #'+_Settings.filters[i].urlVariable)
                             .attr('value', this.Data.state().filters[_Settings.filters[i].urlVariable]);
@@ -683,6 +703,9 @@ function ControlsUpdate() {
                 this.setupURL();
                 this.filter_change();
             }
+            
+            if (show) this.hideShowFilters('show');
+            else this.hideShowFilters('hide');
         }
     };
     

@@ -11,18 +11,18 @@
 </head>
 
 <body>
-<div id="systemLoading" style="width:100%;">
-    <div style="color:white;text-align:center;margin-top:100px;">Loading Scripts</div>
-    <div style="background-color:black;border:1px #ddd solid;width:200px;margin-left:auto;margin-right:auto;">
-        <div id="sLoadBar" style="background-color:red;width:0%">&nbsp;</div>
+<div id="systemLoading">
+    <div id="sLoadLabel">Loading Scripts</div>
+    <div id="sLoadParentBar">
+        <div id="sLoadBar">&nbsp;</div>
     </div>
 </div>
-<div id="container" style="display:none">
+<div id="container">
     <div id="contentWrapper">
         <div id="header">
             <div id="topBelt">
                 <ul id="topBeltMenu">
-                    <li><span id="dataFiltersLabel"><img src="media/images/filter.png" width="13" height="13" style="vertical-align:middle;margin:0px 0px 3px;" alt="Filters Summary" /></span></li>
+                    <li><span id="dataFiltersLabel"><img src="media/images/filter.png" alt="Filters Summary" /></span></li>
                     <li><a id="dropDownMenu1" class="topBeltMenu dropDown" href="#filtersToggleMenu">Filters</a></li>
                     <li><a id="dropDownMenu2" class="topBeltMenu dropDown" href="#usersToggleMenu">Users</a></li>
                     <li><a class="topBeltMenu" href="#" title="Support" target="_blank">Help</a></li>
