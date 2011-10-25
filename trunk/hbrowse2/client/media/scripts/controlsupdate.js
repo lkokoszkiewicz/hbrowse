@@ -201,7 +201,10 @@ function ControlsUpdate() {
         // setting up a proper table settings
         _Settings = this.Settings[this.Data.state('table')]; // Shortcut
         
-        if (_Settings.chartTblColCount !== undefined) colCount = _Settings.chartTblColCount;
+        if (domIdPrefix.search("topTblcht_") != -1 
+            && _Settings.topTblChartColCount !== undefined) colCount = _Settings.topTblChartColCount;
+        else if (domIdPrefix.search("cht_") != -1
+            && _Settings.chartColCount !== undefined) colCount = _Settings.chartColCount;
         
         if (chtCnt > 0) {
             var rowCnt = Math.ceil((chtCnt/colCount));
