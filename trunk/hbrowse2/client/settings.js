@@ -673,6 +673,7 @@ function Settings() {
         // if filterGroups is defined `groupIndex` option has to be added to charts objects
         // to determine to which group filters should be attached
         'chartGroups':['Group 1','Group 2'],
+        'chartTblColCount':2,
         'charts': [
             {
                 'name':'Status Overview',
