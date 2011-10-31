@@ -294,8 +294,12 @@ Output:
 }}}
 ===chartGroups /array/===
 (optional) Array of chart group names. This option allows charts (only for charts under `charts` option) to be grouped in a separate blocks if chartGroups is defined `groupIndex` option has to be added to charts objects to determine to which group of charts it should be attached
+===chartColCount /int/===
+(optional) Defines the number of columns in charts table located under "Charts" tab.
 ===charts /array/===
 (optional) allow to insert charts into charts tab
+===topTblChartColCount /int/===
+(optional) Defines the number of columns in charts table located above the main table.
 ===topTableCharts /array/===
 (optional) allow to insert charts on top of the dataTable
 
