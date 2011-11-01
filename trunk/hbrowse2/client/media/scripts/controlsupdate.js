@@ -420,7 +420,7 @@ function ControlsUpdate() {
     */
     this.drawFilters = function() {
         var i, j, _Settings, optArr, mainSpan, filter, option, groupIndex, 
-            show = false; constFiltersList = [], mulitselectconf = {};
+            show = false; constFiltersList = [], disableFiltersList= [], mulitselectconf = {};
         var thisRef = this;
         
         // setting up a proper table settings
@@ -619,7 +619,7 @@ function ControlsUpdate() {
                         });
                     }
                     
-                    // if constrains function is defined, attach events
+                    // if "constrains" function is defined, attach events
                     if (_Settings.filters[i].options.disableFilterOptionsList !== undefined) {
                         $.extend(mulitselectconf, {
                             click: function(event, ui) { thisRef.multiselect_change(event, ui, this) },
@@ -632,6 +632,12 @@ function ControlsUpdate() {
                     
                     $('#'+_Settings.filters[i].urlVariable).multiselect(mulitselectconf);
                     $('button.ui-multiselect').css('width','130px');
+                }
+                
+                if (_Settings.filters[i].options.disableFiltersList !== undefined) {
+                    $('#'+_Settings.filters[i].urlVariable).change(function(){
+                        thisRef.filtersDisable_change(this);
+                    });
                 }
             }
                 

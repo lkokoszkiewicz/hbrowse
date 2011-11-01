@@ -419,6 +419,85 @@ function Events() {
     
 // ----------------------------------------------------------------------------
 
+// Disable filters on filter change -------------------------------------------
+
+    /*
+        Function: filtersDisable_change
+        When filter.options.disableFiltersList setting is defined
+        some filters can be disabled
+        
+        Parameters:
+            el - changed element
+    */
+    this.filtersDisable_change = function(el) {
+        var i, j, _Settings, _Filter, filtersToDisable, type, fClass;
+        
+        // Selecting a proper settings set
+        _Settings = this.Settings[this.Data.state('table')]; // Shortcut
+        
+        // building filters to disable object
+        filterTypes = {};
+        
+        // Selecting a proper filter from the settings set
+        j = 0;
+        for (i=0;i<_Settings.filters.length;i++) {
+            if (_Settings.filters[i].urlVariable == $(el).attr('id')) {
+                _Filter = _Settings.filters[i];
+                j = 1;
+            }
+            filterTypes[_Settings.filters[i].urlVariable] = _Settings.filters[i].fieldType;
+        }
+        if (j == 0) return false; // If filter not found, stop the method
+        
+        if ($(el).val() != "" && $(el).val() !== null) {
+            for (i=0;i<_Filter.options.disableFiltersList.length;i++) {
+                // disable the filters
+                type = filterTypes[_Filter.options.disableFiltersList[i]];
+                if (type == 'select' || type == 'multiselect') {
+                    $('#'+_Filter.options.disableFiltersList[i]).multiselect('disable');
+                } else {
+                    $('#'+_Filter.options.disableFiltersList[i]).attr('disabled','disabled').css({
+                        'filter': 'Alpha(Opacity=35)',
+                        'opacity': '0.35'
+                    });
+                }
+                // add a proper class name to know which filter disabled it
+                $('#'+_Filter.options.disableFiltersList[i]).addClass($(el).attr('id'));
+            }
+        } else {
+            for (i=0;i<_Filter.options.disableFiltersList.length;i++) {
+                // enable filter only if it wasn't disabled by a different filter
+                // the indication of this is class name. enable it only if filter does not have
+                // other classes rather than equal to current filter id
+                fClass = $('#'+_Filter.options.disableFiltersList[i]).attr('class'); // get the class string from the option
+                // if class exists, split it to array
+                if (fClass !== undefined || fClass == '') fClass = fClass.split(' ');
+                else fClass = [$(el).attr('id')]; // if class is empty, add a default value (which is current filter id)
+                
+                // so, if the only class element is the current filter id
+                if ($('#'+_Filter.options.disableFiltersList[i]).hasClass($(el).attr('id')) && fClass.length == 1) {
+                    // enable the filter option and remove the current filter id class
+                    type = filterTypes[_Filter.options.disableFiltersList[i]];
+                    if (type == 'select' || type == 'multiselect') {
+                        $('#'+_Filter.options.disableFiltersList[i]).multiselect('enable');
+                    } else {
+                        $('#'+_Filter.options.disableFiltersList[i]).removeAttr('disabled').css({
+                            'filter': 'Alpha(Opacity=100)',
+                            'opacity': '1'
+                        });
+                    }
+                    // remove class
+                    $('#'+_Filter.options.disableFiltersList[i]).removeClass($(el).attr('id'));
+                } else {
+                    // else, only remove current filter id class
+                    $('#'+_Filter.options.disableFiltersList[i]).removeClass($(el).attr('id'));
+                }
+            }
+        }
+    };
+
+// ----------------------------------------------------------------------------
+
 // Multiselect filters change -------------------------------------------------
     
     /*
@@ -437,7 +516,7 @@ function Events() {
             el - clicked or cahnges element
     */
     this.multiselect_change = function(event, ui, el) {
-        var i, j, filter, filterID, optClass, disableFilters, checked, checkedArr = [], filtersToChange = {}, _Settings, _Filter;
+        var i, j, filter, filterID, optClass, disableFiltersOptions, checked, checkedArr = [], filtersToChange = {}, _Settings, _Filter;
         
         // Selecting a proper settings set
         _Settings = this.Settings[this.Data.state('table')]; // Shortcut
@@ -454,7 +533,7 @@ function Events() {
         if (j == 0) return false; // If filter not found, stop the method
         
         // Take a proper constraints from the settings (see documentation)
-        disableFilters = _Filter.options.disableFilterOptionsList(this.Data.state());
+        disableFiltersOptions = _Filter.options.disableFilterOptionsList(this.Data.state());
         // Check which options are actually selected
         checked = $('#'+_Filter.urlVariable).multiselect('getChecked');
         
@@ -468,11 +547,11 @@ function Events() {
         // Function builds the filtersToChange object:
         // filtersToChange = {'filter1_urlVariable':[<element1>,<element2>,...],...}
         // this object is a list of filters fields that are allowed for a current filter selection
-        for (i=0;i<disableFilters.length;i++) {
-            for (j=0;j<disableFilters[i][1].length;j++) {
-                filter = disableFilters[i][1][j];
+        for (i=0;i<disableFiltersOptions.length;i++) {
+            for (j=0;j<disableFiltersOptions[i][1].length;j++) {
+                filter = disableFiltersOptions[i][1][j];
                 if (filtersToChange[filter[0]] === undefined) filtersToChange[filter[0]] = [];
-                if ($.inArray(disableFilters[i][0],checkedArr) != -1) {
+                if ($.inArray(disableFiltersOptions[i][0],checkedArr) != -1) {
                     $.merge(filtersToChange[filter[0]],filter[1]);
                 }
             }
