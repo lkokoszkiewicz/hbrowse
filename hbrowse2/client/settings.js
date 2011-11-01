@@ -527,15 +527,23 @@ function Settings() {
         'filters':[
             {
                 'label':'Select filter',  // String
-                'urlVariable':'textfilter',  // String - lower cased, no spaces, no special characters
-                'fieldType':'select',  // String (text|select|date)
+                'urlVariable':'multifilter',  // String - lower cased, no spaces, no special characters
+                'fieldType':'multiselect',  // String (text|select|date)
                 'groupIndex':0,
                 'value':'',
                 'options':{
                     'translateData': function(jsonData) {
-                        return [['','Off'],['1','opt1'],['2','opt2'],['3','opt3'],['4','opt4'],['5','opt5']];
+                        return [/*['','Off'],*/['1','opt1'],['2','opt2'],['3','opt3'],['4','opt4'],['5','opt5']];
                     }
                 }
+            },
+            {
+                'label':'Select filter',  // String
+                'urlVariable':'textfilter',  // String - lower cased, no spaces, no special characters
+                'fieldType':'text',  // String (text|select|date)
+                'groupIndex':0,
+                'value':'',
+                'options':{}
             },
             {
                 'label':'Date filter',  // String
@@ -543,7 +551,19 @@ function Settings() {
                 'fieldType':'date',  // String (text|select|date)
                 'groupIndex':1,
                 'value':'',
-                'options':{}
+                'options':{
+                    'disableFiltersList':['textfilter','multifilter']
+                }
+            },
+            {
+                'label':'Select filter',  // String
+                'urlVariable':'textfilter2',  // String - lower cased, no spaces, no special characters
+                'fieldType':'text',  // String (text|select|date)
+                'groupIndex':1,
+                'value':'',
+                'options':{
+                    'disableFiltersList':['textfilter']
+                }
             },
             {
                 'label':'Task ID',  // String
