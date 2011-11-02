@@ -75,6 +75,10 @@ Output: `[user1, user2, ...]`
 ==Table Classes==
 Here you can define your monitoring system tables that will display the data. Table class should start with the Capita letter. Here you have the possible settings:
 
+===tableName /string/===
+Defines table name. Used in breadcrumbs.
+===showChartsTabFirst /bool/===
+If true, charts tab will be default for this table.
 ===dataURL /string/===
 Mains URL for ajax request
 ===dataURL_params /function(dataState)/===
