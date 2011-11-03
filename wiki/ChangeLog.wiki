@@ -1,5 +1,11 @@
 #labels Featured
 =Change Log=
+==v2.1.0==
+  * Added scripts loading animation
+  * Filters panel is hidden when the only filters are hidden ones
+  * Added the option to disable filters when certain ones are beeing selected
+  * Added charts table number of columns sellection
+  * Added the possibility to display charts tab as default for each separate table
 ==v2.0.0==
   * Improved UI
   * There is no data depth level limitation
