@@ -76,6 +76,7 @@ function Settings() {
     // Mains settings - START
     this.Mains = {
         'tableName': 'Tasks',
+        'showChartsTabFirst':false,
         'dataURL': 'gangataskstable', // Mains URL for ajax request
         // Function, ajax request parameters
         // Input: Data - application Data model, rowDataSet - clicked row data (from ajax datatable response)

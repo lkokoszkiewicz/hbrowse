@@ -348,6 +348,9 @@ function Controller() {
             
             thisRef.executeCharts(_Settings.charts, 'cht_', '#chartContent', _Settings);
             thisRef.executeCharts(_Settings.topTableCharts, 'topTblcht_', '#topTableCharts');
+            
+            // if 'showChartsTabFirst' option is true switch to charts tab
+            if (_Settings.showChartsTabFirst) $('#siteTabs').tabs('select',1);
         };
         
         // Get the data from ajax call
@@ -638,7 +641,7 @@ function Controller() {
         $('#submitFilters').click(function(){ thisRef.filtersSubmit_click(this); });
 		
 		// Activate tabs
-        $("#siteTabs").tabs({select: function(event, ui) {
+        $('#siteTabs').tabs({select: function(event, ui) {
             if (ui.index == 1) $('#topTableCharts').hide();
             else $('#topTableCharts').show();
         }});

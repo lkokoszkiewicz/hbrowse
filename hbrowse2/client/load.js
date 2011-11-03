@@ -7,43 +7,35 @@
 // 19.09.2011 Created
 //
 
-var loadedNumber = 0;
-var totalNumberOfScripts = 24;
-var chLoadingBar = function() {
-    loadedNumber++;
-    var width = Math.ceil((loadedNumber/totalNumberOfScripts)*100);
-    document.getElementById('sLoadBar').style.width=width+"%";
-}
-
 // Load all required libraries
 $LAB
 // Load libs
-.script('media/lib/jquery-1.6.2.min.js').wait(chLoadingBar)
-.script('media/lib/jquery.dataTables-1.8.0.min.js').wait(chLoadingBar)
-.script('media/lib/Scroller.min.js').wait(chLoadingBar)
-.script('media/lib/highcharts.js').wait(chLoadingBar)
-.script('media/lib/exporting.js').wait(chLoadingBar)
-.script('media/lib/quicksilver.js').wait(chLoadingBar)
-.script('media/lib/jquery.livesearch.js').wait(chLoadingBar)
-.script('media/lib/jquery.json-2.1.min.js').wait(chLoadingBar)
-.script('media/lib/jquery.ba-bbq.min.js').wait(chLoadingBar)
-.script('media/lib/cache.js').wait(chLoadingBar)
-.script('media/lib/jquery.base64.js').wait(chLoadingBar)
-.script('media/lib/jquery-ui-1.8.16.custom.min.js').wait(chLoadingBar)
-.script('media/lib/jquery-ui-timepicker-addon.js').wait(chLoadingBar)
-.script('media/lib/jquery.multiselect.min.js').wait(chLoadingBar)
-.script('media/lib/jquery.dataTables.pagination.input.js').wait(chLoadingBar)
+.script('media/lib/jquery-1.6.2.min.js')
+.script('media/lib/jquery.dataTables-1.8.0.min.js')
+.script('media/lib/Scroller.min.js')
+.script('media/lib/highcharts.js')
+.script('media/lib/exporting.js')
+.script('media/lib/quicksilver.js')
+.script('media/lib/jquery.livesearch.js')
+.script('media/lib/jquery.json-2.1.min.js')
+.script('media/lib/jquery.ba-bbq.min.js')
+.script('media/lib/cache.js')
+.script('media/lib/jquery.base64.js')
+.script('media/lib/jquery-ui-1.8.16.custom.min.js')
+.script('media/lib/jquery-ui-timepicker-addon.js')
+.script('media/lib/jquery.multiselect.min.js')
+.script('media/lib/jquery.dataTables.pagination.input.js')
 
 // Load framework
-.script('media/scripts/api.js').wait(chLoadingBar)
-.script('media/scripts/controlsupdate.js').wait(chLoadingBar)
-.script('media/scripts/events.js').wait(chLoadingBar)
-.script('media/scripts/controller.js').wait(chLoadingBar)
-.script('media/scripts/data.js').wait(chLoadingBar)
-.script('media/scripts/components/lkfw.searchable.list.js').wait(chLoadingBar)
-.script('media/scripts/components/lkfw.datatable.js').wait(chLoadingBar)
-.script('media/scripts/components/idfn.datatable.sorting.js').wait(chLoadingBar)
-.script('media/scripts/components/lkfw.tooltip.js').wait(chLoadingBar)
+.script('media/scripts/api.js')
+.script('media/scripts/controlsupdate.js')
+.script('media/scripts/events.js')
+.script('media/scripts/controller.js')
+.script('media/scripts/data.js')
+.script('media/scripts/components/lkfw.searchable.list.js')
+.script('media/scripts/components/lkfw.datatable.js')
+.script('media/scripts/components/idfn.datatable.sorting.js')
+.script('media/scripts/components/lkfw.tooltip.js')
 
 // Load Settings
 .script('settings.js')
