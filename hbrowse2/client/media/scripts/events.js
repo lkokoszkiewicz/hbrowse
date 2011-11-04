@@ -471,11 +471,20 @@ function Events() {
                 // other classes rather than equal to current filter id
                 fClass = $('#'+_Filter.options.disableFiltersList[i]).attr('class'); // get the class string from the option
                 // if class exists, split it to array
-                if (fClass !== undefined || fClass == '') fClass = fClass.split(' ');
+                if (fClass !== undefined && fClass != '') fClass = fClass.split(' ');
                 else fClass = [$(el).attr('id')]; // if class is empty, add a default value (which is current filter id)
                 
-                // so, if the only class element is the current filter id
-                if ($('#'+_Filter.options.disableFiltersList[i]).hasClass($(el).attr('id')) && fClass.length == 1) {
+                for (j=0; j<fClass.length; j++) {
+                    if (fClass[j] == 'hasDatepicker') {
+                        fClass.splice(j, 1);
+                        break;
+                    }
+                }
+                
+                // so, if the only class element is the current filter id or 
+                if ( ($('#'+_Filter.options.disableFiltersList[i]).hasClass($(el).attr('id')) 
+                    || $('#'+_Filter.options.disableFiltersList[i]).hasClass('hasDatepicker'))
+                    && fClass.length == 1 ) {
                     // enable the filter option and remove the current filter id class
                     type = filterTypes[_Filter.options.disableFiltersList[i]];
                     if (type == 'select' || type == 'multiselect') {
@@ -574,7 +583,7 @@ function Events() {
                     // other classes rather than equal to current filter id
                     optClass = $(this).attr('class'); // get the class string from the option
                     // if class exists, split it to array
-                    if (optClass !== undefined || optClass == '') optClass = optClass.split(' ');
+                    if (optClass !== undefined && optClass != '') optClass = optClass.split(' ');
                     else optClass = [$(el).attr('id')]; // if class is empty, add a default value (which is current filter id)
                     
                     // so, if the only class element is the current filter id
