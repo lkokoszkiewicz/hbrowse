@@ -638,6 +638,7 @@ function ControlsUpdate() {
                     $('#'+_Settings.filters[i].urlVariable).change(function(){
                         thisRef.filtersDisable_change(this);
                     });
+                    disableFiltersList.push('#'+_Settings.filters[i].urlVariable);
                 }
             }
                 
@@ -645,6 +646,13 @@ function ControlsUpdate() {
             for (i=0;i<constFiltersList.length;i++) {
                 if ($(constFiltersList[i]).multiselect('getChecked').length > 0) {
                     this.multiselect_change({}, {}, constFiltersList[i]);
+                }
+            }
+            
+            // run filters disabling
+            for (i=0;i<constFiltersList.length;i++) {
+                if ($(disableFiltersList[i]).val() != "" && $(disableFiltersList[i]).val() !== null) {
+                    this.filtersDisable_change(disableFiltersList[i]);
                 }
             }
             
