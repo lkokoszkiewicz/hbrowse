@@ -596,6 +596,7 @@ function ControlsUpdate() {
                         setOptArr(_Settings);
                         // <div id="menu-container" style="position:absolute; width: 500px;"></div>
                         $(filter).autocomplete({
+                            'minLength':3,
                             'source': optArr,
                             'appendTo': '#menu-container'
                         });
