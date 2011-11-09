@@ -137,7 +137,7 @@ a { cursor:pointer; color:#3383BB; }
 
 /*********************/
 /*Autocomplete - START*/
-.ui-autocomplete { list-style:none;padding:0px;border:1px #3383bb solid; border-bottom:3px #3383bb solid; }
+.ui-autocomplete { list-style:none;padding:3px;border:1px #3383bb solid; border-bottom:3px #3383bb solid;max-height:400px;overflow-x:hidden;overflow-y:auto; }
 /*Autocomplete - FINISH*/
 /**********************/
 
