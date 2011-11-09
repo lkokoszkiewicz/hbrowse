@@ -599,7 +599,7 @@ function Controller() {
         };
         
         if (_Settings.onLoadRequestURL !== undefined) {
-            this.Data.ajax_getData_alt('onLoadRequest', _Settings.onLoadRequestURL, {}, dataHandler, $.noop, obj);
+            this.Data.ajax_getData_alt('onLoadRequest', _Settings.onLoadRequestURL, {}, dataHandler, $.noop, {}, false);
         } else {
             try {
                 _Settings.initEvent(thisRef.appDisplayState(),thisRef.Data.state('mem'));

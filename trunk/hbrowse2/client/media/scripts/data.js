@@ -346,11 +346,11 @@ function Data(ajaxAnimation, _Settings) {
             fFailure - Function to run on failure
             obj - Additional object to use with fSuccess of fFailure functions
     */
-    this.ajax_getData_alt = function(xhrName, url, params, fSuccess, fFailure, obj) {
+    this.ajax_getData_alt = function(xhrName, url, params, fSuccess, fFailure, obj, async) {
         var i, currentUrl, portIndex, port, isNumber, index, urlChar, paramsString, key, data;
-        if ( obj === undefined ) {
-            obj = '';
-        }
+        if ( obj === undefined ) obj = '';
+        if ( async === undefined ) async = true;
+        
         var thisRef = this;
         
         currentUrl = window.location.toString();
@@ -394,7 +394,7 @@ function Data(ajaxAnimation, _Settings) {
             $.ajax({
                 type: "GET",
                 url: url,
-                async: true,
+                async: async,
                 timeout: 15000,
                 data: params,
                 dataType: (jsonp ? "jsonp" : "json"),

@@ -529,12 +529,49 @@ function Settings() {
             {
                 'label':'Select filter',  // String
                 'urlVariable':'multifilter',  // String - lower cased, no spaces, no special characters
-                'fieldType':'multiselect',  // String (text|select|date)
+                'fieldType':'multiselect',  // String (text|select|multiselect|date)
                 'groupIndex':0,
                 'value':'',
                 'options':{
+                    'disableFiltersList':['textfilter'],
                     'translateData': function(jsonData) {
                         return [/*['','Off'],*/['1','opt1'],['2','opt2'],['3','opt3'],['4','opt4'],['5','opt5']];
+                    }
+                }
+            },
+            {
+                'label':'Autocomplete filter',  // String
+                'urlVariable':'autocomplete',  // String - lower cased, no spaces, no special characters
+                'fieldType':'autocomplete',  // String (text|select|multiselect|date)
+                'groupIndex':0,
+                'value':'',
+                'options':{
+                    'disableFiltersList':['textfilter'],
+                    'translateData': function(jsonData) {
+                        return [
+			                "ActionScript",
+			                "AppleScript",
+			                "Asp",
+			                "BASIC",
+			                "C",
+			                "C++",
+			                "Clojure",
+			                "COBOL",
+			                "ColdFusion",
+			                "Erlang",
+			                "Fortran",
+			                "Groovy",
+			                "Haskell",
+			                "Java",
+			                "JavaScript",
+			                "Lisp",
+			                "Perl",
+			                "PHP",
+			                "Python",
+			                "Ruby",
+			                "Scala",
+			                "Scheme"
+		                ];
                     }
                 }
             },
