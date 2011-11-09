@@ -135,6 +135,11 @@ a { cursor:pointer; color:#3383BB; }
 /*Loading bar - FINISH*/
 /**********************/
 
+/*********************/
+/*Autocomplete - START*/
+.ui-autocomplete { list-style:none;padding:0px;border:1px #3383bb solid; border-bottom:3px #3383bb solid; }
+/*Autocomplete - FINISH*/
+/**********************/
 
 
 

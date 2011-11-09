@@ -663,7 +663,9 @@ function Events() {
             'take':'id',
             'place':'bottom',
             'classDist':'_filtersSummary',
-            'delay':1000,
+            'delay':0,
+            'fadeIn':0,
+            'onClick':true,
             'clickable':true,
             'posShift':[-5,-1],
             'css':{

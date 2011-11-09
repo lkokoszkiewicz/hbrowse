@@ -419,7 +419,7 @@ function ControlsUpdate() {
         Draws filters based of settings information
     */
     this.drawFilters = function() {
-        var i, j, _Settings, optArr, mainSpan, filter, option, groupIndex, 
+        var i, j, _Settings, optArr, mainSpan, filter, option, groupIndex, handleAjaxData,
             show = false; constFiltersList = [], disableFiltersList= [], mulitselectconf = {};
         var thisRef = this;
         
@@ -460,7 +460,7 @@ function ControlsUpdate() {
             };
             
             // setup incoming ajax data
-            var handleAjaxData = function(data, i){
+            var handleAjaxData_select = function(data, i){
                 try {
                     thisRef.Data.state().mem.filters[_Settings.filters[i].urlVariable] = data;
                     optArr = _Settings.filters[i].options.translateData(data);
@@ -470,7 +470,63 @@ function ControlsUpdate() {
                 } catch(err1) {
                     if (thisRef.Settings.Application.debugMode) thisRef.setupErrorDialog(err1);
                 }
-            }; 
+            };
+            
+            // setup incoming ajax data
+            var handleAjaxData_autocomplete = function(data, i){
+                try {
+                    thisRef.Data.state().mem.filters[_Settings.filters[i].urlVariable] = data;
+                    optArr = _Settings.filters[i].options.translateData(data);
+                } catch(err1) {
+                    if (thisRef.Settings.Application.debugMode) thisRef.setupErrorDialog(err1);
+                }
+            };
+            
+            // Set optArr
+            var setOptArr = function(_Settings) {
+                // if options.dataURL exists, options will be obtained from ajax request
+                if (_Settings.filters[i].options.dataURL !== undefined) {
+                    // check if, by any chance, options wasn't downloaded earlier
+                    // to do this we check if a proper ajax response was reqistered inside Data.mem object
+                    // if not, script will download a proper data
+                    if (thisRef.Data.state().mem.filters[_Settings.filters[i].urlVariable] === undefined) {
+                        // check if options.dataURL_params is defined
+                        // if no, use previously defined function returning empty object
+                        if (_Settings.filters[i].options.dataURL_params === undefined) 
+                            _Settings.filters[i].options.dataURL_params = returnEmptyObjFunc;
+                            
+                        // Choose which handleAjaxData function to use
+                        if (_Settings.filters[i].fieldType != 'autocomplete') handleAjaxData = handleAjaxData_select;
+                        else handleAjaxData = handleAjaxData_autocomplete;
+                        
+                        // query for the options, previously defnied handleAjaxData
+                        // function will be used to store and preper the data 
+                        this.Data.ajax_getData_alt('filter', _Settings.filters[i].options.dataURL, 
+                            _Settings.filters[i].options.dataURL_params(this.Data.state()), 
+                            handleAjaxData, emptyFunc, i);
+                    }
+                    // if data already resides in memory, simply use them to redraw the filter control
+                    else {
+                        try {
+                            optArr = _Settings.filters[i].options
+                                .translateData(thisRef.Data.state().mem.filters[_Settings.filters[i].urlVariable]);
+                        } catch(err2) {
+                            if (thisRef.Settings.Application.debugMode) thisRef.setupErrorDialog(err2);
+                        }
+                    }
+                }
+                // if options.dataURL property is not defined it means that select options
+                // should be defined directly inside options.translateData function
+                // in this case `Data` object will be used as a parameter for this function
+                // so a developer would be able to use any data alredy stored there
+                else {
+                    try {
+                        optArr = _Settings.filters[i].options.translateData(thisRef.Data.state());
+                    } catch(err3) {
+                        if (thisRef.Settings.Application.debugMode) thisRef.setupErrorDialog(err3);
+                    }
+                }
+            }
             
             // Clear space for filters
             $('#dataFiltersInputs').empty();
@@ -516,52 +572,33 @@ function ControlsUpdate() {
                 }
                 // draw select or multiselect filter
                 // select and multiselect filters may get options elements from ajac requests
-                else if (_Settings.filters[i].fieldType == 'select' || _Settings.filters[i].fieldType == 'multiselect') {
-                    // create select control
-                    filter = $('<select></select>').attr('id',_Settings.filters[i].urlVariable);
+                else if (_Settings.filters[i].fieldType == 'select' || _Settings.filters[i].fieldType == 'multiselect'
+                        || _Settings.filters[i].fieldType == 'selectold'
+                        || _Settings.filters[i].fieldType == 'autocomplete') {
                     
-                    // if filter is of type multiselect add multiple attribute to the select field
-                    // multiple selection fields are using miltiselect jquery plugin so they appear
-                    // as a drop down box
-                    if (_Settings.filters[i].fieldType == 'multiselect') filter.attr('multiple','multiple');
+                    if (_Settings.filters[i].fieldType != 'autocomplete') {
+                        // create select control
+                        filter = $('<select></select>').attr('id',_Settings.filters[i].urlVariable);
+                        
+                        // if filter is of type multiselect add multiple attribute to the select field
+                        // multiple selection fields are using miltiselect jquery plugin so they appear
+                        // as a drop down box
+                        if (_Settings.filters[i].fieldType == 'multiselect') filter.attr('multiple','multiple');
                     
-                    // if options.dataURL exists, options will be obtained from ajax request
-                    if (_Settings.filters[i].options.dataURL !== undefined) {
-                        // check if, by any chance, options wasn't downloaded earlier
-                        // to do this we check if a proper ajax response was reqistered inside Data.mem object
-                        // if not, script will download a proper data
-                        if (this.Data.state().mem.filters[_Settings.filters[i].urlVariable] === undefined) {
-                            // check if options.dataURL_params is defined
-                            // if no, use previously defined function returning empty object
-                            if (_Settings.filters[i].options.dataURL_params === undefined) 
-                                _Settings.filters[i].options.dataURL_params = returnEmptyObjFunc;
-                            
-                            // query for the options, previously defnied handleAjaxData
-                            // function will be used to store and preper the data 
-                            this.Data.ajax_getData_alt('filter', _Settings.filters[i].options.dataURL, 
-                                _Settings.filters[i].options.dataURL_params(this.Data.state()), 
-                                handleAjaxData, emptyFunc, i);
-                        }
-                        // if data already resides in memory, simply use them to redraw the filter control
-                        else {
-                            try {
-                                optArr = _Settings.filters[i].options
-                                    .translateData(this.Data.state().mem.filters[_Settings.filters[i].urlVariable]);
-                            } catch(err2) {
-                                if (thisRef.Settings.Application.debugMode) thisRef.setupErrorDialog(err2);
-                            }
-                        }
-                    }
-                    // if options.dataURL property is not defined it means that select options
-                    // should be defined directly inside options.translateData function
-                    // in this case `Data` object will be used as a parameter for this function
-                    // so a developer would be able to use any data alredy stored there
-                    else {
-                        try {
-                            optArr = _Settings.filters[i].options.translateData(this.Data.state());
-                        } catch(err3) {
-                            if (thisRef.Settings.Application.debugMode) thisRef.setupErrorDialog(err3);
-                        }
+                        setOptArr(_Settings);
+                    } else {
+                        filter = $('<input></input>').attr({
+                            'type':'text',
+                            'id':_Settings.filters[i].urlVariable,
+                            'value':this.Data.state().filters[_Settings.filters[i].urlVariable]
+                        });
+                    
+                        setOptArr(_Settings);
+                        // <div id="menu-container" style="position:absolute; width: 500px;"></div>
+                        $(filter).autocomplete({
+                            'source': optArr,
+                            'appendTo': '#menu-container'
+                        });
                     }
                     
                     drawFilterOptions(optArr, filter);
@@ -589,7 +626,7 @@ function ControlsUpdate() {
                 }
             }
             
-            // Turn on date pickers and create events
+            // Turn on date pickers, selects and create events
             for (i=0;i<_Settings.filters.length;i++) {
                 if (_Settings.filters[i].fieldType == 'date') {
                     $('#'+_Settings.filters[i].urlVariable).datepicker({
@@ -632,7 +669,12 @@ function ControlsUpdate() {
                     
                     $('#'+_Settings.filters[i].urlVariable).multiselect(mulitselectconf);
                     $('button.ui-multiselect').css('width','130px');
-                }
+                }/* else if (_Settings.filters[i].fieldType == 'autocomplete') {
+                    //alert(optArr);
+                    $('#'+_Settings.filters[i].urlVariable).autocomplete({
+                        'source': optArr
+                    });
+                }*/
                 
                 if (_Settings.filters[i].options.disableFiltersList !== undefined) {
                     $('#'+_Settings.filters[i].urlVariable).change(function(){
