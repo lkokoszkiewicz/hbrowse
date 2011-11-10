@@ -666,10 +666,10 @@ function Controller() {
             } catch(err) { /* do nothing */ }
         });
         
-        this.viewUpdater();
-        
         // Running settings post processing (if avaliable)
         this.onLoadRequest();
+        
+        this.viewUpdater();
         
         // Set up refresh
         this.refresh_Change('#refresh');

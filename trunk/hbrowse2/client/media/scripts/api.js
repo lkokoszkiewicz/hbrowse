@@ -11,6 +11,29 @@
 
 var hbrowseAPI = {
     // Dates handling - Start
+    getUTCTimeDate: function(minus) {
+        if (minus === undefined) minus = false;
+        
+        var date = new Date();
+        if (!minus) {
+            return date.getUTCFullYear()+'-'
+                +(date.getUTCMonth()+1)+'-'
+                +date.getUTCDate()+' '
+                +date.getUTCHours()+':'
+                +date.getUTCMinutes();
+        } else {
+            var ts = date.getTime();
+            ts -= minus;
+            var newDate = new Date(ts);
+            return newDate.getUTCFullYear()+'-'
+                +(newDate.getUTCMonth()+1)+'-'
+                +newDate.getUTCDate()+' '
+                +newDate.getUTCHours()+':'
+                +newDate.getUTCMinutes();
+        }
+    },
+    
+    // Dates handling - Start
     iso2ts: function(date, mode) {
         if (mode === undefined) mode = 1;
         if (date === 0 || date == '0' || date === undefined) return 0;
