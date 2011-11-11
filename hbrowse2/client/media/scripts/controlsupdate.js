@@ -743,7 +743,8 @@ function ControlsUpdate() {
                     // hide filters button if all avaliable filters are of type hidden
                     if (_Settings.filters[i].fieldType != 'hidden') show = true;
                 
-                    if (_Settings.filters[i].fieldType == 'text' || _Settings.filters[i].fieldType == 'date') {
+                    if (_Settings.filters[i].fieldType == 'text' || _Settings.filters[i].fieldType == 'date'
+                        || _Settings.filters[i].fieldType == 'autocomplete') {
                         $('.filterItems #'+_Settings.filters[i].urlVariable)
                             .attr('value', this.Data.state().filters[_Settings.filters[i].urlVariable]);
                     } 
