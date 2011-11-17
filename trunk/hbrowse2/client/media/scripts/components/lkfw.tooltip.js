@@ -103,7 +103,7 @@
                 });
                 
                 return mainDiv;
-            } catch(err) {/*do nothing*/}
+            } catch(err) { return false; }
         };
         
         // Display a tooltip
@@ -136,7 +136,7 @@
             
             mainDiv = _drawTooltip(this);
             
-            _displayTooltip(mainDiv);
+            if (mainDiv) _displayTooltip(mainDiv);
         };
         
         var _hideTooltip = function(){
