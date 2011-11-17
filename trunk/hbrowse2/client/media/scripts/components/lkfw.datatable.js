@@ -53,6 +53,15 @@
                         }
                         colHeader = $('<th></th>').html(sum);
                         if (contentArr[i][4] !== undefined) colHeader.css(contentArr[i][4]);
+                    } else if (contentArr[i][0] == '=AVG') {
+                        index = parseInt(i, 10);
+                        if (contentArr[i][3] !== undefined && contentArr[i][3] !== false) index = contentArr[i][3];
+                        sum = 0;
+                        for (j=0;j<_config.items.length;j++) {
+                            sum = (sum + parseInt(_config.items[j][index], 10));
+                        }
+                        colHeader = $('<th></th>').html((sum/_config.items.length).toFixed(2));
+                        if (contentArr[i][4] !== undefined) colHeader.css(contentArr[i][4]);
                     } else {
                         colHeader = $('<th></th>').html(contentArr[i][0]);
                         if (contentArr[i][4] !== undefined) colHeader.css(contentArr[i][4]);

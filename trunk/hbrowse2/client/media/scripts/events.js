@@ -626,7 +626,7 @@ function Events() {
             if (this.Data.state().filters[_Settings.filters[i].urlVariable] !== '') {
                 if (_Settings.filters[i].fieldType == 'select') {
                     try {
-                        if (_Settings.filters[i].urlVariable === undefined) selectElements = _Settings.filters[i].options.translateData();
+                        if (_Settings.filters[i].options.dataURL === undefined) selectElements = _Settings.filters[i].options.translateData(this.Data.state());
                         else selectElements = _Settings.filters[i].options.translateData(this.Data.state().mem.filters[_Settings.filters[i].urlVariable]);
                         for (j=0;j<selectElements.length;j++) {
                             if (selectElements[j][0] == this.Data.state().filters[_Settings.filters[i].urlVariable]) {
@@ -636,7 +636,7 @@ function Events() {
                     } catch(err1) { /*do nothing*/ }
                 } else if (_Settings.filters[i].fieldType == 'multiselect') {
                     try {
-                        if (_Settings.filters[i].urlVariable === undefined) selectElements = _Settings.filters[i].options.translateData();
+                        if (_Settings.filters[i].options.dataURL === undefined) selectElements = _Settings.filters[i].options.translateData(this.Data.state());
                         else selectElements = _Settings.filters[i].options.translateData(this.Data.state().mem.filters[_Settings.filters[i].urlVariable]);
                         
                         fElementsArr = [];
