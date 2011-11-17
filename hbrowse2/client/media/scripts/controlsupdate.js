@@ -501,8 +501,8 @@ function ControlsUpdate() {
                         
                         // query for the options, previously defnied handleAjaxData
                         // function will be used to store and preper the data 
-                        this.Data.ajax_getData_alt('filter', _Settings.filters[i].options.dataURL, 
-                            _Settings.filters[i].options.dataURL_params(this.Data.state()), 
+                        thisRef.Data.ajax_getData_alt('filter', _Settings.filters[i].options.dataURL, 
+                            _Settings.filters[i].options.dataURL_params(thisRef.Data.state()), 
                             handleAjaxData, emptyFunc, i);
                     }
                     // if data already resides in memory, simply use them to redraw the filter control
@@ -693,7 +693,7 @@ function ControlsUpdate() {
             }
             
             // run filters disabling
-            for (i=0;i<constFiltersList.length;i++) {
+            for (i=0;i<disableFiltersList.length;i++) {
                 if ($(disableFiltersList[i]).val() != "" && $(disableFiltersList[i]).val() !== null) {
                     this.filtersDisable_change(disableFiltersList[i]);
                 }
