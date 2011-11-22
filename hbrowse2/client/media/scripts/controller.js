@@ -260,7 +260,11 @@ function Controller() {
             // Charts tab handling - start
             if (_Settings.charts !== undefined) $("#siteTabs").tabs("enable",1); // Enable charts tab
             else $("#siteTabs").tabs("disable",1); // Disable charts tab
-            $("#siteTabs").tabs("select",0); // Select data table tab
+            
+            // if 'showChartsTabFirst' option is true switch to charts tab
+            if (_Settings.showChartsTabFirst) $('#siteTabs').tabs('select',1);
+            else $("#siteTabs").tabs("select",0); // Select data table tab
+            
             $('#topTableCharts').empty();
             // Charts tab handling - finish
             
@@ -348,9 +352,6 @@ function Controller() {
             
             thisRef.executeCharts(_Settings.charts, 'cht_', '#chartContent', _Settings);
             thisRef.executeCharts(_Settings.topTableCharts, 'topTblcht_', '#topTableCharts');
-            
-            // if 'showChartsTabFirst' option is true switch to charts tab
-            if (_Settings.showChartsTabFirst) $('#siteTabs').tabs('select',1);
         };
         
         // Get the data from ajax call
