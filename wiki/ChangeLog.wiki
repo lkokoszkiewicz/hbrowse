@@ -1,6 +1,6 @@
 #labels Featured
 =Change Log=
-==v2.1.0==
+==v2.2.0==
   * Added scripts loading animation
   * Filters panel is hidden when the only filters are hidden ones
   * Filters summary now avaliable 'on click'
