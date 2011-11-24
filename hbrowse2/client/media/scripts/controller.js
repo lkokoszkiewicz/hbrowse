@@ -443,13 +443,17 @@ function Controller() {
                 tData = translatedData;
                 tableDraw(tData);
             }
+            
+            if (chart.postProcess !== undefined) {
+                chart.postProcess(thisRef.Data.state());
+            }
         };
         
         if (_charts[cnt].onDemand === false || forceDraw === true) {
             // Get the data from ajax call
             if (_charts[cnt].dataURL) {
                 if (_charts[cnt].dataURL_params === undefined) _charts[cnt].dataURL_params = function() { return {}; };
-                this.Data.ajax_getData_alt('chartData_'+cnt, _charts[cnt].dataURL, _charts[cnt].dataURL_params(this.Data.state()), getData, function(){},_charts[cnt]);
+                this.Data.ajax_getData_alt('chartData', _charts[cnt].dataURL, _charts[cnt].dataURL_params(this.Data.state()), getData, function(){},_charts[cnt]);
             }
             else {
                 getData(this.Data.state().mem, _charts[cnt]);
@@ -573,7 +577,7 @@ function Controller() {
 // ----------------------------------------------------------------------------
     
 // ============================================================================
-// Charts - FINISH
+// URL - FINISH
 // ============================================================================
     
 // ============================================================================
