@@ -402,24 +402,24 @@ function Controller() {
         
         if (_charts[cnt].onDemand === undefined) _charts[cnt].onDemand = false;
         
-        var gChartDraw = function(gData) {
+        var gChartDraw = function(gData, dId) {
             var query = gData.join('&');
-            thisRef.googleCharts_load(query, domId);
+            thisRef.googleCharts_load(query, dId);
         };
         
-        var hChartDraw = function(hData) {
+        var hChartDraw = function(hData, dId) {
             if (hData.chart === undefined) hData.chart = {};
-            hData.chart.renderTo = domId;//domIdPrefix+cnt;
+            hData.chart.renderTo = dId;//domIdPrefix+cnt;
             hData.credits = false;
             new Highcharts.Chart(hData);
         };
         
-        var tableDraw = function(tData) {
-            thisRef.tableCharts_load(tData, domId);
+        var tableDraw = function(tData, dId) {
+            thisRef.tableCharts_load(tData, dId);
         };
         
-        var getData = function(data, chart) {
-            var i, translatedData, gData, hData, tData;
+        var getData = function(data, obj) {
+            var i, translatedData, gData, hData, tData, chart = obj.chart;
             
             translatedData = chart.translateData(data);
             if (translatedData === false) {
@@ -433,15 +433,15 @@ function Controller() {
                         gData.push(i+'='+translatedData[i]);
                     }
                 }
-                gChartDraw(gData);
+                gChartDraw(gData, obj.domId);
             }
             else if (chart.type == 'hchart') {
                 hData = translatedData;
-                hChartDraw(hData);
+                hChartDraw(hData, obj.domId);
             }
             else if (chart.type == 'table') {
                 tData = translatedData;
-                tableDraw(tData);
+                tableDraw(tData, obj.domId);
             }
             
             if (chart.postProcess !== undefined) {
@@ -453,10 +453,10 @@ function Controller() {
             // Get the data from ajax call
             if (_charts[cnt].dataURL) {
                 if (_charts[cnt].dataURL_params === undefined) _charts[cnt].dataURL_params = function() { return {}; };
-                this.Data.ajax_getData_alt('chartData', _charts[cnt].dataURL, _charts[cnt].dataURL_params(this.Data.state()), getData, function(){},_charts[cnt]);
+                this.Data.ajax_getData_alt('chartData', _charts[cnt].dataURL, _charts[cnt].dataURL_params(this.Data.state()), getData, function(){},{'chart':_charts[cnt],'domId':domId});
             }
             else {
-                getData(this.Data.state().mem, _charts[cnt]);
+                getData(this.Data.state().mem, {'chart':_charts[cnt],'domId':domId});
             }
         }
         else {
