@@ -1,5 +1,8 @@
 #labels Featured
 =Change Log=
+==v2.2.1==
+  * Fixed bug where onDemand charts did not appear in the right slots
+
 ==v2.2.0==
   * Added scripts loading animation
   * Filters panel is hidden when the only filters are hidden ones
