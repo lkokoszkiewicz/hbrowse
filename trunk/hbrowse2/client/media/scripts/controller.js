@@ -138,7 +138,7 @@ function Controller() {
         }
         try {
             this.pageRefresh_update();
-            this.noreload = true;
+            this.Data.state('noreload', true);
             this.setupURL();
         } catch(err) {
             if (_Settings.debugMode) this.setupErrorDialog(err);
@@ -663,7 +663,7 @@ function Controller() {
             thisRef.Data.quickSetup($.bbq.getState());
             
             if (!thisRef.Data.state('noreload')) thisRef.viewUpdater();
-            else thisRef.Data.state('noreload', false);
+            thisRef.Data.state('noreload', false);
             
             // Running settings post processing (if avaliable)
             try {

@@ -125,16 +125,20 @@ function Events() {
             el - Clicked element
     */
     this.refresh_Change = function(el) {
+        var refresh = parseInt($(el).val(), 10);
         var thisRef = this;
-        this.Data.state('refresh', parseInt($(el).val(), 10));
         
-        try { clearInterval(this.intervalID); } finally {}
-        if (this.Data.state('refresh') > 0) {
-            this.intervalID = setInterval( function() { thisRef.viewUpdater(); }, (this.Data.state('refresh')*1000) );
+        if (refresh > 0) {
+            this.Data.state('refresh', refresh);
+            
+            try { clearInterval(this.intervalID); } finally {}
+            if (this.Data.state('refresh') > 0) {
+                this.intervalID = setInterval( function() { thisRef.viewUpdater(); }, (this.Data.state('refresh')*1000) );
+            }
+            
+            this.Data.state('noreload', false);
+            this.setupURL();
         }
-        
-        this.Data.state('noreload', false);
-        this.setupURL();
     };
     
 // ----------------------------------------------------------------------------
@@ -324,6 +328,9 @@ function Events() {
         if (dParams) {
             if (dParams.uparam !== undefined) this.Data.state('uparam', dParams.uparam);
             if (dParams.table !== undefined) this.Data.state('table', dParams.table);
+            if (dParams.user !== undefined) this.Data.state('user', dParams.user);
+            if (dParams.refresh !== undefined) this.Data.state('refresh', dParams.refresh);
+            if (dParams.records !== undefined) this.Data.state('records', dParams.records);
             if (dParams.filters !== undefined) {
                 for (i in dParams.filters) {
                     if (dParams.filters.hasOwnProperty(i)) {
