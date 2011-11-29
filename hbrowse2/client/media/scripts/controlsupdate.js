@@ -404,7 +404,7 @@ function ControlsUpdate() {
             $('#dropDownMenu1,#dataFiltersLabel').parent('li').show();
         } else if (action == 'hide') {
             if ($( $('#dropDownMenu1').attr('href') ).css('display') == 'block' && this.Data.state('activemenu') == 1) {
-                $('#dropDownMenu1').trigger('click',[true]);
+                $('#dropDownMenu1').trigger('click',[false]);
             }
             $('#dropDownMenu1,#dataFiltersLabel').parent('li').hide();
         }
@@ -761,7 +761,7 @@ function ControlsUpdate() {
                     this.filtersSubmit_OnOff(i);
                 }
                 
-                this.setupURL();
+                //this.setupURL();
                 this.filter_change();
             }
             
