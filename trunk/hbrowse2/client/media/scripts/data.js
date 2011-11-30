@@ -306,7 +306,7 @@ function Data(ajaxAnimation, _Settings) {
                 //xmlhttprequest = null;
             }
             ajaxAnimation.addClass(xhrName).fadeIn(200);
-            xmlhttprequest = $.ajax({
+            xmlhttprequest[xhrName] = $.ajax({
                 type: "GET",
                 url: url,
                 data: params,
