@@ -342,9 +342,9 @@ function Controller() {
             }
             // Setting up current page - FINISH
             
-            $.each(thisRef.Data.state('or'), function() {
+            /*$.each(thisRef.Data.state('or'), function() {
                 $('#tablePlus_'+this).parent().trigger('click');
-            });
+            });*/
             
             // Hide filters panel
             //if (_Settings.filters !== undefined) thisRef.hideShowFilters('show');//$('#dataFilters').show();
@@ -563,7 +563,7 @@ function Controller() {
             p:this.Data.state('p'),
             records:this.Data.state('records'),
             sorting:this.Data.state('sorting'),
-            or:this.Data.state('or'),
+            //or:this.Data.state('or'),
             uparam:this.Data.state('uparam'),
             activemenu:this.Data.state('activemenu')
         };
