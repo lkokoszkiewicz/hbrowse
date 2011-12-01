@@ -411,7 +411,7 @@ function Controller() {
             if (hData.chart === undefined) hData.chart = {};
             hData.chart.renderTo = dId;//domIdPrefix+cnt;
             hData.credits = false;
-            new Highcharts.Chart(hData);
+            thisRef.highCharts_load(hData, dId);
         };
         
         var tableDraw = function(tData, dId) {

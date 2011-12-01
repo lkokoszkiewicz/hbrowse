@@ -253,6 +253,7 @@ function ControlsUpdate() {
                 'class':'chartImg'
             })
         );
+        $('#'+domId).addClass('chartType_google');
     };
 
 // ----------------------------------------------------------------------------
@@ -302,6 +303,27 @@ function ControlsUpdate() {
         }
         table.append(tHead).append(tBody);
         $('#'+domId).append(table);
+        $('#'+domId).addClass('chartType_table');
+    };
+    
+// ----------------------------------------------------------------------------
+
+// Draw highchart -------------------------------------------------------------
+    
+    /*
+        Function: highCharts_load
+        Function used to draw a highchart
+        
+        Parameters:
+            tData - Properly formated object with the table data
+            domId - DOM target element ( where to draw )
+        
+        See Also:
+            <googleCharts_load>
+    */
+    this.highCharts_load = function(hData, domId) {
+        new Highcharts.Chart(hData);
+        $('#'+domId).addClass('chartType_highchart');
     };
     
 // ----------------------------------------------------------------------------

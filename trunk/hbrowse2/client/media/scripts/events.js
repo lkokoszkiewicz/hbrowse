@@ -191,7 +191,7 @@ function Events() {
             processData();
         }
         
-        if ($.inArray(dataID, this.Data.state('or')) == -1) {
+        if ($.inArray(dataID+'', this.Data.state('or')) == -1) {
             if (_Settings.multipleER) this.Data.state().or.push(dataID);
             else this.Data.state('or', [dataID]);
             this.Data.state('noreload', true);
