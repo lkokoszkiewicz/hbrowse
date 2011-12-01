@@ -189,14 +189,14 @@ function Events() {
             this.Data.ajax_getData_alt('expand', _Settings.expandData.dataURL, _Settings.expandData.dataURL_params(this.Data.state(), rowDataSet), processData, function(){});
         } else {
             processData();
-        }
+        }/*
         
         if ($.inArray(dataID+'', this.Data.state('or')) == -1) {
             if (_Settings.multipleER) this.Data.state().or.push(dataID);
             else this.Data.state('or', [dataID]);
             this.Data.state('noreload', true);
             this.setupURL();
-        }
+        }*/
     };
     
 // ----------------------------------------------------------------------------
@@ -244,7 +244,7 @@ function Events() {
             dataID - Table data Row index
     */
     this.erClose_click = function(dataID) {
-        if (this.Data.state('or').length > 1) {
+        /*if (this.Data.state('or').length > 1) {
             var position = $.inArray(dataID, this.Data.state('or'));
             this.Data.state('or').splice(position,1);
         }
@@ -252,7 +252,7 @@ function Events() {
             this.Data.state('or', []);
         }
         this.Data.state('noreload', true);
-        this.setupURL();
+        this.setupURL();*/
     };
     
 // ----------------------------------------------------------------------------

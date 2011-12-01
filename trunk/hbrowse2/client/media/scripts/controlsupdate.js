@@ -87,7 +87,7 @@ function ControlsUpdate() {
         
         // id=breadcrumbs
         if (this.Data.state('user') || !_Settings.userSelection) {
-            output = '&nbsp;';
+            output = '&nbsp;<a href="#">Start</a> &raquo; ';
             // show table
             if (_Settings.userSelection) output += '[ <span class="highlight">' + this.Data.state('user') + '</span> ] &raquo; ';
             
@@ -127,7 +127,7 @@ function ControlsUpdate() {
         }
         else {
             // show users
-            output = '';
+            output = '&nbsp;<a href="#">Start</a>';
         }
         
         $('#breadcrumbs').html(output);

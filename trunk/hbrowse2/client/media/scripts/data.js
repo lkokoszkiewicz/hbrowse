@@ -37,7 +37,7 @@ function Data(ajaxAnimation, _Settings) {
         p: settings.p,
         records: 25,
         sorting: settings.sorting,
-        or: settings.or, // opened table rows
+        //or: settings.or, // opened table rows
         uparam: settings.uparam, // user defined params (for params that cannot be shared between use cases)
         activemenu: 0,
         
@@ -218,15 +218,15 @@ function Data(ajaxAnimation, _Settings) {
         State.table = (params.table || settings.table);
         State.p = (parseInt(params.p, 10) || settings.p);
         State.records = (parseInt(params.records, 10) || hbrowseAPI.copyVal(getDisplayLength()));
-        State.or = (params.or || settings.or);
+        //State.or = (params.or || settings.or);
         State.sorting = (params.sorting || []);
         State.uparam = (params.uparam || settings.uparam);
         State.activemenu = (parseInt(params.activemenu, 10) || 0);
         
         // make this.or an array of ints
-        for (i=0;i<State.or.length;i++) {
+        /*for (i=0;i<State.or.length;i++) {
             State.or[i] = parseInt(State.or[i], 10);
-        }
+        }*/
         
         // Setting up user defined filters
         if (State.table != '') {
