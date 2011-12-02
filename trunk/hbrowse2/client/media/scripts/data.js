@@ -395,7 +395,7 @@ function Data(ajaxAnimation, _Settings) {
                 type: "GET",
                 url: url,
                 async: async,
-                timeout: 60000,
+                timeout: 300000,
                 data: params,
                 dataType: (jsonp ? "jsonp" : "json"),
                 success: function(data, textStatus, jqXHR) {

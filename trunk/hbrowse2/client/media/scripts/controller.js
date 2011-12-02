@@ -414,8 +414,8 @@ function Controller() {
             thisRef.highCharts_load(hData, dId);
         };
         
-        var tableDraw = function(tData, dId) {
-            thisRef.tableCharts_load(tData, dId);
+        var tableDraw = function(tData, dId, name) {
+            thisRef.tableCharts_load(tData, dId, name);
         };
         
         var getData = function(data, obj) {
@@ -441,7 +441,7 @@ function Controller() {
             }
             else if (chart.type == 'table') {
                 tData = translatedData;
-                tableDraw(tData, obj.domId);
+                tableDraw(tData, obj.domId, chart.name);
             }
             
             if (chart.postProcess !== undefined) {

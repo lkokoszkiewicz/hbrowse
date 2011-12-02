@@ -141,6 +141,10 @@ a { cursor:pointer; color:#3383BB; }
 /*Autocomplete - FINISH*/
 /**********************/
 
-
-
+/*****************/
+/*Charts - START */
+.chartType_table { border:1px #aaaaaa solid; }
+.tableChartName { font-weight:bold; }
+/*Charts - FINISH*/
+/*****************/
 
