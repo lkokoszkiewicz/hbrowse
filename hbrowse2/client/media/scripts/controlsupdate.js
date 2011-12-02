@@ -271,14 +271,14 @@ function ControlsUpdate() {
         See Also:
             <googleCharts_load>
     */
-    this.tableCharts_load = function(tData, domId) {
+    this.tableCharts_load = function(tData, domId, name) {
         var i, j, table, tHead, tHeadTr, tHeadTd, tBody, tBodyTr, tBodyTd;
     
         $('#'+domId).empty();
         table = $('<table></table>').attr({
             'cellpadding':'0px',
             'cellspacing':'1px'
-        }).addClass('chartTable').css('border','1px #aaaaaa solid');
+        }).addClass('chartTable');
         if (tData.width !== undefined) table.css('width',tData.width);
         
         tHead = $('<thead></thead>');
@@ -302,7 +302,7 @@ function ControlsUpdate() {
             tBody.append(tBodyTr);
         }
         table.append(tHead).append(tBody);
-        $('#'+domId).append(table);
+        $('#'+domId).append('<span class="tableChartName">'+name+'</span>').append(table);
         $('#'+domId).addClass('chartType_table');
     };
     
