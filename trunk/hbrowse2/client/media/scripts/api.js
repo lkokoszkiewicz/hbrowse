@@ -14,23 +14,22 @@ var hbrowseAPI = {
     getUTCTimeDate: function(minus) {
         if (minus === undefined) minus = false;
         
+        var addLeadingZero = function(num) {
+            return (num < 10 ? '0'+num : ''+num);
+        };
+        
         var date = new Date();
-        if (!minus) {
-            return date.getUTCFullYear()+'-'
-                +(date.getUTCMonth()+1)+'-'
-                +date.getUTCDate()+' '
-                +date.getUTCHours()+':'
-                +date.getUTCMinutes();
-        } else {
+        if (minus) {
             var ts = date.getTime();
             ts -= minus;
-            var newDate = new Date(ts);
-            return newDate.getUTCFullYear()+'-'
-                +(newDate.getUTCMonth()+1)+'-'
-                +newDate.getUTCDate()+' '
-                +newDate.getUTCHours()+':'
-                +newDate.getUTCMinutes();
+            var date = new Date(ts);
         }
+        
+        return addLeadingZero(date.getUTCFullYear())+'-'
+            +addLeadingZero((date.getUTCMonth()+1))+'-'
+            +addLeadingZero(date.getUTCDate())+' '
+            +addLeadingZero(date.getUTCHours())+':'
+            +addLeadingZero(date.getUTCMinutes());
     },
     
     // Dates handling - Start
