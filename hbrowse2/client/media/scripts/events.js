@@ -328,6 +328,7 @@ function Events() {
         if (dParams) {
             if (dParams.uparam !== undefined) this.Data.state('uparam', dParams.uparam);
             if (dParams.table !== undefined) this.Data.state('table', dParams.table);
+            if (dParams.activemenu !== undefined) this.Data.state('activemenu', dParams.activemenu);
             if (dParams.user !== undefined) this.Data.state('user', dParams.user);
             if (dParams.refresh !== undefined) this.Data.state('refresh', dParams.refresh);
             if (dParams.records !== undefined) this.Data.state('records', dParams.records);
