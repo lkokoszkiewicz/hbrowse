@@ -580,6 +580,38 @@ output example:
     }]
 }
 }}}
+   * Table
+{{{
+{
+    'name':'Table',
+    'type':'table', // (gchart|hchart|table)
+    'onDemand':false,
+    'translateData':function(dataMem) {
+        var data = dataMem.mains.data.Tier1Stat;
+        var output = {
+            width:550,
+            tblLabels:['Cloud','Datasets','Total Files in datasets','Total CpFiles in datasets','Completed','Transfer','Subscribed'],
+            tblData:[]
+            //    [{'html':'phi1','bgcolor':'#00FF00'},{'html':'phi1','bgcolor':'#FF0000'},{'html':'phi1','bgcolor':'#00FF00'},{'html':'phi1','bgcolor':'#FF0000'}]
+        };
+        
+        for (var i=0;i<data.length;i++) {
+            var arrRow = [
+                {'html':'<span class="upperTableHeaders">'+data[i].cloud+'</span>','bgcolor':'#7FA4BF'},
+                {'html':data[i].datasets,'bgcolor':'#FFFF99'},
+                {'html':data[i].files,'bgcolor':'#FFFF99'},
+                {'html':data[i].cpfiles,'bgcolor':'#FFFF99'},
+                {'html':data[i].completed,'bgcolor':'#FFFF99'},
+                {'html':data[i].transfer,'bgcolor':'#FFFF99'},
+                {'html':data[i].subscribed,'bgcolor':'#FFFF99'}
+            ];
+            output.tblData.push(arrRow);
+        }
+        
+        return output;
+    }
+}
+}}}
 As a data source for charts both local stored data (data used to generate a tables) and data from ajax request can be used. When you want to use ajax data you will have to specify _dataURL_ and _dataURL_params_ parameters, in this case input for _translateData_ function will be object extracted from ajax response, otherwise Data.mem (see data.js file for Data.mem object structure) object will serve as an input for this function.
 
 =First running the application=
