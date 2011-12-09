@@ -2,7 +2,7 @@
 <wiki:toc max_depth="4" />
 
 =Basics=
-First thing to consider when setting up TMWebUI application is your data server. Main and in fact only requirement is your server to be able to serve data in a json format for 3 main views:
+First thing to consider when setting up hBrowse UI application is your data server. Main and in fact only requirement is your server to be able to serve data in a json format for all of your views eg:
    * User selection list
    * Main content table (like jobs in Ganga)
    * Sub-content table (like subjobs in Ganga)
@@ -12,8 +12,7 @@ Json data format is not important because special translation functions can be u
 To setup the application you need to modify _media/scripts/settings.js_example_ file. Settings are split onto 3 categories:
    * Application
    * Users
-   * Mains
-   * Subs
+   * <Table classes>, ...
 Each category is represented by a javascript object (dictionary). Properties can be either string or number, boolean value or a function that returns strictly defined content. Below you can find properties reference for each category.
 
 ==Application==
@@ -73,7 +72,7 @@ Input: json responce
 Output: `[user1, user2, ...]`
 
 ==Table Classes==
-Here you can define your monitoring system tables that will display the data. Table class should start with the Capita letter. Here you have the possible settings:
+Here you can define your monitoring system tables that will display the data. Table class should start with the Capital letter. Here you have the possible settings:
 
 ===tableName /string/===
 Defines table name. Used in breadcrumbs.
