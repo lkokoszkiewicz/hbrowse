@@ -612,12 +612,11 @@ output example:
     }
 }
 }}}
+As a data source for charts both local stored data (data used to generate a tables) and data from ajax request can be used. When you want to use ajax data you will have to specify _dataURL_ and _dataURL_params_ parameters, in this case input for _translateData_ function will be object extracted from ajax response, otherwise Data.mem (see data.js file for Data.mem object structure) object will serve as an input for this function.
+
 ===postProcess /function/===
 (optional) Function that is run after chart is loaded. You can use it to load another chart or to attach some events to newly created table.
 Input: Data object
-
-*Summary*
-As a data source for charts both local stored data (data used to generate a tables) and data from ajax request can be used. When you want to use ajax data you will have to specify _dataURL_ and _dataURL_params_ parameters, in this case input for _translateData_ function will be object extracted from ajax response, otherwise Data.mem (see data.js file for Data.mem object structure) object will serve as an input for this function.
 
 =First running the application=
 If you download the whole package (not just the essential libraries) you get a working example application with example data sources (files) which you should be replaced. So, basically, the package is a "starting point" example application which should be modified to meet the requirements.
