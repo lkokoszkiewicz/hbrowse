@@ -177,7 +177,7 @@ function Events() {
             if (jsonDataSet === undefined) jsonDataSet = false;
             
             try {
-                output = _Settings.expandData.dataFunction(rowDataSet, jsonDataSet);
+                output = _Settings.expandData.dataFunction(rowDataSet, jsonDataSet, trID[0]);
                 drawERfunction(thatRef, trID, $(thatRef).parent().attr('class'), output);
             } catch(err) {
                 if (thisRef.Settings.Application.debugMode) thisRef.setupErrorDialog(err);
