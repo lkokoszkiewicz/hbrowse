@@ -459,7 +459,7 @@ function ControlsUpdate() {
             var returnEmptyObjFunc = function() { return {}; };
             
             // draw Array options
-            var drawFilterOptions = function(optArr, filter) {
+            var drawFilterOptions = function(optArr, filter, i) {
                 if (optArr.length > 0) for (j=0;j<optArr.length;j++) {
                     // create option html element
                     var option = $('<option></option>').attr('value',optArr[j][0]).text(optArr[j][1]);
@@ -486,7 +486,7 @@ function ControlsUpdate() {
                 try {
                     thisRef.Data.state().mem.filters[_Settings.filters[i].urlVariable] = data;
                     optArr = _Settings.filters[i].options.translateData(data);
-                    drawFilterOptions(optArr, $('#'+_Settings.filters[i].urlVariable));
+                    drawFilterOptions(optArr, $('#'+_Settings.filters[i].urlVariable), i);
                     $('#'+_Settings.filters[i].urlVariable).multiselect('refresh');
                     $('button.ui-multiselect').css('width','130px');
                 } catch(err1) {
@@ -548,7 +548,7 @@ function ControlsUpdate() {
                         if (thisRef.Settings.Application.debugMode) thisRef.setupErrorDialog(err3);
                     }
                 }
-            }
+            };
             
             // Clear space for filters
             $('#dataFiltersInputs').empty();
@@ -624,7 +624,7 @@ function ControlsUpdate() {
                         });
                     }
                     
-                    drawFilterOptions(optArr, filter);
+                    drawFilterOptions(optArr, filter, i);
                     
                     mainSpan.append(filter);
                 }
