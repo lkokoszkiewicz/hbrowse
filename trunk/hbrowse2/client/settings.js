@@ -209,10 +209,17 @@ function Settings() {
                 'noFailClick':'F',
                 'noUnknClick':'U'
             };
-            var status = classTranslate[$(el).find('a').attr('class').replace("drilldown ","")];
-            var tid = Data.mem.table.data[rowIndex].TASKMONID;
+            var drivingClass = $(el).find('a').attr('class').replace("drilldown ","");
             
-            return {'table':'Subs',filters:{'status':status,'tid':tid}};
+            if (drivingClass != 'chartsTable') {
+                var tid = Data.mem.table.data[rowIndex].TASKMONID;
+                var status = classTranslate[drivingClass];
+            } else {
+                var tid = $(el).find('a').html();
+                var status = 'all';
+            }
+            
+            return {'table':'Subs',filters:{'tid':tid}};
         },
         /*'tableActivityEvent': function(el) {
             alert('it works! (mains)');
@@ -370,7 +377,8 @@ function Settings() {
                         width:550,
                         tblLabels:['col1','col2','col3','col4'],
                         tblData:[
-                            [{'html':'phi1','bgcolor':'#00FF00'},{'html':'phi1','bgcolor':'#FF0000'},{'html':'phi1','bgcolor':'#00FF00'},{'html':'phi1','bgcolor':'#FF0000'}]
+                            [{'html':'<a class="drilldown chartsTable">app_ana_testuser_2265</a>','bgcolor':'#00FF00'},{'html':'phi1','bgcolor':'#FF0000'},{'html':'phi1','bgcolor':'#00FF00'},{'html':'phi1','bgcolor':'#FF0000'}],
+                            [{'html':'<a class="drilldown chartsTable">app_ana_testuser_2265</a>','bgcolor':'#00FF00'},{'html':'phi1','bgcolor':'#FF0000'},{'html':'phi1','bgcolor':'#00FF00'},{'html':'phi1','bgcolor':'#FF0000'}]
                         ]
                     };
                     

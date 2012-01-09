@@ -697,6 +697,16 @@ function Events() {
         this.drawChart(_charts, domIdPrefix, cnt, true);
     };
     
+    this.tableChartDraw_postprocess = function(domId) {
+        var thisRef = this;
+        
+        $('#'+domId+' tbody a.drilldown').closest('td').unbind();
+        $('#'+domId+' tbody a.drilldown').closest('td').click(function(){
+            var aPos = $(this).closest('tr').prevAll().length;
+            thisRef.drillDown_click(this, aPos);
+        });
+    };
+    
 // ============================================================================
 // Filters events - FINISH
 // ============================================================================
