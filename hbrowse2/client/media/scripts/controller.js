@@ -550,7 +550,8 @@ function Controller() {
         var updateHashwithFilters = function(urlHash, _Settings) {
             if (_Settings.filters !== undefined) {
                 for (var i=0;i<_Settings.filters.length;i++) {
-                    urlHash[_Settings.filters[i].urlVariable] = thisRef.Data.state().filters[_Settings.filters[i].urlVariable];
+                    urlHash[_Settings.filters[i].urlVariable] = (thisRef.Data.state().filters[_Settings.filters[i].urlVariable]
+                        || _Settings.filters[i].value);
                 }
             }
             return urlHash;
