@@ -226,7 +226,8 @@ Input:
 Optional function that allows user to handle table change event (on changing sorting or page). Function will also run on table init, in this case element will be empty.
 ===filtersPreSubmit /function/===
 (optional) Function allowing to test the filters values before submitting the filters form.
-returns:
+
+Returns:
   * true - if everything is ok
   * false - if not
   * (html) - if you want to display some comments
