@@ -529,6 +529,14 @@ function Settings() {
             });
             //alert('it works! (subs)');
         },*/
+        // Optional function allowing to test the filters values before submitting the filters form
+        // returns:
+        //    true - if everything is ok
+        //    false - if not
+        //    (html) - if you want to display some comments
+        'filtersPreSubmit':function(Data) {
+            return true;
+        },
         // (optional) filterGroups option allows filters to be grouped in a separate blocks
         // if filterGroups is defined `groupIndex` option has to be added to charts objects
         // to determine to which group filters should be attached

@@ -385,20 +385,44 @@ function Events() {
             el - clicked element
     */
     this.filtersSubmit_click = function(el) {
-        var i, _Settings;
+        var i, filtersOK, _Settings;
     
         _Settings = this.Settings[this.Data.state('table')]; // Shortcut
         
-        for (i=0;i<_Settings.filters.length;i++) {
-            this.Data.state().filters[_Settings.filters[i].urlVariable] = ($('.filterItems #'+_Settings.filters[i].urlVariable).val() || '');
-            this.filtersSubmit_OnOff(i);
+        if (_Settings.filtersPreSubmit !== undefined) {
+            filtersOK = _Settings.filtersPreSubmit(this.Data.state());
+        } else {
+            filtersOK = true;
         }
-        this.Data.state('or', []);
-        this.Data.state('sorting', []);
-        this.Data.state('p', 1);
-        this.setupURL();
         
-        this.filter_change();
+        if (filtersOK == true) {
+            for (i=0;i<_Settings.filters.length;i++) {
+                this.Data.state().filters[_Settings.filters[i].urlVariable] = ($('.filterItems #'+_Settings.filters[i].urlVariable).val() || '');
+                this.filtersSubmit_OnOff(i);
+            }
+            this.Data.state('or', []);
+            this.Data.state('sorting', []);
+            this.Data.state('p', 1);
+            this.setupURL();
+            
+            this.filter_change();
+        } else {
+            if (filtersOK) {
+                $('#dialog-content').html(filtersOK);
+                $('#dialog-message').dialog({ 
+                    title: 'Form error',
+                    modal: true,
+                    width: 400,
+                    resizable: false,
+			        buttons: {
+				        Ok: function() {
+					        $( this ).dialog( "close" );
+				        }
+			        } 
+	            });
+                $('#dialog-message').dialog('open');
+            }
+        }
     };
     
 // ----------------------------------------------------------------------------

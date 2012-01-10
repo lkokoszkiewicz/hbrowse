@@ -302,8 +302,7 @@ function ControlsUpdate() {
             tBody.append(tBodyTr);
         }
         table.append(tHead).append(tBody);
-        $('#'+domId).append('<span class="tableChartName">'+name+'</span>').append(table);
-        $('#'+domId).addClass('chartType_table');
+        $('#'+domId).append('<span class="tableChartName">'+name+'</span>').append(table).addClass('chartType_table');
         this.tableChartDraw_postprocess(domId);
     };
     
