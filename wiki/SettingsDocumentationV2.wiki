@@ -224,6 +224,12 @@ Input:
    * element - Clicked element
    * dataMem - Data.state.mem object
 Optional function that allows user to handle table change event (on changing sorting or page). Function will also run on table init, in this case element will be empty.
+===filtersPreSubmit /function/===
+(optional) Function allowing to test the filters values before submitting the filters form.
+returns:
+  * true - if everything is ok
+  * false - if not
+  * (html) - if you want to display some comments
 ===filterGroups /array/===
 (optional) Array of filters group names. This option allows filters to be grouped in a separate blocks if filterGroups is defined `groupIndex` option has to be added to filter objects to determine to which group of filters it should be attached.
 Example:
