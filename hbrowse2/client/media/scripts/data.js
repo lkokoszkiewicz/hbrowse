@@ -144,6 +144,7 @@ function Data(ajaxAnimation, _Settings) {
                 title: 'Error during ajax request (xhrName: '+xhrName+')',
                 modal: true,
                 width: 700,
+                resizable: false,
 			    buttons: {
 				    Ok: function() {
 					    $( this ).dialog( "close" );
