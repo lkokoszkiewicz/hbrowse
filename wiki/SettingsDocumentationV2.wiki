@@ -207,7 +207,7 @@ function, translates ajax response onto dataTables plugin data format, here you 
 Input: Array of data selected in `getDataArray` function. The output of getArrayData function.
 Output: `[[col_val1, col_val2, ...], ...]`
 ===drillDownHandler /function(dataState, element, rowIndex)/===
-It is executed every time someone clicks a table cell with a.drilldown html tag in it. Main purpose of the function is to indicate tid and (optionary) uparam parameters from the Data object (uparam allows to setup additional parameters to tid that would define a sub table ajax request). This allows to properly display subs table.
+It is executed every time someone clicks a table cell with a.drilldown html tag in it (inside main table, expanded row table or chart table). Main purpose of the function is to indicate tid and (optionary) uparam parameters from the Data object (uparam allows to setup additional parameters to tid that would define a sub table ajax request). This allows to properly display subs table.
 Input:
    * dataState - application Data.state object
    * element - clicked jQuery element
@@ -226,6 +226,9 @@ Input:
 Optional function that allows user to handle table change event (on changing sorting or page). Function will also run on table init, in this case element will be empty.
 ===filtersPreSubmit /function/===
 (optional) Function allowing to test the filters values before submitting the filters form.
+
+Input:
+  * Data - Data.state object
 
 Returns:
   * true - if everything is ok
