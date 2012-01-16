@@ -1,5 +1,9 @@
 #labels Featured
 =Change Log=
+==v2.2.2==
+  * Added filtersPreSubmit function allowing any presubmit filters actions, including form checking
+  * Added drilldown capabilities to chart tables. Now, if you put a.drilldown tag to a tables chart, after clicking it will run corresponding drillDownHandler function
+
 ==v2.2.1==
   * Fixed bug where onDemand charts did not appear in the right slots
 
