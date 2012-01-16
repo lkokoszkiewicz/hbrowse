@@ -529,7 +529,7 @@ function Settings() {
             });
             //alert('it works! (subs)');
         },*/
-        // Optional function allowing to test the filters values before submitting the filters form
+        // (optional) Function allowing to test the filters values before submitting the filters form
         // returns:
         //    true - if everything is ok
         //    false - if not
