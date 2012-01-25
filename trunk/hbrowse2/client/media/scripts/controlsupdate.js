@@ -391,12 +391,12 @@ function ControlsUpdate() {
             domIdPrefix - Individual chart span id prefix (eg: cht_)
             cnt - Chart index
     */
-    this.drawNoDataMessage = function(_charts, domIdPrefix, cnt) {
+    this.drawNoDataMessage = function(_charts, domId, cnt) {
         var chtMessageFrame = this.drawChtMessageFrame();
         
         chtMessageFrame.append('<span class="chartTitle">'+_charts[cnt].name+'</span><br />There is no data<br />to draw a chart');
-        $('#'+domIdPrefix+cnt).empty();
-        $('#'+domIdPrefix+cnt).append(chtMessageFrame);
+        $('#'+domId).empty();
+        $('#'+domId).append(chtMessageFrame);
     };
     
 // ----------------------------------------------------------------------------

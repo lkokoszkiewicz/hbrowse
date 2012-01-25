@@ -423,25 +423,25 @@ function Controller() {
             
             translatedData = chart.translateData(data);
             if (translatedData === false) {
-                thisRef.drawNoDataMessage(_charts, domIdPrefix, cnt);
-                return false;
-            }
-            if (chart.type == 'gchart') {
-                gData = [];
-                for (i in translatedData) { // Adding dynamic variables
-                    if (translatedData.hasOwnProperty(i)) {
-                        gData.push(i+'='+translatedData[i]);
+                thisRef.drawNoDataMessage(_charts, obj.domId, cnt);
+            } else {
+                if (chart.type == 'gchart') {
+                    gData = [];
+                    for (i in translatedData) { // Adding dynamic variables
+                        if (translatedData.hasOwnProperty(i)) {
+                            gData.push(i+'='+translatedData[i]);
+                        }
                     }
+                    gChartDraw(gData, obj.domId);
                 }
-                gChartDraw(gData, obj.domId);
-            }
-            else if (chart.type == 'hchart') {
-                hData = translatedData;
-                hChartDraw(hData, obj.domId);
-            }
-            else if (chart.type == 'table') {
-                tData = translatedData;
-                tableDraw(tData, obj.domId, chart.name);
+                else if (chart.type == 'hchart') {
+                    hData = translatedData;
+                    hChartDraw(hData, obj.domId);
+                }
+                else if (chart.type == 'table') {
+                    tData = translatedData;
+                    tableDraw(tData, obj.domId, chart.name);
+                }
             }
             
             if (chart.postProcess !== undefined) {
