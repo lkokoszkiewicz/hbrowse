@@ -1,5 +1,8 @@
 #labels Featured
 =Change Log=
+==v2.2.3==
+  * Fixed bug with not showing 'There is no data to draw a chart' message when chart translateData function returns _false_
+
 ==v2.2.2==
   * Added filtersPreSubmit function allowing any presubmit filters actions, including form checking
   * Added drilldown capabilities to chart tables. Now, if you put a.drilldown tag to a tables chart, after clicking it will run corresponding drillDownHandler function

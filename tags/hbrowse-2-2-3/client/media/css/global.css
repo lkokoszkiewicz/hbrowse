@@ -1,0 +1,23 @@
+/*Example additional styles*/
+.alignRight { text-align:right; }
+
+td.numericTD { text-align:right; }
+
+.wrapColumn { white-space: nowrap; overflow:hidden; }
+
+.status { width:100%; color:#ffffff; font-weight:bold; text-align:center }
+.NotCompleted { border:1px #1e4a68 solid; background-color:#BB72F3; }
+.Successfull { border:1px #1e4a68 solid; background-color:#59D118; }
+.Failed { border:1px #1e4a68 solid; background-color:#C50000; }
+.Running { border:1px #1e4a68 solid; background-color:#3072F3; }
+.Unknown { border:1px #1e4a68 solid; background-color:#C2BDDD; }
+.Pending { border:1px #1e4a68 solid; background-color:#FF9900; }
+
+a.noJobsClick {font-size:8pt;}
+a.noPendClick {color:#FF9900;font-size:8pt;}
+a.noRunnClick {color:#BB72F3;font-size:8pt;}
+a.noSuccClick {color:#59D118;font-size:8pt;}
+a.noFailClick {color:#C50000;font-size:8pt;}
+a.noUnknClick {color:#C2BDDD;font-size:8pt;}
+
+
