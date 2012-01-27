@@ -632,7 +632,7 @@ function Controller() {
         if (!_Settings.dataRefresh && _Settings.dataRefresh !== undefined) $('#refreshDropBox').hide();
         $('title').text(_Settings.pageTitle); // Set page title
         $('#footerTxt').html(_Settings.footerTxt); // Set footer text
-        $('#menuHelp a').attr('href', _Settings.supportLnk);
+        $('#supportLink').attr('href', _Settings.supportLnk);
         $('#logo').css('background-image', 'url('+_Settings.logoLnk+')');
         $("#dialog-message").dialog({autoOpen: false});
         
