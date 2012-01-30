@@ -1,7 +1,10 @@
 #labels Featured
 =Change Log=
+==v2.2.4==
+  * Fixed bug where 'Help' link was not setup with the proper url from the settings file. The _index.html_ file was modified to comply with the changes done to the framework so from now on _Application.supportLnk_ property will be attached to element with id="supportLink"
+
 ==v2.2.3==
-  * Fixed bug with not showing 'There is no data to draw a chart' message when chart translateData function returns _false_
+  * Fixed bug with not showing 'There is no data to draw a chart' message when chart _translateData_ function returns _false_
 
 ==v2.2.2==
   * Added filtersPreSubmit function allowing any presubmit filters actions, including form checking
@@ -18,6 +21,7 @@
   * Added the option to disable filters when certain ones are beeing selected
   * Added charts table number of columns sellection
   * Added the possibility to display charts tab as default for each separate table
+
 ==v2.0.0==
   * Improved UI
   * There is no data depth level limitation
@@ -25,6 +29,7 @@
   * Charts tab charts grouping
   * Everything is loaded asynchronously
   * Added select filters co-dependencies (it is possible to disable some filter options when selecting a certain option from another filter)
+
 ==v1.6.2==
   * Fixed bug where system checks all of the multiple select items at once
   * Update highcharts library
