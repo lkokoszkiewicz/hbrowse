@@ -10,6 +10,31 @@
 //
 
 var hbrowseAPI = {
+    // Calculates duration numbers (days, hours, minutes, and seconds)
+    secondsToDuration: function(secs) {
+        var addLeadingZero = function(num) {
+            return (num < 10 ? '0'+num : ''+num);
+        };
+        var days = Math.floor(secs / 86400);
+        
+        var divison_for_hours = secs % 86400;
+        var hours = Math.floor(divison_for_hours / (60 * 60));
+       
+        var divisor_for_minutes = secs % (60 * 60);
+        var minutes = Math.floor(divisor_for_minutes / 60);
+     
+        var divisor_for_seconds = divisor_for_minutes % 60;
+        var seconds = Math.ceil(divisor_for_seconds);
+       
+        var obj = {
+            "d": days,
+            "h": addLeadingZero(hours),
+            "m": addLeadingZero(minutes),
+            "s": addLeadingZero(seconds)
+        };
+        return obj;
+    },
+
     // Dates handling - Start
     getUTCTimeDate: function(minus) {
         if (minus === undefined) minus = false;
