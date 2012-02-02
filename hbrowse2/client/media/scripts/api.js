@@ -9,8 +9,23 @@
 // 19.09.2011 version 2.0.0 release
 //
 
+/*
+   Class: hbrowseAPI
+   This class provides some helper methods.
+*/
 var hbrowseAPI = {
-    // Calculates duration numbers (days, hours, minutes, and seconds)
+// secondsToDuration ----------------------------------------------------------
+    
+    /*
+        Function: secondsToDuration
+        Calculates duration numbers (days, hours, minutes, and seconds)
+        
+        Parameters:
+            secs - integer, duration in seconds
+        
+        Returns:
+            object - {d:<days>,h:<hours>,m:<minutes>,s:<seconds>}
+    */
     secondsToDuration: function(secs) {
         var addLeadingZero = function(num) {
             return (num < 10 ? '0'+num : ''+num);
@@ -35,7 +50,23 @@ var hbrowseAPI = {
         return obj;
     },
 
-    // Dates handling - Start
+// ----------------------------------------------------------------------------
+
+// getUTCTimeDate -------------------------------------------------------------
+
+    /*
+        Function: getUTCTimeDate
+        Returns current, iso formatted (YYYY-MM-DD hh:mm), UTC time
+        
+        Parameters:
+            minus - number of miliseconds you want to deduct from the output time
+        
+        Returns:
+            iso formatted date
+        
+        See Also:
+            <ts2iso>, <iso2ts>
+    */
     getUTCTimeDate: function(minus) {
         if (minus === undefined) minus = false;
         
@@ -56,8 +87,29 @@ var hbrowseAPI = {
             +addLeadingZero(date.getUTCHours())+':'
             +addLeadingZero(date.getUTCMinutes());
     },
+
+// ----------------------------------------------------------------------------
+
+// iso2ts ---------------------------------------------------------------------
     
-    // Dates handling - Start
+    /*
+        Function: iso2ts
+        Converts iso formatted date (YYYY-MM-DD) to a timestamp in miliseconds.
+        
+        Function accepts 2 modes:
+        - 1 - (default) just converts the date (YYYY-MM-DD) to a timestamp 
+        - 2 - adds 86399000 (23 hours 59 minutes) to the timestamp value
+        
+        Parameters:
+            date - date in timestamp format
+            mode - Integer (1|2|3)
+        
+        Returns:
+            Timestamp
+        
+        See Also:
+            <ts2iso>, <getUTCTimeDate>
+    */
     iso2ts: function(date, mode) {
         if (mode === undefined) mode = 1;
         if (date === 0 || date == '0' || date === undefined) return 0;
@@ -67,7 +119,30 @@ var hbrowseAPI = {
             else return 0;
         }
     },
+
+// ----------------------------------------------------------------------------
+
+// ts2iso ---------------------------------------------------------------------
     
+    /*
+        Function: ts2iso
+        Converts timestamp to an iso formatted date (YYYY-MM-DD).
+        
+        Function accepts 3 modes:
+        - 1 - (default) just converts the timestamp to a date (YYYY-MM-DD)
+        - 2 - adds 00:00 hour at the end (YYYY-MM-DD 00:00)
+        - 3 - adds 23:59 hour at the end (YYYY-MM-DD 23:59)
+        
+        Parameters:
+            date - timestamp in miliseconds
+            mode - Integer (1|2|3)
+        
+        Returns:
+            iso formatted date
+        
+        See Also:
+            <iso2ts>, <getUTCTimeDate>
+    */
     ts2iso: function(date, mode) {
         if (mode === undefined) mode = 1;
         if (date === 0 || date == '0' || date === undefined) return '';
@@ -78,37 +153,21 @@ var hbrowseAPI = {
             else return '';
         }
     },
+
+// ----------------------------------------------------------------------------
+
+// uniqueArr ------------------------------------------------------------------
     
-    changeFromTill: function(which, timestamp) {
-        var output = true;
-        if (timestamp === '') timestamp = 0;
-        else timestamp = parseInt(timestamp, 10);
+    /*
+        Function: uniqueArr
+        Returns array with unique elements
         
-        if (which == 'from') {
-            if (timestamp > State.till && timestamp !== 0) {
-                State.till = (timestamp + 86399000);
-            }
-            else if (timestamp === 0) {
-                timestamp = (State.till - 86399000);
-                output = false;
-            }
-            State.from = timestamp;
-        }
-        else if (which == 'till') {
-            if (((timestamp+86399000) < State.from || State.from === 0) && timestamp !== 0) {
-                State.from = timestamp;
-            }
-            else if (timestamp === 0) {
-                timestamp = State.till;
-                output = false;
-            }
-            State.till = (timestamp+86399000);
-        }
-        return output;
-    },
-    // Dates handling - Finish
-    
-    // return array with unique elements
+        Parameters:
+            arrayName - Array to process
+        
+        Returns:
+            Unique array
+    */
     uniqueArr: function(arrayName) {
         var newArray=new Array();
         label:for(var i=0; i<arrayName.length;i++ ) {  
@@ -120,6 +179,8 @@ var hbrowseAPI = {
         }
         return newArray;
     },
+
+// ----------------------------------------------------------------------------
 
 // Copy variable --------------------------------------------------------------
     
