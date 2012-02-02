@@ -336,7 +336,7 @@ function Data(ajaxAnimation, _Settings) {
 // Get ajax data --------------------------------------------------------------
     
     /*
-        Function: ajax_getData
+        Function: ajax_getData_alt
         Get ajax data for charts or filters (async)
         
         Parameters:
@@ -346,6 +346,7 @@ function Data(ajaxAnimation, _Settings) {
             fSuccess - Function to run on success
             fFailure - Function to run on failure
             obj - Additional object to use with fSuccess of fFailure functions
+            async - Optional parameter making request asyncronous
     */
     this.ajax_getData_alt = function(xhrName, url, params, fSuccess, fFailure, obj, async) {
         var i, currentUrl, portIndex, port, isNumber, index, urlChar, paramsString, key, data;
