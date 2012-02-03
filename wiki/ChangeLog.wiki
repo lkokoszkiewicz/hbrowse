@@ -1,5 +1,11 @@
 #labels Featured
 =Change Log=
+==v2.2.5==
+  * Added new functions to the hbrowseAPI class:
+    * _secondsToDuration_ - Calculates duration numbers from seconds (days, hours, minutes, and seconds)
+    * _ts2UTC_ - Converts timestamp to UTC time in iso format
+    * _addLeadingZero_ - Adds leading zeros to the number if lesser then 10
+
 ==v2.2.4==
   * Fixed bug where 'Help' link was not setup with the proper url from the settings file. The _index.html_ file was modified to comply with the changes done to the framework so from now on _Application.supportLnk_ property will be attached to element with id="supportLink"
 
