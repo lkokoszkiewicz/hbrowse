@@ -52,6 +52,54 @@ var hbrowseAPI = {
 
 // ----------------------------------------------------------------------------
 
+// addLeadingZero -------------------------------------------------------------
+    
+    /*
+        Function: addLeadingZero
+        Adds leading zeros to the number if lesser then 10
+        
+        Parameters:
+            num - number
+        
+        Returns:
+            Number string
+    */
+    addLeadingZero: function(num) {
+        return (num < 10 ? '0'+num : ''+num);
+    };
+
+// ----------------------------------------------------------------------------
+
+// ts2UTC ---------------------------------------------------------------------
+    
+    /*
+        Function: ts2UTC
+        Converts timestamp to UTC time in iso format
+        
+        Parameters:
+            ts - timestamp
+            timeFlag - boolean, if true, hour and minutes will be present in output
+        
+        Returns:
+            iso formatted date
+        
+        See Also:
+            <getUTCTimeDate>
+    */
+    ts2UTC: function(ts, timeFlag) {
+        if (timeFlag === undefined) timeFlag = false;
+        var date = new Date(ts);
+        var output = date.getUTCFullYear()+'-'
+            +this.addLeadingZero((date.getUTCMonth()+1))+'-'
+            +this.addLeadingZero(date.getUTCDate());
+        if (timeFlag) output += ' '
+            +this.addLeadingZero(date.getUTCHours())+':'
+            +this.addLeadingZero(date.getUTCMinutes());
+        return output;
+    };
+
+// ----------------------------------------------------------------------------
+
 // getUTCTimeDate -------------------------------------------------------------
 
     /*
