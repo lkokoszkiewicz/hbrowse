@@ -17,7 +17,7 @@ svn export tags/hbrowse-$1-$2-$3/client hbrowse_exports/hbrowse-$1-$2-$3/.
 
 # Creating documentation
 mkdir hbrowse_exports/hbrowse-$1-$2-$3/Docs
-./NaturalDocs/NaturalDocs -i hbrowse_exports/hbrowse-$1-$2-$3/media/scripts/ -o FramedHTML hbrowse_exports/hbrowse-$1-$2-$3/Docs -p NaturalDocs/
+./NaturalDocs/NaturalDocs -i hbrowse_exports/hbrowse-$1-$2-$3/media/scripts/ -o FramedHTML hbrowse_exports/hbrowse-$1-$2-$3/Docs -p NaturalDocs/ -r
 
 # Saving non-minified source files
 cp -r hbrowse_exports/hbrowse-$1-$2-$3/media/scripts/ hbrowse_exports/hbrowse-$1-$2-$3/media/scripts_source/
