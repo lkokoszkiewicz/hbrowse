@@ -66,7 +66,7 @@ var hbrowseAPI = {
     */
     addLeadingZero: function(num) {
         return (num < 10 ? '0'+num : ''+num);
-    };
+    },
 
 // ----------------------------------------------------------------------------
 
@@ -96,7 +96,7 @@ var hbrowseAPI = {
             +this.addLeadingZero(date.getUTCHours())+':'
             +this.addLeadingZero(date.getUTCMinutes());
         return output;
-    };
+    },
 
 // ----------------------------------------------------------------------------
 
