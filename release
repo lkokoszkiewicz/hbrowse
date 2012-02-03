@@ -1,19 +1,42 @@
 #!/bin/bash
+# Update svn structure
 svn update
 svn cp trunk/hbrowse$1/. tags/hbrowse-$1-$2-$3
+
+# Update change log
 nano wiki/ChangeLog.wiki
+
+# Update website version
 echo "var curRel = ['$1','$2','$3'];" > tags/curver.js
+
+# Check In
 svn ci -m ""
+
+# Export tag to a hbrowse_exports directory
 svn export tags/hbrowse-$1-$2-$3/client hbrowse_exports/hbrowse-$1-$2-$3/.
+
+# Creating documentation
+mkdir hbrowse_exports/hbrowse-$1-$2-$3/Docs
+./NaturalDocs/NaturalDocs -i hbrowse_exports/hbrowse-$1-$2-$3/media/scripts/ -o FramedHTML hbrowse_exports/hbrowse-$1-$2-$3/Docs -p NaturalDocs/
+
+# Saving non-minified source files
 cp -r hbrowse_exports/hbrowse-$1-$2-$3/media/scripts/ hbrowse_exports/hbrowse-$1-$2-$3/media/scripts_source/
+
+# Minify scripts
 java -jar yuicompressor-2.4.6.jar -o '.js$:.js' hbrowse_exports/hbrowse-$1-$2-$3/media/scripts/*.js
 java -jar yuicompressor-2.4.6.jar -o '.js$:.js' hbrowse_exports/hbrowse-$1-$2-$3/media/scripts/components/*.js
 #java -jar yuicompressor-2.4.6.jar -o '.css$:.css' ../hbrowse_exports/hbrowse-$1-$2-$3/media/css/*.css
+
+# Creating hbrowse-common library
 mkdir hbrowse_exports/hbrowse-common-$1-$2-$3
 cp -R hbrowse_exports/hbrowse-$1-$2-$3/media/* hbrowse_exports/hbrowse-common-$1-$2-$3/.
+
+# creating archives
 cd hbrowse_exports/
 tar -pczf hbrowse-$1-$2-$3.tar.gz hbrowse-$1-$2-$3
 tar -pczf hbrowse-common-$1-$2-$3.tar.gz hbrowse-common-$1-$2-$3
 cd ../
+
+# Sending archives to the google code server
 ./googlecode_upload.py -s "Only the essential libraries (v$1.$2.$3)" -p hbrowse -u $4 -w $5 -l Featured hbrowse_exports/hbrowse-common-$1-$2-$3.tar.gz
 ./googlecode_upload.py -s "hBrowse framework v$1.$2.$3" -p hbrowse -u $4 -w $5 -l Featured hbrowse_exports/hbrowse-$1-$2-$3.tar.gz
