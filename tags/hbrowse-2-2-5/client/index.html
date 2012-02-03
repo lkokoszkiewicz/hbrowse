@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<head>
+<title>Task Monitoring</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<!-- Enable IE9 Standards mode -->
+<meta http-equiv="X-UA-Compatible" content="IE=9" >
+<link rel="stylesheet" type="text/css" href="media/css/base.css" />
+
+<script type="text/javascript" src="media/lib/LAB.min.js"></script>
+<script type="text/javascript" src="load.js"></script>
+</head>
+
+<body>
+<div id="systemLoading">
+    <div id="sLoadLabel">Loading Scripts <img title="Loading Animation" src="media/images/loading.gif"></div>
+</div>
+<div id="container">
+    <div id="contentWrapper">
+        <div id="header">
+            <div id="topBelt">
+                <ul id="topBeltMenu">
+                    <li><span id="dataFiltersLabel"><img src="media/images/filter.png" alt="Filters Summary" /></span></li>
+                    <li><a id="dropDownMenu1" class="topBeltMenu dropDown" href="#filtersToggleMenu">Filters</a></li>
+                    <li><a id="dropDownMenu2" class="topBeltMenu dropDown" href="#usersToggleMenu">Users</a></li>
+                    <li><a id="supportLink" class="topBeltMenu" href="#" title="Support" target="_blank">Help</a></li>
+                </ul>
+            </div>
+            <div id="filtersToggleMenu">
+                <div id="dataFilters">
+                    <div id="dataFiltersInputs"></div>
+                    <div id="submitFiltersDiv"><input id="submitFilters" type="button" value="Submit" /></div>
+                </div>
+            </div>
+            <div id="usersToggleMenu">
+            </div>
+            <div id="breadcrumbs">&nbsp;</div>
+            <div id="logo"></div>
+            <div id="loadingAnimation"><img id="ajaxAnimation" src="media/images/loading.gif" width="24" height="22" alt="loading animation" /></div>
+            <div id="refreshSelect">
+                REFRESH&nbsp;
+                <select id="refresh">
+                    <option value="0" selected="selected">Disabled</option>
+                    <option value="60">1 min</option>
+                    <option value="300">5 min</option>
+                    <option value="600">10 min</option>
+                    <option value="1200">20 min</option>
+                </select>
+                <img id="refreshImg" src="media/images/refresh.png" alt="refresh" />
+            </div>
+        </div>
+        <div id="content">
+            <div id="topTableCharts"></div>
+            <div id="siteTabs">
+                <ul>
+                    <li><a href="#tableContent">Data</a></li>
+                    <li><a href="#chartContent">Charts</a></li>
+                </ul>
+                <div id="tableContent"></div>
+                <div id="chartContent"></div>
+            </div>
+            <div id="loadingTable">
+                <div style="position:absolute; top:0px; left:0px; background-color:white; width:100%; height:100%; filter:alpha(opacity=60); opacity:0.6;"></div>
+            </div>
+        </div>
+        <div id="footer">
+            <div id="footerTxtCredits">Powered by <a href="http://hbrowse.net">hBrowse framework</a></div>
+            <div id="footerTxt"></div>
+        </div>
+    </div>
+</div>
+
+<input type="hidden" id="url-page" value="hash" />
+<div id="dialog-message">
+	<p id="dialog-content"></p>
+</div>
+<div id="menu-container" style="position:absolute; width: 130px;"></div>
+</body>
+
+</html>
