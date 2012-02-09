@@ -17,7 +17,7 @@ Each category is represented by a javascript object (dictionary). Properties can
 
 ==Application==
 ===userSelection /bool/===
-Display user selection page? If false, a placeholder user name (Application.modelDefaults.user) and default table object name (Application.modelDefaults.table) has to be setup (eg. default, see below) (true/false)
+Display user selection page? If false, a placeholder user name (Application.modelDefaults.user, eg. 'default') and default table object name (Application.modelDefaults.table) has to be setup.
 ===jsonp /bool/===
 Allow requests to other hosts (default: false)
 ===pageTitle /string/===
