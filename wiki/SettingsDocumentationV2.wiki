@@ -9,7 +9,7 @@ First thing to consider when setting up hBrowse UI application is your data serv
 Json data format is not important because special translation functions can be used inside the application. Of course, data that is in a right format is processed much quicker.
 
 =Setting up the application=
-To setup the application you need to modify _media/scripts/settings.js_example_ file. Settings are split onto 3 categories:
+To setup the application you need to modify _media/scripts/settings.js_ file. Settings are split onto 3 categories:
    * Application
    * Users
    * <Table classes>, ...
