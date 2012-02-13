@@ -1,5 +1,8 @@
 #labels Featured
 =Change Log=
+==v2.2.6==
+  * Fixed bug where _datetime_ filters where not updated properly
+
 ==v2.2.5==
   * Added new functions to the hbrowseAPI class:
     * _secondsToDuration_ - Calculates duration numbers from seconds (days, hours, minutes, and seconds)
