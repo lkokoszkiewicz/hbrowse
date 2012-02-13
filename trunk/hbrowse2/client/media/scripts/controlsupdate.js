@@ -373,7 +373,7 @@ function ControlsUpdate() {
         chtMessageFrame.append($('<input />').attr({
             'id':'butt_'+domId,
             'type':'button',
-            'value':'Load Chart'
+            'value':'Click to load chart'
         }).click(function(){ thisRef.drawChtRequestButton_click(this, _charts, domIdPrefix, destIndex); }));
         $('#'+domId).append(chtMessageFrame);
     };
@@ -766,6 +766,7 @@ function ControlsUpdate() {
                     if (_Settings.filters[i].fieldType != 'hidden') show = true;
                 
                     if (_Settings.filters[i].fieldType == 'text' || _Settings.filters[i].fieldType == 'date'
+                        || _Settings.filters[i].fieldType == 'datetime'
                         || _Settings.filters[i].fieldType == 'autocomplete') {
                         $('.filterItems #'+_Settings.filters[i].urlVariable)
                             .attr('value', this.Data.state().filters[_Settings.filters[i].urlVariable]);
