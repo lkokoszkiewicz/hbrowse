@@ -339,6 +339,9 @@ table.display tr.odd.row_selected td {
 tr.odd td.sorting_1 {
 	background-color: #ccd8e5;
 }
+tr.odd:hover {
+	background-color: #cce2cc;
+}
 
 tr.odd td.sorting_2 {
 	background-color: #DADCFF;
@@ -350,6 +353,9 @@ tr.odd td.sorting_3 {
 
 tr.even td.sorting_1 {
 	background-color: #e4ebf3;
+}
+tr.even:hover {
+	background-color: #e8efe8;
 }
 
 tr.even td.sorting_2 {
