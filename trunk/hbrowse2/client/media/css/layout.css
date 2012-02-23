@@ -15,7 +15,7 @@ a { cursor:pointer; color:#3383BB; }
 
 /***********************/
 /*Header styles - START*/
-#container { position:inherit; display:none; }
+#container { position:inherit; }
 
 /*HEADER - generic header styles*/
 #header { position:relative; }
