@@ -49,8 +49,4 @@ $LAB
         Controller = new Controller();
         Controller.Init();
     } );
-})
-.wait(function(){
-    $('#systemLoading').hide();
-    $('#container').show();
 });
