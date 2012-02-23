@@ -1,5 +1,10 @@
 #labels Featured
 =Change Log=
+==v2.2.7==
+  * Stopped support for loading scripts animation, anyone interested in the provious behavior will have to add _#container { display:none }_ to his global.css file
+  * Added rows highlighting on mouseover
+  * Upgraded dataTables plugin to v1.9.0
+
 ==v2.2.6==
   * Fixed bug where _datetime_ filters where not updated properly
 
