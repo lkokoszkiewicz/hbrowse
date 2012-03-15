@@ -364,9 +364,11 @@
                 }],_config.dataTable.aoColumns);
             }
             
-            elCnt = 0;
+            var elCnt = 0;
+            var condition, table;
             this.each(function() {
-                if (!_config.dTable[elCnt]) {
+                condition = (_config.dTable[elCnt] !== undefined && (_config.dTable[elCnt].tableId != _config.tableId));
+                if (!_config.dTable[elCnt] || condition) {
                     bSort = true;
                     if (_config.sorting === false) {
                         aaSorting = [[0,'asc']];
@@ -376,16 +378,19 @@
                     $(this).empty().append(_buildTable(elCnt));
                     
                     dTableOptions = {
-					        "bJQueryUI": false,
-					        "sPaginationType": "full_numbers",
-					        "bAutoWidth":false,
-					        "bSortClasses": true,
-					        "bDeferRender": true,
-					        "bSort": bSort,
-					        "aaSorting": aaSorting
-		            };
+                        "bJQueryUI": false,
+                        "sPaginationType": "full_numbers",
+                        "bAutoWidth":false,
+                        "bSortClasses": true,
+                        "bDeferRender": true,
+                        "bSort": bSort,
+                        "aaSorting": aaSorting
+                    };
                     
-                    _config.dTable.push($('#dataTable_'+elCnt).dataTable( $.extend(dTableOptions,_config.dataTable)));
+                    table = $('#dataTable_'+elCnt).dataTable( $.extend(dTableOptions,_config.dataTable));
+                    if (condition) _config.dTable[elCnt] = table;
+                    else _config.dTable.push(table);
+                    _config.dTable[elCnt]['tableId'] = _config.tableId;
 		        }
 		        else {
 		            if (!_isSimpleHeaders()) _updateTableFooterSums(elCnt);
