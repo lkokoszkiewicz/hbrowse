@@ -414,12 +414,12 @@ function Events() {
                     modal: true,
                     width: 400,
                     resizable: false,
-			        buttons: {
-				        Ok: function() {
-					        $( this ).dialog( "close" );
-				        }
-			        } 
-	            });
+                    buttons: {
+                        Ok: function() {
+                            $( this ).dialog( "close" );
+                        }
+                    } 
+                });
                 $('#dialog-message').dialog('open');
             }
         }

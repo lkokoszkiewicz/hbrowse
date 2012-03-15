@@ -328,7 +328,7 @@ function Controller() {
             tSettings = thisRef.Table[0].fnSettings();
             tPages = parseInt( (tSettings.fnRecordsDisplay()-1) / tSettings._iDisplayLength, 10 ) + 1;
             
-		    if ( $.bbq.getState('p') && ($.bbq.getState('p') <= tPages) ) {
+            if ( $.bbq.getState('p') && ($.bbq.getState('p') <= tPages) ) {
                 $('#url-page').trigger('click');  // Load page number from URL
                 thisRef.Data.state('noreload', true);  // tell keyup event that page has been reloaded (history is not working without this)
                 $('#dataTable_0_filter input').trigger('keyup');  // Recreate expand events for current page
@@ -645,8 +645,8 @@ function Controller() {
             thisRef.closeMenu_Click(this, noActiveMenuReset);
         });
         $('#submitFilters').click(function(){ thisRef.filtersSubmit_click(this); });
-		
-		// Activate tabs
+        
+        // Activate tabs
         $('#siteTabs').tabs({select: function(event, ui) {
             if (ui.index == 1) $('#topTableCharts').hide();
             else $('#topTableCharts').show();

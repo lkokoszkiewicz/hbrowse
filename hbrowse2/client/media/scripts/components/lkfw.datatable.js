@@ -391,16 +391,16 @@
                     if (condition) _config.dTable[elCnt] = table;
                     else _config.dTable.push(table);
                     _config.dTable[elCnt]['tableId'] = _config.tableId;
-		        }
-		        else {
-		            if (!_isSimpleHeaders()) _updateTableFooterSums(elCnt);
-		            _config.dTable[elCnt].fnClearTable();
-		        }
-		        _config.dTable[elCnt].fnAddData(_config.items);
-		        dTable = _config.dTable[elCnt];
-		        
-		        // Setting up table events
-		        if (_config.dataTable.sPaginationType) {
+                }
+                else {
+                    if (!_isSimpleHeaders()) _updateTableFooterSums(elCnt);
+                    _config.dTable[elCnt].fnClearTable();
+                }
+                _config.dTable[elCnt].fnAddData(_config.items);
+                dTable = _config.dTable[elCnt];
+                
+                // Setting up table events
+                if (_config.dataTable.sPaginationType) {
                     $('#dataTable_'+elCnt+' thead tr,#dataTable_'+elCnt+'_next,#dataTable_'+elCnt+'_previous,#dataTable_'+elCnt+'_first,#dataTable_'+elCnt+'_last').click( function() { _config.fnContentChange(this); if (_config.expandableRows) _expandClick(dTable); } );
                     $('#dataTable_'+elCnt+'_paginate input,#dataTable_'+elCnt+'_filter input').keyup( function() { 
                         _config.fnContentChange(this);

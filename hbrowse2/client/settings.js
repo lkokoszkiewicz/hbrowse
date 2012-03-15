@@ -565,29 +565,29 @@ function Settings() {
                     'disableFiltersList':['textfilter'],
                     'translateData': function(jsonData) {
                         return [
-			                "ActionScript",
-			                "AppleScript",
-			                "Asp",
-			                "BASIC",
-			                "C",
-			                "C++",
-			                "Clojure",
-			                "COBOL",
-			                "ColdFusion",
-			                "Erlang",
-			                "Fortran",
-			                "Groovy",
-			                "Haskell",
-			                "Java",
-			                "JavaScript",
-			                "Lisp",
-			                "Perl",
-			                "PHP",
-			                "Python",
-			                "Ruby",
-			                "Scala",
-			                "Scheme"
-		                ];
+                            "ActionScript",
+                            "AppleScript",
+                            "Asp",
+                            "BASIC",
+                            "C",
+                            "C++",
+                            "Clojure",
+                            "COBOL",
+                            "ColdFusion",
+                            "Erlang",
+                            "Fortran",
+                            "Groovy",
+                            "Haskell",
+                            "Java",
+                            "JavaScript",
+                            "Lisp",
+                            "Perl",
+                            "PHP",
+                            "Python",
+                            "Ruby",
+                            "Scala",
+                            "Scheme"
+                        ];
                     }
                 }
             },
@@ -713,12 +713,12 @@ function Settings() {
                     
                     if (dataLen > 0) {
                         var in_array = function(array, p_val) {
-	                        for(var i = 0, l = array.length; i < l; i++) {
-		                        if(array[i] == p_val) {
-			                        return true;
-		                        }
-	                        }
-	                        return false;
+                            for(var i = 0, l = array.length; i < l; i++) {
+                                if(array[i] == p_val) {
+                                    return true;
+                                }
+                            }
+                            return false;
                         }
                         
                         var obj = {
@@ -835,11 +835,11 @@ function Settings() {
                         }
                     ];
                     var startdatestring = jsonDataSet.firststarted[0][0]['started'];
-		            var enddatestring = jsonDataSet.lastfinished[0][0]['finished'];
-		            var timeInterval = (enddatestring - startdatestring)/60;
-		            var succjobstotalevents = jsonDataSet.succjobs[0][0]['TOTALEVENTS'];
-		            
-		            //procEventsArr.sort(function(a,b){return (Date.parse(getDateObj(a.finished))-Date.parse(b.finished));});
+                    var enddatestring = jsonDataSet.lastfinished[0][0]['finished'];
+                    var timeInterval = (enddatestring - startdatestring)/60;
+                    var succjobstotalevents = jsonDataSet.succjobs[0][0]['TOTALEVENTS'];
+                    
+                    //procEventsArr.sort(function(a,b){return (Date.parse(getDateObj(a.finished))-Date.parse(b.finished));});
                     var bufF = 0;
                     for (var i=0;i<procEventsArr.length;i++) {
                         bufF += procEventsArr[i].Events;
