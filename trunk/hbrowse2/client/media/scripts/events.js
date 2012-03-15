@@ -268,14 +268,14 @@ function Events() {
 // Data table content change --------------------------------------------------
     
     /*
-        Function: mainsTableContent_change
+        Function: tableContent_change
         Executed when data table content changes due to sorting 
         or client side filtering
         
         Parameters:
             el - clicked element
     */
-    this.mainsTableContent_change = function(el) {
+    this.tableContent_change = function(el) {
         var records, _Settings = this.Settings[this.Data.state('table')]; // Shortcut
         var thisRef = this;
         if ($('#dataTable_0_paginate input').val() !== undefined) this.Data.state('p', $('#dataTable_0_paginate input').val());
@@ -286,8 +286,8 @@ function Events() {
         records = parseInt($('#dataTable_0_length select').val(), 10);
         if (!isNaN(records)) this.Data.state('records', records);
         $('#dataTable_0 tbody a.drilldown').closest('td').unbind();
-        $('#dataTable_0 tbody a.drilldown').closest('td').click(function(){ 
-            var aPos = thisRef.mainsTable[0].fnGetPosition(this);
+        $('#dataTable_0 tbody a.drilldown').closest('td').click(function(){
+            var aPos = thisRef.Table[0].fnGetPosition(this);
             thisRef.drillDown_click(this, aPos[0]); 
         });
         
