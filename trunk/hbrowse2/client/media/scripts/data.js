@@ -145,13 +145,13 @@ function Data(ajaxAnimation, _Settings) {
                 modal: true,
                 width: 700,
                 resizable: false,
-			    buttons: {
-				    Ok: function() {
-					    $( this ).dialog( "close" );
-					    window.history.back();
-				    }
-			    } 
-	        });
+                buttons: {
+                    Ok: function() {
+                        $( this ).dialog( "close" );
+                        window.history.back();
+                    }
+                } 
+            });
             $('#dialog-message').dialog('open');
         }
         else {

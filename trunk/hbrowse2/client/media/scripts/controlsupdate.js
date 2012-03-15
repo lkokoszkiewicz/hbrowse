@@ -41,12 +41,12 @@ function ControlsUpdate() {
             title: err.name+': '+err.message,
             modal: true,
             width: 700,
-			buttons: {
-				Ok: function() {
-					$( this ).dialog( "close" );
-				}
-			} 
-	    });
+            buttons: {
+                Ok: function() {
+                    $( this ).dialog( "close" );
+                }
+            } 
+        });
         $('#dialog-message').dialog('open');
     };
 
@@ -174,9 +174,9 @@ function ControlsUpdate() {
             this.charts_prepTable(groupTableIndexes[i], '#chartGroupContent_'+i, domIdPrefix+i+'_');
         }
         $('#'+accordionID).accordion({
-			autoHeight: false,
-			navigation: true
-		});
+            autoHeight: false,
+            navigation: true
+        });
     };
     
 // ----------------------------------------------------------------------------
@@ -654,16 +654,16 @@ function ControlsUpdate() {
                 if (_Settings.filters[i].fieldType == 'date') {
                     $('#'+_Settings.filters[i].urlVariable).datepicker({
                         dateFormat: 'yy-mm-dd',
-			            changeMonth: true,
-			            changeYear: true
-		            });
+                        changeMonth: true,
+                        changeYear: true
+                    });
                 }
                 else if (_Settings.filters[i].fieldType == 'datetime') {
                     $('#'+_Settings.filters[i].urlVariable).datetimepicker({
                         dateFormat: 'yy-mm-dd',
-			            changeMonth: true,
-			            changeYear: true
-		            });
+                        changeMonth: true,
+                        changeYear: true
+                    });
                 }
                 else if (_Settings.filters[i].fieldType == 'multiselect' || _Settings.filters[i].fieldType == 'select') {
                     mulitselectconf = {
