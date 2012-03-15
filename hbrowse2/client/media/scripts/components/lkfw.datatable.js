@@ -365,10 +365,8 @@
             }
             
             elCnt = 0;
-            dTablesArr = [];
             this.each(function() {
-		        dTable = _config.dTable[elCnt];
-                if (!dTable) {
+                if (!_config.dTable[elCnt]) {
                     bSort = true;
                     if (_config.sorting === false) {
                         aaSorting = [[0,'asc']];
@@ -387,19 +385,23 @@
 					        "aaSorting": aaSorting
 		            };
                     
-                    dTable = $('#dataTable_'+elCnt).dataTable( $.extend(dTableOptions,_config.dataTable));
+                    _config.dTable.push($('#dataTable_'+elCnt).dataTable( $.extend(dTableOptions,_config.dataTable)));
 		        }
 		        else {
 		            if (!_isSimpleHeaders()) _updateTableFooterSums(elCnt);
-		            dTable.fnClearTable();
+		            _config.dTable[elCnt].fnClearTable();
 		        }
-		        dTable.fnAddData(_config.items);
-		        dTablesArr.push(dTable);
+		        _config.dTable[elCnt].fnAddData(_config.items);
+		        dTable = _config.dTable[elCnt];
 		        
 		        // Setting up table events
 		        if (_config.dataTable.sPaginationType) {
                     $('#dataTable_'+elCnt+' thead tr,#dataTable_'+elCnt+'_next,#dataTable_'+elCnt+'_previous,#dataTable_'+elCnt+'_first,#dataTable_'+elCnt+'_last').click( function() { _config.fnContentChange(this); if (_config.expandableRows) _expandClick(dTable); } );
-                    $('#dataTable_'+elCnt+'_paginate input,#dataTable_'+elCnt+'_filter input').keyup( function() { _config.fnContentChange(this); if (_config.expandableRows) _expandClick(dTable); } );
+                    $('#dataTable_'+elCnt+'_paginate input,#dataTable_'+elCnt+'_filter input').keyup( function() { 
+                        _config.fnContentChange(this);
+                        if (_config.expandableRows) 
+                            _expandClick(dTable); 
+                    } );
                     $('#dataTable_'+elCnt+'_length select').change( function() { _config.fnContentChange(this); if (_config.expandableRows) _expandClick(dTable); } );
                 }
                 if (_config.expandableRows) _expandClick(dTable);
@@ -408,7 +410,7 @@
                 elCnt++;
             });
             
-            return dTablesArr;
+            return _config.dTable;
         }
     };
     

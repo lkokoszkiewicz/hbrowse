@@ -268,7 +268,7 @@ function Controller() {
             $('#topTableCharts').empty();
             // Charts tab handling - finish
             
-            thisRef.mainsTable = $('#tableContent').lkfw_dataTable({
+            /*thisRef.Table = */$('#tableContent').lkfw_dataTable({
                 dTable: thisRef.Table,
                 tableId: 'mains',
                 expandableRows: _Settings.expandableRows,
@@ -280,9 +280,9 @@ function Controller() {
                 sorting: (thisRef.Data.state('sorting').length > 0 ? thisRef.Data.state('sorting') : _Settings.sorting),
                 fnERContent:function(trID, thatRef, drawERfunction){ return thisRef.expand_click(trID, thatRef, drawERfunction); },
                 fnERContentPostProcess:function(expandedID,inputObj){ return thisRef.expand_click_postprocess(expandedID,inputObj,true); },
-                fnContentChange: function(el) { thisRef.mainsTableContent_change(el); },
+                fnContentChange: function(el) { thisRef.tableContent_change(el); },
                 fnERClose: function(dataID) { thisRef.erClose_click(dataID); },
-                fnTableSorting: function(el) { thisRef.tableSorting_click(el,thisRef.mainsTable[0]); },
+                fnTableSorting: function(el) { thisRef.tableSorting_click(el,thisRef.Table[0]); },
                 dataTable: {
                     iDisplayLength: thisRef.Data.state('records'),//_Settings.iDisplayLength,
                     sPaginationType: "input",
@@ -325,7 +325,7 @@ function Controller() {
             thisRef.filtersUpdate();
             
             // Setting up current page - START
-            tSettings = thisRef.mainsTable[0].fnSettings();
+            tSettings = thisRef.Table[0].fnSettings();
             tPages = parseInt( (tSettings.fnRecordsDisplay()-1) / tSettings._iDisplayLength, 10 ) + 1;
             
 		    if ( $.bbq.getState('p') && ($.bbq.getState('p') <= tPages) ) {
@@ -538,7 +538,7 @@ function Controller() {
         if (this.appDisplayState() == 'table') {
             //show table
             this.Data.state('uparam', []);
-            this.Table = [];
+            //this.Table = [];
         }
         else if (this.appDisplayState() == 'users') {
             // Show users
