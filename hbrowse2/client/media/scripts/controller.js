@@ -268,9 +268,9 @@ function Controller() {
             $('#topTableCharts').empty();
             // Charts tab handling - finish
             
-            /*thisRef.Table = */$('#tableContent').lkfw_dataTable({
+            $('#tableContent').lkfw_dataTable({
                 dTable: thisRef.Table,
-                tableId: 'mains',
+                tableId: thisRef.Data.state('table'),
                 expandableRows: _Settings.expandableRows,
                 multipleER: _Settings.multipleER,
                 items: data,
