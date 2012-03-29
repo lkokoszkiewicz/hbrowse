@@ -8,6 +8,9 @@ First thing to consider when setting up hBrowse UI application is your data serv
    * Sub-content table (like subjobs in Ganga)
 Json data format is not important because special translation functions can be used inside the application. Of course, data that is in a right format is processed much quicker.
 
+=First running the application=
+If you download the whole package (not just the essential libraries) you get a working example application with example data sources (files) which you should be replaced. So, basically, the package is a "starting point" example application which should be modified to meet the requirements.
+
 =Setting up the application=
 To setup the application you need to modify _media/scripts/settings.js_ file. Settings are split onto 3 categories:
    * Application
@@ -94,7 +97,7 @@ Definition of data that will be displayed after row expansion, expandData object
    * dataURL_params - */function/* Ajax request parameters
       * Input: controller.Data object and current row data
       * Output: `{'<parameter_name>':<parameter_value>,...} (default: {})`
-   * dataFunction - */Function/* Function, definition of data that will be displayed after row expansion
+   * dataFunction - */Function/* Function, definition of data that will be displayed after row expansion. It returns an array of content to display, the order of contents is represented on the webpage.
       * Input:
          * rowDataSet - clicked row data (from ajax datatable response)
          * jsonDataSet - data extracted from ajax response
@@ -185,11 +188,11 @@ The above definition will generate the following html structure:
     </tfoot>
 </table>
 }}}
-In addition, there is a possibility to add a summary sum of entire column values (this option, for now, was tested only for ints). Here is en example:
+In addition, there is a possibility to add a summary sum or avrage value of entire column values (this option, for now, was tested only for ints). Here is en example:
 {{{
 'footer': {
     'groups':[['Statuses Summary',0,5]],
-    'labels':[['monitorTaskId',2,0],['Num of Jobs',2,0],['=SUM',0,0,false,{'text-align':'right','color':'#FF9900'}],['=SUM',0,0,false,{'text-align':'right','color':'#BB72F3'}],['=SUM',0,0,false,{'text-align':'right','color':'#59D118'}],['=SUM',0,0,false,{'text-align':'right','color':'#C50000'}],['=SUM',0,0,false,{'text-align':'right','color':'#C2BDDD'}],['Graphically',2,0]]
+    'labels':[['monitorTaskId',2,0],['Num of Jobs',2,0],['=SUM',0,0,false,{'text-align':'right','color':'#FF9900'}],['=AVG',0,0,false,{'text-align':'right','color':'#BB72F3'}],['=SUM',0,0,false,{'text-align':'right','color':'#59D118'}],['=AVG',0,0,false,{'text-align':'right','color':'#C50000'}],['=SUM',0,0,false,{'text-align':'right','color':'#C2BDDD'}],['Graphically',2,0]]
 }
 }}}
 So, the label array was extended a little. After header label, row and col span column index and css styles object was added. Column index represents the column index which values we want to sum up (after adding optional expandable row 'plus image coulmn'). Column index is optional so it can be left empty or set to false. You have to use false if you don't want to specify it but you want to define additional style-sheets for a specific header.
@@ -198,7 +201,7 @@ Complex headers option is an experimental one for now, and it's difficult for us
 ===aoColumns /array/===
 (optional) columns options, see http://www.datatables.net/usage/columns
 ===getDataArray /function(responseData)/===
-function: extracting array of table data (for dataTable) form Ajax response
+function: extracting array of table data (for dataTable) form Ajax response. Allows the system to automatically find a proper data row if needed (eg. for expandable row).
 Example:
    * Ajax response: `{'user_taskstable':[{col_val1, col_val2, ...}, ...]}`
    * Required function: `function(data) { return data.user_taskstable; }`
@@ -317,7 +320,7 @@ Output:
 (optional) allow to insert charts on top of the dataTable
 
 ==Setting up charts==
-Charts are based on google charts service and highcharts jQuery plotting library. The types of charts to draw can be toggled using _type_ property (gchart for google charts and hchart for highcharts). In case when one want to use google charts to display charts on the page function _translateData_ will have to return object with complete google charts parameter set (see the first example and google charts web page: http://code.google.com/apis/chart/). Google charts can be created using Chart Wizard (http://code.google.com/apis/chart/docs/chart_wizard.html), this will give you the necessary parameters to fill. In case when using highcharts the _translateData_ function would have to return highcharts options object (instructions for using highcharts can be found here: http://www.highcharts.com/). When composing highcharts options object you don't have to specify options.chart.renderTo option, it will be replaced anyway. Below you can find example charts settings:
+Charts are based on google charts service and highcharts jQuery plotting library. The types of charts to draw can be toggled using _type_ property (gchart for google charts, hchart for highcharts and table for displaying a table in a place of chart). In case when you want to use google charts to display charts on the page function _translateData_ will have to return object with complete google charts parameter set (see the first example and google charts web page: http://code.google.com/apis/chart/). Google charts can be created using Chart Wizard (http://code.google.com/apis/chart/docs/chart_wizard.html), this will give you the necessary parameters to fill. In case when using highcharts the _translateData_ function would have to return highcharts options object (instructions for using highcharts can be found here: http://www.highcharts.com/). When composing highcharts options object you don't have to specify options.chart.renderTo option, it will be replaced anyway. To display a 'chart table' you will need to return a strictly specified object (you can see the last example). Below you can find example charts settings:
 {{{
 'charts': [
     {
@@ -468,8 +471,7 @@ Charts are based on google charts service and highcharts jQuery plotting library
             var output = {
                 width:550,
                 tblLabels:['Cloud','Datasets','Total Files in datasets','Total CpFiles in datasets','Completed','Transfer','Subscribed'],
-                tblData:[]
-                //    [{'html':'phi1','bgcolor':'#00FF00'},{'html':'phi1','bgcolor':'#FF0000'},{'html':'phi1','bgcolor':'#00FF00'},{'html':'phi1','bgcolor':'#FF0000'}]
+                tblData:[] // EXAMPLE OF tblData: [{'html':'phi1','bgcolor':'#00FF00'},{'html':'phi1','bgcolor':'#FF0000'},{'html':'phi1','bgcolor':'#00FF00'},{'html':'phi1','bgcolor':'#FF0000'}]
             };
             
             for (var i=0;i<data.length;i++) {
@@ -626,6 +628,3 @@ As a data source for charts both local stored data (data used to generate a tabl
 ===postProcess /function/===
 (optional) Function that is run after chart is loaded. You can use it to load another chart or to attach some events to newly created table.
 Input: Data object
-
-=First running the application=
-If you download the whole package (not just the essential libraries) you get a working example application with example data sources (files) which you should be replaced. So, basically, the package is a "starting point" example application which should be modified to meet the requirements.

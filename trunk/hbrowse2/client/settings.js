@@ -3,6 +3,10 @@
 //
 // Author: Lukasz Kokoszkiewicz [lukasz@kokoszkiewicz.com , lukasz.kokoszkiewicz@cern.ch]
 //
+// Description:
+// Here you have a working example of the settings file. Use it as a starting point, on which you can build an entire UI.
+// To get additional info please look at documentation at http://code.google.com/p/hbrowse/wiki/SettingsDocumentationV2
+//
 // History:
 // 28.05.2010 Created
 //
@@ -35,6 +39,7 @@ function Settings() {
                 'uparam': [] // user defined params (for params that cannot be shared between use cases)
             }
         }//,
+        // You can define an on load ajax request that will provide the application with any kind of default (startup) data loaded from the provided url. 
         //'onLoadRequestURL':'http://localhost/hbrowse2/gangataskmonitoring',
         // Optional init function alows to run some additional action on application initialization, it takes one parameter which is the state of the view (subs|mains|users)
         // Keep in mind the this is only the state of the url, not the state of the app, because of asyncronous ajax requests
@@ -75,8 +80,8 @@ function Settings() {
     
     // Mains settings - START
     this.Mains = {
-        'tableName': 'Tasks',
-        'showChartsTabFirst':false,
+        'tableName': 'Tasks', // Defines table name. Used in breadcrumbs. 
+        'showChartsTabFirst':false, // (optional) If true, charts tab will be default for this table.
         'dataURL': 'gangataskstable', // Mains URL for ajax request
         // Function, ajax request parameters
         // Input: Data - application Data model, rowDataSet - clicked row data (from ajax datatable response)
@@ -96,6 +101,7 @@ function Settings() {
         // Expanded data view setub object
         'expandData': {
             // Function, definition of data that will be displayed after row expansion
+            // It returns an array of content to display, the order of contents is represented on the webpage
             // Input: 
             //  - rowDataSet - clicked row data (from ajax datatable response)
             //  - jsonDataSet - data extracted from ajax response
@@ -105,6 +111,7 @@ function Settings() {
             //     'tblLabels':[<label1>,<label2>,...] or false,
             //     'tblData':[[<row1value1>,<row1value2>,...],[<row2value1>,<row2value2>,...],...]
             //   } or false,
+            //   'charts':[<charts_objects>],
             //   'html':<custom_html> or false
             // }
             'dataFunction': function(rowDataSet, jsonDataSet) {
@@ -136,7 +143,7 @@ function Settings() {
         'sorting':[1,'desc'], // [<column_index>,<sorting_direction>], sorting_direction='desc'||'asc'
         'iDisplayLength': 25, // Number of rows to display on single page
         'aLengthMenu':[10, 15, 20, 25, 30, 50, 100, 200],
-        // Column labels (complex headers example)
+        // Column labels (complex headers example, see documentation for more info)
         'tblLabels': function() {
             return {
                 'header':{
@@ -162,6 +169,7 @@ function Settings() {
             {"sWidth":"130px","bSortable":false}
         ],
         // Function: extracting array of table data form Ajax response
+        // Allows the system to automatically find a proper data row if needed (eg. for expandable row)
         // Example:
         // - Ajax response: {'user_taskstable':[{col_val1, col_val2, ...}, ...]}
         // - Required function: function(data) { return data.user_taskstable; }
@@ -188,17 +196,16 @@ function Settings() {
             return tasksArr;
         },
         // Function, it is executed every time someone clicks cell with a.drilldown html tag in it
-        // Main purpose of the function is to indicate tid and (optionary) uparam parameters from the Data object
-        // (uparam allows to setup additional parameters to tid that would define a sub table ajax request)
-        // This allows to properly display subs table
+        // Main purpose of the function is to indicate parameters for displaying the drilldown table.
+        // This allows to properly display a drilldown table
         // Input:
         //  - Data - application Data object
         //  - el - clicked jQuery element
         //  - rowIndex - index of the clicked row
         // Output: {
-        //   'uparam':[<parameters_list>],
-        //   'tid':<id_for_the_subtable>,
-        //   'filters':{'<filter_urlVariable>',<value>}
+        //   'table':'<tableObjectName>',
+        //   'filters':{ '<filterUrlVariable>':'<filterValue>', ... }
+        // }
         'drillDownHandler': function(Data, el, rowIndex) {
             var classTranslate = {
                 'tmIdClick':'all',
@@ -221,6 +228,8 @@ function Settings() {
             
             return {'table':'Subs',filters:{'tid':tid}};
         },
+        // Optional function that allows user to handle table change event (on changing sorting or page).
+        // Function will also run on table init, in this case element will be empty.
         /*'tableActivityEvent': function(el) {
             alert('it works! (mains)');
         },*/
