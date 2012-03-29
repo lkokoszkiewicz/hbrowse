@@ -1,5 +1,10 @@
 #labels Featured
 =Change Log=
+==v2.2.8==
+  * Some code refactoring
+  * Default _settings.js_ file comments improved
+  * Documentation updates
+
 ==v2.2.7==
   * Stopped support for loading scripts animation, anyone interested in the provious behavior will have to add _#container { display:none }_ to his global.css file
   * Added rows highlighting on mouseover
