@@ -150,7 +150,7 @@ Here is the example function that you can define instead of standard array:
     };
 }
 }}}
-Every label is an array: `[<label text>,<row_span>,<col_span>,<(optional)column_index>,<(optional)css_styles>]`. _Groups_, for header are positioned above _labels_ and for footer below. In optional _column_index_ you can change the column data source to sum or average values from a different column.
+Every label is an array: `[<label text>,<row_span>,<col_span>,<(optional)column_index>,<(optional)css_styles>]`. _Groups_, for header are positioned above _labels_ and for footer below. In optional _column_index_ you can change the column data source to sum or average values from a different column, to ignore the _column_index_ setting just set it to _false_ (necessary to use when you don't want to change a default column index but use _css_styles_ at the same time, see example below).
 The above definition will generate the following html structure:
 {{{
 <table id="dataTable_0" cellpadding="0" cellspacing="1" class="display">
