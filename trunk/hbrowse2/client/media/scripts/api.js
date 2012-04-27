@@ -14,6 +14,33 @@
    This class provides some helper methods.
 */
 var hbrowseAPI = {
+// maxDec ---------------------------------------------------------------------
+
+    /*
+        Function: maxDec
+        Returns given maximum of decimals.
+        
+        Parameters:
+            number - float or integer
+            decimals - integer, number of maximum decimals
+        
+        Returns
+            string
+    */
+    maxDec: function(number, decimals) {
+        var output;
+        
+        number = number.toString().split(".");
+        if (number.length == 1) {
+            output = number[0];
+        } else {
+            output = number[0]+'.'+number[1].substr(0,decimals);
+        }
+        return output;
+    },
+
+// ----------------------------------------------------------------------------
+
 // secondsToDuration ----------------------------------------------------------
     
     /*

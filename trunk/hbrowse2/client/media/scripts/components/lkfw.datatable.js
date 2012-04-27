@@ -41,7 +41,8 @@
             };
             
             var _headerRow = function(contentArr) {
-                var i, j, colHeadersTr, index, sum, colHeader;
+                var i, j, colHeadersTr, index, sum, sumw, minus, colHeader, current;
+                
                 colHeadersTr = $('<tr></tr>');
                 for (i=0;i<contentArr.length;i++) {
                     if (contentArr[i][0] == '=SUM') {
@@ -49,18 +50,25 @@
                         if (contentArr[i][3] !== undefined && contentArr[i][3] !== false) index = contentArr[i][3];
                         sum = 0;
                         for (j=0;j<_config.items.length;j++) {
-                            sum = (sum + parseInt(_config.items[j][index], 10));
+                            current = parseFloat(_config.items[j][index]);
+                            if (!isNaN(current))
+                                sum += current;
                         }
-                        colHeader = $('<th></th>').html(sum);
+                        colHeader = $('<th></th>').html(hbrowseAPI.maxDec(sum,2));
                         if (contentArr[i][4] !== undefined) colHeader.css(contentArr[i][4]);
                     } else if (contentArr[i][0] == '=AVG') {
                         index = parseInt(i, 10);
                         if (contentArr[i][3] !== undefined && contentArr[i][3] !== false) index = contentArr[i][3];
                         sum = 0;
+                        minus = 0;
                         for (j=0;j<_config.items.length;j++) {
-                            sum = (sum + parseInt(_config.items[j][index], 10));
+                            current = parseFloat(_config.items[j][index]);
+                            if (!isNaN(current))
+                                sum += current;
+                            else
+                                minus++;
                         }
-                        colHeader = $('<th></th>').html((sum/_config.items.length).toFixed(2));
+                        colHeader = $('<th></th>').html(hbrowseAPI.maxDec(sum/(_config.items.length-minus),2));
                         if (contentArr[i][4] !== undefined) colHeader.css(contentArr[i][4]);
                     } else {
                         colHeader = $('<th></th>').html(contentArr[i][0]);

@@ -42,7 +42,7 @@ function Controller() {
 
     /*
         Function: appDisplayState
-        Determines application state. Tells if application is in used 
+        Determines application state. Tells if application is in user 
         selection dialog or displaying a data table
         
         Returns:
