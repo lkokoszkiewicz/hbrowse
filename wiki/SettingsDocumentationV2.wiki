@@ -48,7 +48,7 @@ Here You can set up model (data.js) default values, in most cases doesn't need t
    * or - */array/* opened table rows (default: `[]`)
    * uparam - */array/* user defined params (for params that cannot be shared between use cases) (default: `[]`)
 ===onLoadRequestURL /string/===
-You can define an on load ajax request that will provide the application with any kind of default (startup) data loaded from the provided url.
+You can define an on load ajax request that will provide the application with any kind of default (startup) data loaded from the provided url. You can access the data inside Controller.Data.state().mem.onload.
 ===hashChangeEvent /function(state, dataMem)/===
 Input:
    * state - State of the view (subs|mains|users). Keep in mind that this is only the state of the url, not the state of the application, because of asynchronous ajax requests the state of the view might be (temporally) different then state of the url hash.
