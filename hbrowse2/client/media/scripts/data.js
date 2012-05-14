@@ -337,7 +337,7 @@ function Data(ajaxAnimation, _Settings) {
     
     /*
         Function: ajax_getData_alt
-        Get ajax data for charts or filters (async)
+        Get ajax data for charts or filters (async possible)
         
         Parameters:
             xhrName - Custom name of the request
@@ -403,15 +403,100 @@ function Data(ajaxAnimation, _Settings) {
                 success: function(data, textStatus, jqXHR) {
                     _Cache.add(key, data);
                     fSuccess(data, obj);
-                    //ajaxAnimation.removeClass(xhrName);
-                    //if (!ajaxAnimation.attr('class')) ajaxAnimation.hide();
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     ajaxAnimation.removeClass(xhrName);
-                    //if (!ajaxAnimation.attr('class')) ajaxAnimation.hide();
-                    //fFailure(obj);
+                    fFailure(obj);
                 }
             });
+        }
+    };
+
+// ----------------------------------------------------------------------------
+
+// Get ajax data (custom request) ---------------------------------------------
+    
+    /*
+        Function: ajax_getData_custom
+        Get ajax data for your developer extentions. You can use this function to load any
+        additional data into the system. You can use sync request and also choose a POST
+        method of request.
+        
+        Parameters:
+            ajaxOptions - options object to setup ajax request (see jQuery.ajax function documentation), 
+                options success and error will always be overwritten
+            xhrName - Custom name of the request
+            fSuccess - Function to run on success
+            fFailure - Function to run on failure
+            obj - Additional object to use with fSuccess of fFailure functions
+    */
+    this.ajax_getData_custom = function(userAjaxConfig, xhrName, fSuccess, fFailure, obj) {
+        var i, currentUrl, portIndex, port, isNumber, index, urlChar, paramsString, key, data;
+        if ( userAjaxConfig.url === undefined ) userAjaxConfig.url = "";
+        if ( userAjaxConfig.data === undefined ) userAjaxConfig.data = {};
+        if ( xhrName === undefined ) xhrName = 'defaultName'+$.now();
+        if ( fSuccess === undefined ) fSuccess = $.noop;
+        if ( fFailure === undefined ) fFailure = $.noop;
+        if ( obj === undefined ) obj = '';
+        
+        var thisRef = this;
+        
+        currentUrl = window.location.toString();
+        portIndex = currentUrl.indexOf('?port=');
+        if (portIndex > -1) {
+            
+            port = '';
+            isNumber = true;    
+            index = portIndex + 6;
+        
+            while(isNumber){
+                urlChar = currentUrl[index];
+                if(urlChar == '0' || urlChar == '1' || urlChar =='2' ||
+                   urlChar == '3' || urlChar == '4' || urlChar =='5' ||
+                   urlChar == '6' || urlChar == '7' || urlChar =='8' || urlChar =='9'){
+                    port = port + currentUrl[index];
+                    index++;
+                }
+                else{
+                    isNumber = false;
+                }
+                
+            }
+
+            url = addPortNumber(url, port);            
+        }
+        
+        paramsString = '';
+        for (i in userAjaxConfig.data) {
+            if (userAjaxConfig.data.hasOwnProperty(i)) {
+                paramsString += i+'='+userAjaxConfig.data[i]+'&';
+            }
+        }
+        key = $.base64Encode(xhrName+'^'+userAjaxConfig.url+'#'+paramsString);
+        
+        var ajaxConfig = {
+            type: "GET",
+            async: true,
+            dataType: "json"
+        };
+        $.extend(ajaxConfig, userAjaxConfig);
+        var ajaxReqHandling = {
+            success: function(data, textStatus, jqXHR) {
+                _Cache.add(key, data);
+                fSuccess(data, obj);
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                ajaxAnimation.removeClass(xhrName);
+                fFailure(obj);
+            }
+        };
+        $.extend(ajaxConfig, ajaxReqHandling);
+        
+        data = _Cache.get(key);
+        if (data) {
+            fSuccess(data, obj);
+        } else if (userAjaxConfig.url) {
+            $.ajax(ajaxConfig);
         }
     };
 
