@@ -250,7 +250,7 @@ It's an array of objects, each object represents different filter and all of the
    * fieldType - */string/* accept 3 kinds of input types ('text' | 'select' | 'multiselect' | 'date') (default: 'text')
    * groupIndex - */int/* - (optional) Determines to which group filter should be attached
    * value - */string/* Initial value for the filter (default: '')
-   * disableCache - */boolean/* If set it to true the filters request will be done every time the table loads (default: '')
+   * disableCache - */boolean/* If set it to true the filters request will be done every time the table loads (default: false)
    * options - */obejct/* there are several options that you can setup depending on _fieldType_ and needs, here is the example:
 {{{
 {
