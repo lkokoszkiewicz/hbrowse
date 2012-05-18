@@ -511,7 +511,8 @@ function ControlsUpdate() {
                     // check if, by any chance, options wasn't downloaded earlier
                     // to do this we check if a proper ajax response was reqistered inside Data.mem object
                     // if not, script will download a proper data
-                    if (thisRef.Data.state().mem.filters[_Settings.filters[i].urlVariable] === undefined) {
+                    if (thisRef.Data.state().mem.filters[_Settings.filters[i].urlVariable] === undefined
+                        || _Settings.filters[i].disableCache == true) {
                         // check if options.dataURL_params is defined
                         // if no, use previously defined function returning empty object
                         if (_Settings.filters[i].options.dataURL_params === undefined) 
