@@ -1,5 +1,8 @@
 #labels Featured
 =Change Log=
+==v2.2.10==
+  * Added _disableCache_ filter option (see documentation).
+
 ==v2.2.9==
   * =AVG and =SUM options of the table column headers and footers are not experimental any more.
   * Added _ajax_getData_custom_ function that can be used by a developers to get additional data. It gives little more flexibility to a programmer, for example it's possible to set a POST type connection.
